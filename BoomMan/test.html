@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page Title</title>
+    <script>
+
+        const HEIGHT = 600;
+        const WIDTH = 800;
+
+        class World {
+            constructor(width, height) {
+
+                let canvas = document.createElement('canvas');
+                document.body.append(canvas);
+                canvas.style.width = width;
+                canvas.style.height = height;
+                canvas.style.border = "1px solid red";
+                canvas.width = width;
+                canvas.height = height;
+
+                this.canvas = canvas;
+                this.width = width;
+                this.height = height;
+            }
+
+            get rangeX() {
+                return this.width;
+            }
+
+            get rangeY() {
+                return this.height;
+            }
+
+            get land() {
+                return this.canvas;
+            }
+        }
+
+        class WORLDRULE {
+            constructor() {
+                let self = this;
+                self.timer = setInterval(self.calculate.bind(self), 100);
+                self.content = null;
+                self._x = 0;
+                self._y = 0;
+                self.range = 0;
+                self.speedX = 0;
+                self.speedY = 0;
+                this._World = {
+                    width: 0,
+                    height: 0
+                }
+            }
+            get x() {
+                return this._x;
+            }
+
+            get y() {
+                return this._y;
+            }
+
+            get speed() {
+                return {
+                    x: this.speedX,
+                    y: this.speedY
+                }
+            }
+
+            set World(world) {
+                this._World = world;
+            }
+
+            calculate() {
+                var self = this;
+                var result, calX, calY;
+                if (!self.content || (!this.speedX && !this.speedY)) {
+                    return;
+                }
+
+                result = self.checkHit();
+                if (result == 'x') {
+                    // 触发碰撞后，先移动后，后改速度
+                    calX = (2 * self._World.rangeX - self.range - self._x - self.speedX);
+                    calY = self._y + self.speedY;
+                    this.addSpeedX(-2 * this.speedX);
+                } else if (result == 'y') {
+                    // 触发碰撞后，先移动后，后改速度
+                    calX = self._x + self.speedX;
+                    calY = (2 * self._World.rangeY - self.range - self._y - self.speedY);
+                    this.addSpeedY(-2 * this.speedY);
+                } else if (result == "xy") {
+                    // 触发碰撞后，先移动后，后改速度
+                    calX = (2 * self._World.rangeX - self.range - self._x - self.speedX);
+                    calY = (2 * self._World.rangeY - self.range - self._y - self.speedY);
+                    this.addSpeedX(-2 * this.speedX);
+                    this.addSpeedY(-2 * this.speedY);
+                } else {
+                    calX = self._x + self.speedX;
+                    calY = self._y + self.speedY;
+                }
+                // 移动
+                self.content.translate(calX, calY);
+            }
+
+            addSpeedX(x) {
+                this.speedX += x;
+            }
+
+            addSpeedY(y) {
+                this.speedY += y;
+            }
+
+            checkHit() {
+                var self = this;
+                var rangeX = self._World.rangeX - self.range;
+                var rangeY = self._World.rangeY - self.range;
+                var result = "";
+                var resultX = self._x + self.speedX;
+                var resultY = self._y + self.speedY;
+
+                if (resultX < self.range || resultX > rangeX) {
+                    result += "x";
+                }
+                if (resultY < self.range || resultY > rangeY) {
+                    result += "y";
+                }
+
+                return result;
+            }
+
+        }
+
+        class point extends WORLDRULE {
+            constructor() {
+                super();
+            }
+
+            init() {
+                var self = this;
+                self.context = self._World.canvas.getContext("2d");
+                self.content.fillRect(WIDTH / 2, HEIGHT / 2, self._x, self._y);
+            }
+        }
+
+        window.onload = () => {
+            const WORLD = new World(WIDTH, HEIGHT);
+            var p = new point();
+            p.World = WORLD;
+            p.init();
+        }
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
