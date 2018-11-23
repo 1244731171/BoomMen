@@ -34,4 +34,12 @@ class Tips
         this.renderDom(domInfo);
         this.registedDomMap.set(domInfo['id'], domInfo);
     }
+
+    registerTextTips(testInfo){
+
+    }
+
+    fireEvent(data){
+        this.eventer.fire(data);
+    }
 }

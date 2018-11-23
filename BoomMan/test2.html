@@ -1,0 +1,67 @@
+<html>
+    <head>
+    <title>Canvas Animation</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    </head>
+    <body>
+    <canvas id="canvas" width="200" height="200"></canvas>
+        <script>
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            //对于这些函数和用途不清楚的可以
+            //看回我以前写的js代码，有详细的
+            //解释，这里就不详细说明了
+            var circle = function(x,y,radius,fillCircle){
+                ctx.beginPath();
+                ctx.arc(x,y,radius,0,Math.PI*2,false);
+                if(fillCircle){
+                    ctx.fill();
+                }else{
+                    ctx.stroke();
+                }
+            };
+            //绘制蜜蜂
+            var drawBee = function(x,y){
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "Black";
+                ctx.fillStyle = "Gold";
+
+                //蜜蜂身体
+                circle(x,y,8,true);
+                //蜜蜂边框
+                circle(x,y,8,false);
+                //用圆来绘制蜜蜂的翅膀
+                circle(x-5,y-11,5,false);
+                circle(x+5,y-11,5,false);
+                //最后绘制眼睛
+                circle(x-2,y-1,2,false);
+                circle(x+2,y-1,2,false);
+            }
+            //更新蜜蜂位置
+            var update = function(coordinate){
+                var offset = Math.random()*4-2;
+                coordinate += offset;
+                //防止出界
+                if(coordinate>200){
+                    coordinate = 200;
+                }
+                if(coordinate<0){
+                    coordinate = 0;
+                }
+                return coordinate;
+            }
+            var x = 100;
+            var y = 100;
+            setInterval(
+                function(){
+                    ctx.clearRect(0,0,200,200);
+                    drawBee(x,y);
+                    //更新x，y的坐标
+                    x = update(x);
+                    y = update(y);
+                    //画一个边框
+                    ctx.strokeRect(0,0,200,200);
+                },30);
+        </script>
+    </body>
+</html>

@@ -5,52 +5,184 @@
     <title>Page Title</title>
     <script>
 
-        const HEIGHT = 600;
-        const WIDTH = 800;
+        const HEIGHT = window.innerHeight;
+        const WIDTH = window.innerWidth;
 
-        class World {
+        class __TIME {
+            constructor(rate = 33) {
+                let self = this;
+                self._timeList = [];
+                self._rate = rate;
+
+                self._timer = setInterval(self._calculate.bind(self), rate);
+            }
+
+            on(event, id) {
+                this._timeList.push({
+                    id: id,
+                    event: event
+                });
+            }
+
+            off(id) {
+                let list = this._timeList;
+                for (const index in list) {
+                    let event = list[index];
+                    if (event.id == id) {
+                        list.splice(index, 1);
+                    }
+                }
+            }
+
+            freeze() {
+                clearInterval(this._timer);
+            }
+
+            unfreeze() {
+                let self = this;
+                self._timer = setInterval(self._calculate.bind(self), self._rate);
+            }
+
+            _calculate() {
+                this._timeList.forEach(element => {
+                    element['event']();
+                });
+            }
+        }
+
+        class __WORLD {
             constructor(width, height) {
 
                 let canvas = document.createElement('canvas');
-                document.body.append(canvas);
-                canvas.style.width = width;
-                canvas.style.height = height;
-                canvas.style.border = "1px solid red";
-                canvas.width = width;
-                canvas.height = height;
+                this._universe = window;
+                this._canvas = canvas;
+                this._width = width;
+                this._height = height;
+                this._worldBrush = canvas.getContext("2d");
+                this._objectList = [];
 
-                this.canvas = canvas;
-                this.width = width;
-                this.height = height;
+                this.init();
+            }
+
+            init() {
+                let self = this;
+                TIME.on(() => {
+                    if (document && document.body) {
+                        document.body.append(self._canvas);
+                        self._canvas.style.width = self._width;
+                        self._canvas.style.height = self._height;
+                        self._canvas.style.position = "absolute";
+                        self._canvas.style.top = "0px";
+                        self._canvas.style.left = "0px";
+                        self._canvas.width = self._width;
+                        self._canvas.height = self._height;
+                        self.initEvent();
+                        TIME.off('createEarth');
+                    }
+                }, 'createEarth');
+            }
+
+            initEvent() {
+                let self = this;
+                TIME.on(() => {
+                    self._worldBrush.clearRect(0, 0, self.rangeX, self.rangeY);
+                }, 'clearWorld');
+            }
+
+            set rangeX(x) {
+                this._width = x;
+            }
+
+            set rangeY(y) {
+                this._height = y;
             }
 
             get rangeX() {
-                return this.width;
+                return this._width;
             }
 
             get rangeY() {
-                return this.height;
+                return this._height;
             }
 
-            get land() {
-                return this.canvas;
+            get earth() {
+                return this._canvas;
             }
+
+            add(object) {
+                var self = this;
+                TIME.off('connectLine');
+                self._objectList.push(object);
+                TIME.on(self._checkEffect.bind(self), 'connectLine');
+            }
+
+            remove(object) {
+                var self = this;
+                var index = self._objectList.indexOf(object);
+                if (index >= 0) {
+                    TIME.off('connectLine');
+                    self._objectList.splice(index, 1);
+                    object.destroy();
+                    TIME.on(self._checkEffect.bind(self), 'connectLine');
+                }
+            }
+
+            _checkConnect(obj1, obj2) {
+                let x1 = obj1.x;
+                let y1 = obj1.y;
+                let e1 = obj1.effectRange;
+                let x2 = obj2.x;
+                let y2 = obj2.y;
+                let e2 = obj2.effectRange;
+                let e = Math.min(e1, e2);
+                let d = Math.pow((y2 - y1), 2) + Math.pow((x2 - x1), 2);
+                d = Math.sqrt(d);
+                if (e > d) {
+                    this._worldBrush.strokeStyle = "#b4d8f9";
+                    this._worldBrush.lineWidth = 0.5;
+                    this._worldBrush.beginPath();
+                    this._worldBrush.moveTo(x1, y1);
+                    this._worldBrush.lineTo(x2, y2);
+                    this._worldBrush.stroke();
+                    this._worldBrush.closePath();
+                }
+            }
+
+            _checkEffect() {
+                let self = this;
+                let list = self._objectList;
+                for (let i = 0; i < list.length; i++) {
+                    const ele1 = list[i];
+                    for (let j = i + 1; j < list.length; j++) {
+                        const ele2 = list[j];
+                        self._checkConnect(ele1, ele2);
+                    }
+                }
+            }
+
         }
 
         class WORLDRULE {
             constructor() {
                 let self = this;
-                self.timer = setInterval(self.calculate.bind(self), 100);
-                self.content = null;
+                self.context = null;
+                self._uid = new Date().getTime().toString().substr(9, 4);
                 self._x = 0;
                 self._y = 0;
-                self.range = 0;
+                self._range = 0;
                 self.speedX = 0;
                 self.speedY = 0;
+                self._effectRange = 100;
                 this._World = {
                     width: 0,
                     height: 0
                 }
+
+                self.initEvent();
+            }
+            initEvent() {
+                let self = this;
+                TIME.on(self.calculate.bind(self), 'objectMove' + self._uid);
             }
             get x() {
                 return this._x;
@@ -72,58 +204,71 @@
             }
 
             calculate() {
-                var self = this;
+                let self = this;
                 var result, calX, calY;
-                if (!self.content || (!this.speedX && !this.speedY)) {
+                if (!self.context) {
                     return;
                 }
 
                 result = self.checkHit();
-                if (result == 'x') {
+                if (result.indexOf('+x') != -1) {
                     // 触发碰撞后，先移动后，后改速度
-                    calX = (2 * self._World.rangeX - self.range - self._x - self.speedX);
-                    calY = self._y + self.speedY;
+                    calX = (2 * (self._World.rangeX - self._range) - self._x - self.speedX);
                     this.addSpeedX(-2 * this.speedX);
-                } else if (result == 'y') {
+                } else if (result.indexOf('-x') != -1) {
                     // 触发碰撞后，先移动后，后改速度
-                    calX = self._x + self.speedX;
-                    calY = (2 * self._World.rangeY - self.range - self._y - self.speedY);
-                    this.addSpeedY(-2 * this.speedY);
-                } else if (result == "xy") {
-                    // 触发碰撞后，先移动后，后改速度
-                    calX = (2 * self._World.rangeX - self.range - self._x - self.speedX);
-                    calY = (2 * self._World.rangeY - self.range - self._y - self.speedY);
+                    calX = (2 * self._range - self.speedX - self._x);
                     this.addSpeedX(-2 * this.speedX);
-                    this.addSpeedY(-2 * this.speedY);
                 } else {
                     calX = self._x + self.speedX;
+                }
+
+                if (result.indexOf('+y') != -1) {
+                    // 触发碰撞后，先移动后，后改速度
+                    calY = (2 * (self._World.rangeY - self._range) - self._y - self.speedY);
+                    this.addSpeedY(-2 * this.speedY);
+                } else if (result.indexOf('-y') != -1) {
+                    // 触发碰撞后，先移动后，后改速度
+                    calY = (2 * self._range - self.speedY - self._y);
+                    this.addSpeedY(-2 * this.speedY);
+                } else {
                     calY = self._y + self.speedY;
                 }
+
                 // 移动
-                self.content.translate(calX, calY);
+                // self.context.clearRect(self._x - self._range, self._y - self._range, 2 * self._range, 2 * self._range);
+                self._x = calX;
+                self._y = calY;
+                self.move();
             }
 
             addSpeedX(x) {
+                // console.log('%s add x Speed: %s', this._uid, x);
                 this.speedX += x;
             }
 
             addSpeedY(y) {
+                // console.log('%s add y Speed: %s', this._uid, y);
                 this.speedY += y;
             }
 
             checkHit() {
-                var self = this;
-                var rangeX = self._World.rangeX - self.range;
-                var rangeY = self._World.rangeY - self.range;
+                let self = this;
+                var rangeX = self._World.rangeX - self._range;
+                var rangeY = self._World.rangeY - self._range;
                 var result = "";
                 var resultX = self._x + self.speedX;
                 var resultY = self._y + self.speedY;
 
-                if (resultX < self.range || resultX > rangeX) {
-                    result += "x";
+                if (resultX <= self._range) {
+                    result += "-x";
+                } else if (resultX >= rangeX) {
+                    result += "+x";
                 }
-                if (resultY < self.range || resultY > rangeY) {
-                    result += "y";
+                if (resultY <= self._range) {
+                    result += "-y";
+                } else if (resultY >= rangeY) {
+                    result += "+y";
                 }
 
                 return result;
@@ -132,28 +277,105 @@
         }
 
         class point extends WORLDRULE {
-            constructor() {
+            constructor(x, y, World) {
                 super();
+                let self = this;
+                self._x = x || 0;
+                self._y = y || 0;
+                self._World = World || self._World;
+                self._range = 1;
+                self._effectRange = 100;
             }
 
             init() {
-                var self = this;
-                self.context = self._World.canvas.getContext("2d");
-                self.content.fillRect(WIDTH / 2, HEIGHT / 2, self._x, self._y);
+                let self = this;
+                self.context = self._World.earth.getContext("2d");
+                self.context.fillStyle = "#2E81CE"; //等同于fillStyle="rgba(46,129,206,1)";
+                self.move();
             }
+
+            move() {
+                let self = this;
+                self.context.beginPath();
+                self.context.arc(self._x, self._y, self._range, 0, 2 * Math.PI);
+                self.context.fill();
+            }
+
+            get effectRange() {
+                return this._effectRange;
+            }
+
+            set x(x) {
+                this._x = x;
+            }
+
+            set y(y) {
+                this._y = y;
+            }
+
+            get x() {
+                return this._x;
+            }
+
+            get y() {
+                return this._y;
+            }
+
+            destroy() {
+                let self = this;
+                TIME.off('objectMove' + self._uid);
+                self.context.fillRect(self._x - self._range, self._y - self._range, 2 * self._range, 2 * self._range);
+                self._x = 0;
+                self._y = 0;
+                self._range = 0;
+                self.speedX = 0;
+                self.speedY = 0;
+                self._effectRange = 100;
+            }
+
         }
 
+        let randomInt = (max) => {
+            // return parseInt(Math.random() * max) || randomInt(max);
+            return (Math.random() * max) || randomInt(max);
+        }
+
+        let mousePoint = null;
+        let mouseMove = (e) => {
+            if (!mousePoint) {
+                mousePoint = new point(e.offsetX, e.offsetY, WORLD);
+                mousePoint.init();
+                WORLD.add(mousePoint);
+            }
+            mousePoint.x = e.offsetX;
+            mousePoint.y = e.offsetY;
+        }
+
+        let mouseOut = (e) => {
+            WORLD.remove(mousePoint);
+            mousePoint = null;
+        }
+
+        const TIME = new __TIME();
+        const WORLD = new __WORLD(WIDTH, HEIGHT);
         window.onload = () => {
-            const WORLD = new World(WIDTH, HEIGHT);
-            var p = new point();
-            p.World = WORLD;
-            p.init();
+
+            for (let i = 0; i < 100; i++) {
+                let p = new point(randomInt(WIDTH), randomInt(HEIGHT), WORLD);
+                p.init();
+                p.addSpeedX(randomInt(4));
+                p.addSpeedY(randomInt(4));
+                WORLD.add(p);
+            }
+
+            WORLD.earth.addEventListener('mousemove', mouseMove);
+            WORLD.earth.addEventListener('mouseout', mouseOut);
         }
 
     </script>
 </head>
 
-<body>
+<body style="width:100%;height:100%;">
 
 </body>
 
