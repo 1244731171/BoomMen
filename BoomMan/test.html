@@ -7,6 +7,7 @@
 
         const HEIGHT = window.innerHeight;
         const WIDTH = window.innerWidth;
+        let uuid = 1000;
 
         class __TIME {
             constructor(rate = 33) {
@@ -103,7 +104,6 @@
             drawEffectLine() {
                 let self = this;
                 self._worldBrush.lineWidth = 0.5;
-                self._worldBrush.beginPath();
                 for (const key in self._drawEffectMap) {
                     if (self._drawEffectMap.hasOwnProperty(key)) {
                         const element = self._drawEffectMap[key];
@@ -113,12 +113,13 @@
                         } else {
                             self._worldBrush.strokeStyle = "#81D8D0";
                         }
+                self._worldBrush.beginPath();
                         self._worldBrush.moveTo(element.x1, element.y1);
                         self._worldBrush.lineTo(element.x2, element.y2);
                         self._worldBrush.stroke();
+                self._worldBrush.closePath();
                     }
                 }
-                self._worldBrush.closePath();
                 self._drawEffectMap = {};
             }
 
@@ -222,7 +223,7 @@
             constructor() {
                 let self = this;
                 self.context = null;
-                self._uid = new Date().getTime().toString().substr(9, 4);
+                self._uid = (uuid++);
                 self._x = 0;
                 self._y = 0;
                 self._range = 0;
