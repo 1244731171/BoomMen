@@ -5,10 +5,6 @@
     <title>Page Title</title>
     <script>
 
-        const HEIGHT = window.innerHeight;
-        const WIDTH = window.innerWidth;
-        let uuid = 1000;
-
         class __TIME {
             constructor(rate = 33) {
                 let self = this;
@@ -101,28 +97,6 @@
                 this._worldBrush.clearRect(0, 0, this.rangeX, this.rangeY);
             }
 
-            drawEffectLine() {
-                let self = this;
-                self._worldBrush.lineWidth = 0.5;
-                for (const key in self._drawEffectMap) {
-                    if (self._drawEffectMap.hasOwnProperty(key)) {
-                        const element = self._drawEffectMap[key];
-
-                        if (element.isCSP) {
-                            self._worldBrush.strokeStyle = "#f9b4b6";
-                        } else {
-                            self._worldBrush.strokeStyle = "#81D8D0";
-                        }
-                self._worldBrush.beginPath();
-                        self._worldBrush.moveTo(element.x1, element.y1);
-                        self._worldBrush.lineTo(element.x2, element.y2);
-                        self._worldBrush.stroke();
-                self._worldBrush.closePath();
-                    }
-                }
-                self._drawEffectMap = {};
-            }
-
             set rangeX(x) {
                 this._width = x;
             }
@@ -165,41 +139,18 @@
                 }
             }
 
-            _checkConnect(obj1, obj2) {
-                let x1 = obj1.x;
-                let y1 = obj1.y;
-                let e1 = obj1.effectRange;
-                let id1 = obj1._uid;
-                let x2 = obj2.x;
-                let y2 = obj2.y;
-                let e2 = obj2.effectRange;
-                let id2 = obj2._uid;
-                let e = Math.min(e1, e2);
-                let d = Math.pow((y2 - y1), 2) + Math.pow((x2 - x1), 2);
+            calculateDistance(obj1, obj2) {
+                let d = Math.pow((obj2.y - obj1.y), 2) + Math.pow((obj2.x - obj1.x), 2);
                 d = Math.sqrt(d);
-                if (e > d) {
-                    // superPower 永远在list的第一位，传染又是从0开始，所以只需要看obj1就行
-                    if (obj1.isCSP || obj2.isCSP) {
-                        obj1.isCSP = true;
-                        obj2.isCSP = true;
-                    }
-                    let id = id1 < id2 ? id1 + "" + id2 : id2 + "" + id1;
-                    let drawMap = this._drawEffectMap[id];
-                    if(!drawMap || !drawMap.isCSP){
-                        this._drawEffectMap[id] = {
-                            x1: x1,
-                            y1: y1,
-                            x2: x2,
-                            y2: y2,
-                            isCSP: obj1.isCSP
-                        };
-                    }
-                }
+                return d;
             }
 
             _checkEffect() {
                 let self = this;
-                let list = self._objectList;
+                let list = self._objectList.concat();
+
+                let obj1, obj2, temp, range, alpha, distance;
+                // reset isCSP
                 for (let i = 0; i < list.length; i++) {
                     if (list[i]._uid == 'superPower') {
                         list[i].isCSP = true;
@@ -207,14 +158,46 @@
                         list[i].isCSP = false;
                     }
                 }
-                for (let i = 0; i < list.length; i++) {
-                    const ele1 = list[i];
-                    for (let j = i + 1; j < list.length; j++) {
-                        const ele2 = list[j];
-                        self._checkConnect(ele1, ele2);
-                    }
+
+                while (list.length) {
+                    obj1 = list.splice(0, 1)[0];
+                    for (let i = 0; i < list.length; i++) {
+                        obj2 = list[i];
+                        range = obj1.effectRange;
+                        distance = WORLD.calculateDistance(obj1, obj2);
+                        if (range >= distance) {
+                            alpha = (distance <= shadeNumber * range) ? 1 : ((range - distance) / (range - shadeNumber * range));
+                            if (obj1.isCSP) {
+                                obj2.isCSP = true;
+                                WORLD.drawEffectLine(obj1, obj2, alpha, "#F9B4B6");
+                                //移行变位
+                                temp = list.splice(i, 1)[0];
+                                list.unshift(temp);
+                            } else {
+                                WORLD.drawEffectLine(obj1, obj2, alpha);
+                            } // if
+                        } // if
+                    } // loop
+                } // loop
+            }
+
+            drawEffectLine(obj1, obj2, alpha, lineColor = "#81D8D0") {
+                let self = this;
+
+                alpha = parseInt(alpha * 255).toString(16);
+                if(alpha.length == 1){
+                    lineColor += ('0' + alpha);
+                }else{
+                    lineColor += alpha;
                 }
-                self.drawEffectLine();
+
+                self._worldBrush.lineWidth = 0.5;
+                self._worldBrush.strokeStyle = lineColor;
+                self._worldBrush.beginPath();
+                self._worldBrush.moveTo(obj1.x, obj1.y);
+                self._worldBrush.lineTo(obj2.x, obj2.y);
+                self._worldBrush.stroke();
+                self._worldBrush.closePath();
             }
 
         }
@@ -341,8 +324,11 @@
                 self._y = y || 0;
                 self._World = World || self._World;
                 self._range = 1;
+                
                 self._effectRange = 100;
                 self._isCSP = false;
+                
+                self._connectList = [];
             }
 
             init() {
@@ -386,6 +372,10 @@
                 TIME.on(self.calculate.bind(self), 'objectMove' + self._uid);
             }
 
+            get uid() {
+                return this._uid;
+            }
+
             // isConnectSuperPower
             set isCSP(flag) {
                 this._isCSP = flag;
@@ -394,6 +384,14 @@
             // isConnectSuperPower
             get isCSP() {
                 return this._isCSP;
+            }
+
+            addConnect(p) {
+                this._connectList.push(p);
+            }
+
+            clearConnect() {
+                this._connectList = [];
             }
 
             destroy() {
@@ -410,9 +408,12 @@
 
         }
 
-        let randomInt = (max) => {
-            // return parseInt(Math.random() * max) || randomInt(max);
-            return (Math.random() * max) || randomInt(max);
+        let randomInt = (min, max) => {
+            if (max === undefined) {
+                return (Math.random() * min) || randomInt(min);
+            } else {
+                return (min + Math.random() * (max - min)) || randomInt(max);
+            }
         }
 
         let mousePoint = null;
@@ -433,15 +434,25 @@
             mousePoint = null;
         }
 
-        const TIME = new __TIME(1000);
+
+        const HEIGHT = window.innerHeight;
+        const WIDTH = window.innerWidth;
+        const TIME = new __TIME();
         const WORLD = new __WORLD(WIDTH, HEIGHT);
+
+        let shadeNumber = 0.8;
+        let uuid = 1000;
+
         WORLD.loaded = () => {
 
-            for (let i = 0; i < 30; i++) {
+            var pointsNumbers = (parseInt(HEIGHT / 500) || 1) * (parseInt(WIDTH / 500) || 1) * 25;
+            console.log("this WORLD is %spx width, %spx height, %s points", WIDTH, HEIGHT, pointsNumbers);
+            // 每500px*500px 最少压入25个点
+            for (let i = 0; i < pointsNumbers; i++) {
                 let p = new point(randomInt(WIDTH), randomInt(HEIGHT), WORLD);
                 p.init();
-                p.addSpeedX(randomInt(4));
-                p.addSpeedY(randomInt(4));
+                p.addSpeedX(randomInt(-1, 1));
+                p.addSpeedY(randomInt(-1, 1));
                 WORLD.add(p);
             }
 
