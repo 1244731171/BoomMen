@@ -121,7 +121,7 @@
             add(object) {
                 var self = this;
                 TIME.off('connectLine');
-                if (object._uid == "superPower") {
+                if (object._uid == "blackhole") {
                     self._objectList.unshift(object);
                 } else {
                     self._objectList.push(object);
@@ -321,7 +321,7 @@
 
         }
 
-        class plant extends WORLDRULE {
+        class PLANT extends WORLDRULE {
             constructor(x, y, World) {
                 super();
                 let self = this;
@@ -416,9 +416,9 @@
 
         }
 
-        class blackhole extends plant {
-            constructor() {
-                super();
+        class BLACKHOLE extends PLANT {
+            constructor(x, y, World) {
+                super(x, y, World);
                 this._uid = 'blackhole';
             }
         }
@@ -431,21 +431,21 @@
             }
         }
 
-        let mousePoint = null;
+        let blackhole = null;
 
         let mouseMove = (e) => {
-            if (!mousePoint) {
-                mousePoint = new blackhole(e.offsetX, e.offsetY, WORLD);
-                mousePoint.init();
-                WORLD.add(mousePoint);
+            if (!blackhole) {
+                blackhole = new BLACKHOLE(e.offsetX, e.offsetY, WORLD);
+                blackhole.init();
+                WORLD.add(blackhole);
             }
-            mousePoint.x = e.offsetX;
-            mousePoint.y = e.offsetY;
+            blackhole.x = e.offsetX;
+            blackhole.y = e.offsetY;
         }
 
         let mouseOut = (e) => {
-            WORLD.remove(mousePoint);
-            mousePoint = null;
+            WORLD.remove(blackhole);
+            blackhole = null;
         }
 
 
@@ -463,7 +463,7 @@
             console.log("this WORLD is %spx width, %spx height, %s points", WIDTH, HEIGHT, pointsNumbers);
             // 每500px*500px 最少压入25个点
             for (let i = 0; i < pointsNumbers; i++) {
-                let p = new plant(randomInt(WIDTH), randomInt(HEIGHT), WORLD);
+                let p = new PLANT(randomInt(WIDTH), randomInt(HEIGHT), WORLD);
                 p.init();
                 p.addSpeedX(randomInt(-1, 1));
                 p.addSpeedY(randomInt(-1, 1));
