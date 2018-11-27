@@ -121,7 +121,7 @@
             add(object) {
                 var self = this;
                 TIME.off('connectLine');
-                if (object._uid == "blackhole") {
+                if (object.type == "blackhole") {
                     self._objectList.unshift(object);
                 } else {
                     self._objectList.push(object);
@@ -153,7 +153,7 @@
                 let obj1, obj2, temp, range, alpha, distance;
                 // reset isCBH
                 for (let i = 0; i < list.length; i++) {
-                    if (list[i]._uid == 'blackhole') {
+                    if (list[i].isManual) {
                         list[i].isCBH = true;
                     } else {
                         list[i].isCBH = false;
@@ -164,7 +164,7 @@
                     obj1 = list.splice(0, 1)[0];
                     for (let i = 0; i < list.length; i++) {
                         obj2 = list[i];
-                        range = obj1.effectRange;
+                        range = Math.max(obj1.effectRange, obj2.effectRange);
                         distance = WORLD.calculateDistance(obj1, obj2);
                         if (range >= distance) {
                             alpha = (distance <= shadeNumber * range) ? 1 : ((range - distance) / (range - shadeNumber * range));
@@ -177,6 +177,17 @@
                             } else {
                                 WORLD.drawEffectLine(obj1, obj2, alpha);
                             } // if
+
+                            if (obj1.type == 'blackhole') {
+                                obj1.catch(obj2, distance);
+                                if (obj2.type == 'blackhole') {
+                                    WORLD.drawEffectLine(obj1, obj2, 1, "#000000");
+                                }
+                            }
+                        } else {
+                            if (obj1.type == 'blackhole' && obj2.CBBH.uid == obj1.uid) {
+                                obj1.lost(obj2);
+                            }
                         } // if
                     } // loop
                 } // loop
@@ -186,9 +197,9 @@
                 let self = this;
 
                 alpha = parseInt(alpha * 255).toString(16);
-                if(alpha.length == 1){
+                if (alpha.length == 1) {
                     lineColor += ('0' + alpha);
-                }else{
+                } else {
                     lineColor += alpha;
                 }
 
@@ -213,8 +224,8 @@
                 self._orgx = 0;
                 self._orgy = 0;
                 self._range = 0;
-                self.speedX = 0;
-                self.speedY = 0;
+                self._speedX = 0;
+                self._speedY = 0;
                 self._effectRange = 100;
                 this._World = {
                     width: 0,
@@ -237,8 +248,8 @@
 
             get speed() {
                 return {
-                    x: this.speedX,
-                    y: this.speedY
+                    x: this._speedX,
+                    y: this._speedY
                 }
             }
 
@@ -256,26 +267,26 @@
                 result = self.checkHit();
                 if (result.indexOf('+x') != -1) {
                     // 触发碰撞后，先移动后，后改速度
-                    calX = (2 * (self._World.rangeX - self._range) - self._x - self.speedX);
-                    this.addSpeedX(-2 * this.speedX);
+                    calX = (2 * (self._World.rangeX - self._range) - self._x - self._speedX);
+                    this._speedX *= -1
                 } else if (result.indexOf('-x') != -1) {
                     // 触发碰撞后，先移动后，后改速度
-                    calX = (2 * self._range - self.speedX - self._x);
-                    this.addSpeedX(-2 * this.speedX);
+                    calX = (2 * self._range - self._speedX - self._x);
+                    this._speedX *= -1
                 } else {
-                    calX = self._x + self.speedX;
+                    calX = self._x + self._speedX;
                 }
 
                 if (result.indexOf('+y') != -1) {
                     // 触发碰撞后，先移动后，后改速度
-                    calY = (2 * (self._World.rangeY - self._range) - self._y - self.speedY);
-                    this.addSpeedY(-2 * this.speedY);
+                    calY = (2 * (self._World.rangeY - self._range) - self._y - self._speedY);
+                    this._speedY *= -1
                 } else if (result.indexOf('-y') != -1) {
                     // 触发碰撞后，先移动后，后改速度
-                    calY = (2 * self._range - self.speedY - self._y);
-                    this.addSpeedY(-2 * this.speedY);
+                    calY = (2 * self._range - self._speedY - self._y);
+                    this._speedY *= -1
                 } else {
-                    calY = self._y + self.speedY;
+                    calY = self._y + self._speedY;
                 }
 
                 // 移动
@@ -289,12 +300,12 @@
 
             addSpeedX(x) {
                 // console.log('%s add x Speed: %s', this._uid, x);
-                this.speedX += x;
+                this._speedX += x;
             }
 
             addSpeedY(y) {
                 // console.log('%s add y Speed: %s', this._uid, y);
-                this.speedY += y;
+                this._speedY += y;
             }
 
             checkHit() {
@@ -302,8 +313,8 @@
                 var rangeX = self._World.rangeX - self._range;
                 var rangeY = self._World.rangeY - self._range;
                 var result = "";
-                var resultX = self._x + self.speedX;
-                var resultY = self._y + self.speedY;
+                var resultX = self._x + self._speedX;
+                var resultY = self._y + self._speedY;
 
                 if (resultX <= self._range) {
                     result += "-x";
@@ -329,14 +340,13 @@
                 self._y = y || 0;
                 self._World = World || self._World;
                 self._range = 1;
-                
+                this._type = 'plant';
+
                 self._effectRange = 100;
                 // is connect black hole
                 self._isCBH = false;
                 // is catched black hole
-                self._isCBBH = false;
-                
-                self._connectList = [];
+                self._CBBH = false;
             }
 
             init() {
@@ -351,6 +361,10 @@
                 self.context.beginPath();
                 self.context.arc(self._x, self._y, self._range, 0, 2 * Math.PI);
                 self.context.fill();
+            }
+
+            get type() {
+                return this._type;
             }
 
             get effectRange() {
@@ -394,12 +408,14 @@
                 return this._isCBH;
             }
 
-            addConnect(p) {
-                this._connectList.push(p);
+            // isCatchByBlackHole
+            set CBBH(blackholeId) {
+                this._CBBH = blackholeId || false;
             }
 
-            clearConnect() {
-                this._connectList = [];
+            // isCatchByBlackHole
+            get CBBH() {
+                return this._CBBH;
             }
 
             destroy() {
@@ -409,25 +425,132 @@
                 self._x = 0;
                 self._y = 0;
                 self._range = 0;
-                self.speedX = 0;
-                self.speedY = 0;
+                self._speedX = 0;
+                self._speedY = 0;
                 self._effectRange = 100;
             }
 
         }
 
         class BLACKHOLE extends PLANT {
-            constructor(x, y, World) {
+            constructor(x, y, World, level = 1) {
                 super(x, y, World);
-                this._uid = 'blackhole';
+                this._type = 'blackhole';
+
+                this._range = 5;
+                // 被捕获plant列表
+                this._catchMap = {};
+                // 最大捕获距离 兼 影响范围
+                this._effectRange = 300;
+                // 最小被捕获距离
+                this._catchRange = 200;
+                this._level = level;
+                this._isManual = false;
+            }
+
+            get level() {
+                return this._level;
+            }
+
+            set level(level) {
+                this._level = level;
+            }
+
+            get isManual() {
+                return this._isManual;
+            }
+
+            set isManual(flag) {
+                this._isManual = flag;
+            }
+
+            catch(plant, distance) {
+                if (plant.type == "blackhole") {
+                    return;
+                }
+                let self = this;
+                let plantId = plant.uid;
+                var plantInfo = self._catchMap[plantId];
+                if (!plantInfo) {
+                    // 第一次捕获先看该plant是不是被捕获过，没有被捕获或者blackhole等级没他高，可以替代捕获
+                    let orgBlackhole = plant.CBBH;
+                    if (orgBlackhole) {
+                        if (orgBlackhole.level > self._level) {
+                            return;
+                        } else {
+                            // 原blackhole先lost才能，新blackhole才能catch
+                            orgBlackhole.lost(plant);
+                        }
+                    }
+
+                    // 第一次被捕获要看两者距离是不是小于捕获距离
+                    if (distance <= self._catchRange) {
+                        plant.CBBH = self;
+                        self._catchMap[plantId] = {
+                            id: plantId,
+                            plant: plant,
+                            originSpeed: plant.speed
+                        } // add plant
+                    } // check catch range
+                } else {
+                    if (distance > self._catchRange) {
+                        // 已经被捕获了 
+                        if (!plantInfo.isChange) {
+                            plant._speedX *= -1;
+                            plant._speedY *= -1;
+                            plantInfo.isChange = true;
+                        }
+                    } else {
+                        if (plantInfo.isChange) {
+                            plant._speedX = plantInfo.originSpeed.x;
+                            plant._speedY = plantInfo.originSpeed.y;
+                            plantInfo.isChange = false;
+                        } else {
+                            //更新speed
+                            plantInfo.originSpeed = plant.speed;
+                        }
+                    }
+                }
+            }
+
+            lost(plant) {
+                if (plant.type == "blackhole") {
+                    return;
+                }
+                let self = this;
+                let plantId = plant.uid;
+                var plantInfo = self._catchMap[plantId];
+                if (plantInfo && plantInfo.isChange) {
+                    plant._speedX = plantInfo.originSpeed.x;
+                    plant._speedY = plantInfo.originSpeed.y;
+                    plantInfo.isChange = false;
+                    delete self._catchMap[plantId];
+                }
+                plant.CBBH = null;
+            }
+        }
+
+        let randomFloat = (min, max) => {
+            if (max === undefined) {
+                return (Math.random() * min);
+            } else {
+                return (min + Math.random() * (max - min));
+            }
+        }
+
+        let randomUInt = (min, max) => {
+            if (max === undefined) {
+                return parseInt(Math.random() * min);
+            } else {
+                return parseInt(min + Math.random() * (max - min));
             }
         }
 
         let randomInt = (min, max) => {
             if (max === undefined) {
-                return (Math.random() * min) || randomInt(min);
+                return parseInt(Math.random() * min) || randomInt(min);
             } else {
-                return (min + Math.random() * (max - min)) || randomInt(max);
+                return parseInt(min + Math.random() * (max - min)) || randomInt(min, max);
             }
         }
 
@@ -435,7 +558,8 @@
 
         let mouseMove = (e) => {
             if (!blackhole) {
-                blackhole = new BLACKHOLE(e.offsetX, e.offsetY, WORLD);
+                blackhole = new BLACKHOLE(e.offsetX, e.offsetY, WORLD, Infinity);
+                blackhole.type == 'blackhole';
                 blackhole.init();
                 WORLD.add(blackhole);
             }
@@ -462,13 +586,24 @@
             var pointsNumbers = (parseInt(HEIGHT / 500) + 1) * (parseInt(WIDTH / 500) + 1) * 25;
             console.log("this WORLD is %spx width, %spx height, %s points", WIDTH, HEIGHT, pointsNumbers);
             // 每500px*500px 最少压入25个点
+
+            var b1 = new BLACKHOLE(randomFloat(WIDTH), randomFloat(HEIGHT), WORLD, 1);
+            b1.init();
+            b1.addSpeedX(randomUInt(-2, 2));
+            b1.addSpeedY(randomUInt(-2, 2));
+            WORLD.add(b1);
             for (let i = 0; i < pointsNumbers; i++) {
-                let p = new PLANT(randomInt(WIDTH), randomInt(HEIGHT), WORLD);
+                let p = new PLANT(randomFloat(WIDTH), randomFloat(HEIGHT), WORLD);
                 p.init();
-                p.addSpeedX(randomInt(-1, 1));
-                p.addSpeedY(randomInt(-1, 1));
+                p.addSpeedX(randomFloat(-3, 3));
+                p.addSpeedY(randomFloat(-3, 3));
                 WORLD.add(p);
             }
+            var b2 = new BLACKHOLE(randomFloat(WIDTH), randomFloat(HEIGHT), WORLD, 3);
+            b2.init();
+            b2.addSpeedX(randomUInt(-2, 2));
+            b2.addSpeedY(randomUInt(-2, 2));
+            WORLD.add(b2);
 
             WORLD.earth.addEventListener('mousemove', mouseMove);
             WORLD.earth.addEventListener('mouseout', mouseOut);
