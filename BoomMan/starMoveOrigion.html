@@ -3,6 +3,7 @@
 
 <head>
     <title>Page Title</title>
+    <script type="text/javascript" src="./kit.js"></script>
     <script>
 
         class __TIME {
@@ -150,12 +151,12 @@
                 let list = self._objectList.concat();
 
                 let obj1, obj2, temp, range, alpha, distance;
-                // reset isCSP
+                // reset isCBH
                 for (let i = 0; i < list.length; i++) {
-                    if (list[i]._uid == 'superPower') {
-                        list[i].isCSP = true;
+                    if (list[i]._uid == 'blackhole') {
+                        list[i].isCBH = true;
                     } else {
-                        list[i].isCSP = false;
+                        list[i].isCBH = false;
                     }
                 }
 
@@ -167,8 +168,8 @@
                         distance = WORLD.calculateDistance(obj1, obj2);
                         if (range >= distance) {
                             alpha = (distance <= shadeNumber * range) ? 1 : ((range - distance) / (range - shadeNumber * range));
-                            if (obj1.isCSP) {
-                                obj2.isCSP = true;
+                            if (obj1.isCBH) {
+                                obj2.isCBH = true;
                                 WORLD.drawEffectLine(obj1, obj2, alpha, "#F9B4B6");
                                 //移行变位
                                 temp = list.splice(i, 1)[0];
@@ -209,6 +210,8 @@
                 self._uid = (uuid++);
                 self._x = 0;
                 self._y = 0;
+                self._orgx = 0;
+                self._orgy = 0;
                 self._range = 0;
                 self.speedX = 0;
                 self.speedY = 0;
@@ -277,6 +280,8 @@
 
                 // 移动
                 // self.context.clearRect(self._x - self._range, self._y - self._range, 2 * self._range, 2 * self._range);
+                self._orgx = self.x;
+                self._orgy = self.y;
                 self._x = calX;
                 self._y = calY;
                 self.move();
@@ -316,7 +321,7 @@
 
         }
 
-        class point extends WORLDRULE {
+        class plant extends WORLDRULE {
             constructor(x, y, World) {
                 super();
                 let self = this;
@@ -326,7 +331,10 @@
                 self._range = 1;
                 
                 self._effectRange = 100;
-                self._isCSP = false;
+                // is connect black hole
+                self._isCBH = false;
+                // is catched black hole
+                self._isCBBH = false;
                 
                 self._connectList = [];
             }
@@ -377,13 +385,13 @@
             }
 
             // isConnectSuperPower
-            set isCSP(flag) {
-                this._isCSP = flag;
+            set isCBH(flag) {
+                this._isCBH = flag;
             }
 
             // isConnectSuperPower
-            get isCSP() {
-                return this._isCSP;
+            get isCBH() {
+                return this._isCBH;
             }
 
             addConnect(p) {
@@ -408,6 +416,13 @@
 
         }
 
+        class blackhole extends plant {
+            constructor() {
+                super();
+                this._uid = 'blackhole';
+            }
+        }
+
         let randomInt = (min, max) => {
             if (max === undefined) {
                 return (Math.random() * min) || randomInt(min);
@@ -420,8 +435,7 @@
 
         let mouseMove = (e) => {
             if (!mousePoint) {
-                mousePoint = new point(e.offsetX, e.offsetY, WORLD);
-                mousePoint.uid = "superPower";
+                mousePoint = new blackhole(e.offsetX, e.offsetY, WORLD);
                 mousePoint.init();
                 WORLD.add(mousePoint);
             }
@@ -445,11 +459,11 @@
 
         WORLD.loaded = () => {
 
-            var pointsNumbers = (parseInt(HEIGHT / 500) || 1) * (parseInt(WIDTH / 500) || 1) * 25;
+            var pointsNumbers = (parseInt(HEIGHT / 500) + 1) * (parseInt(WIDTH / 500) + 1) * 25;
             console.log("this WORLD is %spx width, %spx height, %s points", WIDTH, HEIGHT, pointsNumbers);
             // 每500px*500px 最少压入25个点
             for (let i = 0; i < pointsNumbers; i++) {
-                let p = new point(randomInt(WIDTH), randomInt(HEIGHT), WORLD);
+                let p = new plant(randomInt(WIDTH), randomInt(HEIGHT), WORLD);
                 p.init();
                 p.addSpeedX(randomInt(-1, 1));
                 p.addSpeedY(randomInt(-1, 1));
