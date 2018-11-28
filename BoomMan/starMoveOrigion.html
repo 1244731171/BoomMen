@@ -437,13 +437,13 @@
                 super(x, y, World);
                 this._type = 'blackhole';
 
-                this._range = 5;
+                this._range =2;
                 // 被捕获plant列表
                 this._catchMap = {};
                 // 最大捕获距离 兼 影响范围
-                this._effectRange = 300;
+                this._effectRange = 150;
                 // 最小被捕获距离
-                this._catchRange = 200;
+                this._catchRange = 100;
                 this._level = level;
                 this._isManual = false;
             }
@@ -528,6 +528,15 @@
                 }
                 plant.CBBH = null;
             }
+
+            destroy() {
+                let self = this;
+                for(let id in self._catchMap){
+                    self.lost(self._catchMap[id]);
+                }
+                super.destroy();
+            }
+
         }
 
         let randomFloat = (min, max) => {
@@ -538,19 +547,19 @@
             }
         }
 
-        let randomUInt = (min, max) => {
+        let randomInt = (min, max) => {
             if (max === undefined) {
-                return parseInt(Math.random() * min);
+                return Math.round(Math.random() * min);
             } else {
-                return parseInt(min + Math.random() * (max - min));
+                return Math.round(min + Math.random() * (max - min));
             }
         }
 
-        let randomInt = (min, max) => {
+        let randomUInt = (min, max) => {
             if (max === undefined) {
-                return parseInt(Math.random() * min) || randomInt(min);
+                return Math.round(Math.random() * min) || randomUInt(min);
             } else {
-                return parseInt(min + Math.random() * (max - min)) || randomInt(min, max);
+                return Math.round(min + Math.random() * (max - min)) || randomUInt(min, max);
             }
         }
 
@@ -561,6 +570,7 @@
                 blackhole = new BLACKHOLE(e.offsetX, e.offsetY, WORLD, Infinity);
                 blackhole.type == 'blackhole';
                 blackhole.init();
+                blackhole.isManual = true;
                 WORLD.add(blackhole);
             }
             blackhole.x = e.offsetX;
@@ -587,23 +597,23 @@
             console.log("this WORLD is %spx width, %spx height, %s points", WIDTH, HEIGHT, pointsNumbers);
             // 每500px*500px 最少压入25个点
 
-            var b1 = new BLACKHOLE(randomFloat(WIDTH), randomFloat(HEIGHT), WORLD, 1);
-            b1.init();
-            b1.addSpeedX(randomUInt(-2, 2));
-            b1.addSpeedY(randomUInt(-2, 2));
-            WORLD.add(b1);
+            // var b1 = new BLACKHOLE(randomFloat(WIDTH), randomFloat(HEIGHT), WORLD, 1);
+            // b1.init();
+            // b1.addSpeedX(randomFloat(-0.5, 0.5));
+            // b1.addSpeedY(randomFloat(-0.5, 0.5));
+            // WORLD.add(b1);
             for (let i = 0; i < pointsNumbers; i++) {
                 let p = new PLANT(randomFloat(WIDTH), randomFloat(HEIGHT), WORLD);
                 p.init();
-                p.addSpeedX(randomFloat(-3, 3));
-                p.addSpeedY(randomFloat(-3, 3));
+                p.addSpeedX(randomFloat(-1, 1));
+                p.addSpeedY(randomFloat(-1, 1));
                 WORLD.add(p);
             }
-            var b2 = new BLACKHOLE(randomFloat(WIDTH), randomFloat(HEIGHT), WORLD, 3);
-            b2.init();
-            b2.addSpeedX(randomUInt(-2, 2));
-            b2.addSpeedY(randomUInt(-2, 2));
-            WORLD.add(b2);
+            // var b2 = new BLACKHOLE(randomFloat(WIDTH), randomFloat(HEIGHT), WORLD, 3);
+            // b2.init();
+            // b2.addSpeedX(randomFloat(-0.5, 0.5));
+            // b2.addSpeedY(randomFloat(-0.5, 0.5));
+            // WORLD.add(b2);
 
             WORLD.earth.addEventListener('mousemove', mouseMove);
             WORLD.earth.addEventListener('mouseout', mouseOut);
