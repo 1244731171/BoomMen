@@ -3,7 +3,6 @@
 
 <head>
     <title>Page Title</title>
-    <script type="text/javascript" src="./kit.js"></script>
     <script>
 
         class __TIME {
@@ -15,7 +14,7 @@
                 self._timer = setInterval(self._calculate.bind(self), rate);
             }
 
-            on(event, id) {
+            on(id, event) {
                 this._timeList.push({
                     id: id,
                     event: event
@@ -39,6 +38,16 @@
             unfreeze() {
                 let self = this;
                 self._timer = setInterval(self._calculate.bind(self), self._rate);
+            }
+
+            set rate(rate) {
+                this.freeze();
+                this._rate = rate;
+                this.unfreeze();
+            }
+
+            get rage (){
+                return this._rate;
             }
 
             _calculate() {
@@ -68,7 +77,7 @@
 
             init() {
                 let self = this;
-                TIME.on(() => {
+                TIME.on('createEarth', () => {
                     if (document && document.body) {
                         document.body.append(self._canvas);
                         self._canvas.style.width = self._width;
@@ -81,12 +90,12 @@
                         self.initEvent();
                         TIME.off('createEarth');
                     }
-                }, 'createEarth');
+                });
             }
 
             initEvent() {
                 let self = this;
-                TIME.on(self.clearWorld.bind(self), 'clearWorld');
+                TIME.on('clearWorld', self.clearWorld.bind(self));
 
                 if (typeof self.loaded == 'function') {
                     self.loaded();
@@ -126,7 +135,7 @@
                 } else {
                     self._objectList.push(object);
                 }
-                TIME.on(self._checkEffect.bind(self), 'connectLine');
+                TIME.on('connectLine', self._checkEffect.bind(self));
             }
 
             remove(object) {
@@ -136,7 +145,7 @@
                     TIME.off('connectLine');
                     self._objectList.splice(index, 1);
                     object.destroy();
-                    TIME.on(self._checkEffect.bind(self), 'connectLine');
+                    TIME.on('connectLine', self._checkEffect.bind(self));
                 }
             }
 
@@ -236,7 +245,7 @@
             }
             initEvent() {
                 let self = this;
-                TIME.on(self.calculate.bind(self), 'objectMove' + self._uid);
+                TIME.on('objectMove' + self._uid, self.calculate.bind(self));
             }
             get x() {
                 return this._x;
@@ -391,7 +400,7 @@
                 let self = this;
                 TIME.off('objectMove' + self._uid);
                 self._uid = uid;
-                TIME.on(self.calculate.bind(self), 'objectMove' + self._uid);
+                TIME.on('objectMove' + self._uid, self.calculate.bind(self));
             }
 
             get uid() {
