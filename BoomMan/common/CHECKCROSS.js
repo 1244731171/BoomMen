@@ -11,7 +11,7 @@ class __CROSS {
      * @returns {number} A
      */
     getLineA(x1, y1, x2, y2) {
-        if(x1 == x2){
+        if (x1 == x2) {
             return Infinity;
         }
         let A = (y1 - y2) / (x1 - x2);
@@ -25,7 +25,7 @@ class __CROSS {
      * @returns {number} B
      */
     getLineB(x, y, a) {
-        if(a == Infinity){
+        if (a == Infinity) {
             return x;
         }
         let B = y - a * x;
@@ -263,9 +263,34 @@ class __CROSS {
             y2 = lineSegement1.y2;
             y3 = lineSegement2.y1;
             y4 = lineSegement2.y2;
-            return Math.max(y1,y2,y3,y4) - Math.min(y1,y2,y3,y4)
+            if (lineSegement1.x1 != lineSegement2.x1) {
+                return false;
+            } else {
+                return Math.max(y1, y2, y3, y4) - Math.min(y1, y2, y3, y4) <= (Math.max(y1, y2) - Math.min(y1, y2) + Math.max(y3, y4) - Math.min(y3, y4))
+            }
         } else if (lineSegement1.y1 == lineSegement1.y2 && lineSegement2.y1 == lineSegement2.y2) {
             // 同垂直x轴
+            // 同垂直y轴
+            x1 = lineSegement1.x1;
+            x2 = lineSegement1.x2;
+            x3 = lineSegement2.x1;
+            x4 = lineSegement2.x2;
+            if (lineSegement1.y1 != lineSegement2.y1) {
+                return false;
+            } else {
+                return Math.max(x1, x2, x3, x4) - Math.min(x1, x2, x3, x4) <= (Math.max(x1, x2) - Math.min(x1, x2) + Math.max(x3, x4) - Math.min(x3, x4))
+            }
+        } else {
+            if (lineSegement1.x1 == lineSegement1.x2) {
+                y1 = Math.min(lineSegement1.y1, lineSegement1.y2);
+                y2 = Math.max(lineSegement1.y1, lineSegement1.y2);
+                y3 = lineSegement2.y1;
+            } else {
+                y1 = Math.min(lineSegement2.y1, lineSegement2.y2);
+                y2 = Math.max(lineSegement2.y1, lineSegement2.y2);
+                y3 = lineSegement1.y1;
+            }
+            return y1 <= y3 && y3 <= y2;
         }
     }
 }
