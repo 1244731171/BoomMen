@@ -1,5 +1,6 @@
 class __CHOICE {
     constructor(possibilityList) {
+        this._type = "choice";
         // 可能性列表
         this._possibilityList = [];
         // 可能性map
@@ -7,7 +8,7 @@ class __CHOICE {
         // 最近一次选择
         this._lastActionId = null;
         // id
-        this._uid = new Date().getTime();
+        this._uid = this._type + (new Date().getTime() * Math.random());
         // buff
         this._passiveStep = 3;
         // debuff
@@ -25,6 +26,9 @@ class __CHOICE {
         //     "originTimes": 10
         // }]
         // 重置
+        if(!possibilityList || !possibilityList.length){
+            return;
+        }
         this._possibilityList = [];
         this._possibilityMap = {};
 

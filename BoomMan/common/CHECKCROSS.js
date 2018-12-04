@@ -293,6 +293,25 @@ class __CROSS {
             return y1 <= y3 && y3 <= y2;
         }
     }
+
+    easyCheckPointRectangleCross(p, rectangele){
+        let x1, x2, x3, x4, y1, y2, y3, y4, x, y, minX, minY, maxX, maxY;
+        y1 = rectangele[0].y1;
+        y2 = rectangele[1].y2;
+        y3 = rectangele[2].y1;
+        y4 = rectangele[3].y2;
+        x1 = rectangele[0].x1;
+        x2 = rectangele[1].x2;
+        x3 = rectangele[2].x1;
+        x4 = rectangele[3].x2;
+        minX = Math.min(x1, x2, x3, x4);
+        minY = Math.max(x1, x2, x3, x4);
+        maxX = Math.min(y1, y2, y3, y4);
+        maxY = Math.max(y1, y2, y3, y4);
+        x = p.x;
+        y = p.y;
+        return (minX <= x && x <= maxX) && (minY <= y && y <= maxY);
+    }
 }
 
 const CROSS = new __CROSS();
