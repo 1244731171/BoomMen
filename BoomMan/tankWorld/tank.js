@@ -42,6 +42,7 @@ class __TANK {
         this._checkCornerChoice = new __CHOICE();
         // this._memory = new __MEMORY();
 
+        this.calculateSpeed();
     }
 
     get type() {
@@ -58,6 +59,10 @@ class __TANK {
 
     get position() {
         return this._position;
+    }
+
+    addSpeed(speed){
+        this.calculateSpeed(speed);
     }
 
     addSpeedX(speed) {
@@ -96,8 +101,14 @@ class __TANK {
 
     engineStart() {
         let self = this;
-        self._state = 'engineStart';
+        self._state  = 'engineStart';
         TIME.on(self._uid, self.checkMoveable.bind(self));
+    }
+
+    engineStop() {
+        let self = this;
+        self._state = 'engineStop';
+        TIME.off(self._uid);
     }
 
     goForward() {
@@ -106,10 +117,52 @@ class __TANK {
 
     turnLeft() {
         console.log('turnLeft', this._uid);
+        this.calculateFace('left');
+        this.calculateSpeed();
     }
 
     turnRight() {
         console.log('turnRight', this._uid);
+        this.calculateFace('right');
+        this.calculateSpeed();
+    }
+
+    calculateFace(turn) {
+        let index;
+        switch (turn) {
+            case 'left':
+                index = FACELIST.indexOf(this._face);
+                index = index ? index - 1 : FACELIST.length - 1;
+                this._face = FACELIST[index];
+                break;
+            case 'right':
+                index = FACELIST.indexOf(this._face);
+                index = index + 1 === FACELIST.length ? 0 : index + 1;
+                this._face = FACELIST[index];
+                break;
+        }
+    }
+
+    calculateSpeed(speed){
+        speed = speed || this._speedX + this._speedY;
+        switch (this._face) {
+            case E:
+                this._speedX = speed;
+                this._speedY = 0;
+                break;
+            case S:
+                this._speedX = 0;
+                this._speedY = speed;
+                break;
+            case W:
+                this._speedX = -1 * speed;
+                this._speedY = 0;
+                break;
+            case N:
+                this._speedX = 0;
+                this._speedY = -1 * speed;
+                break;
+        }
     }
 
     checkMoveable() {
@@ -123,41 +176,38 @@ class __TANK {
 
         switch (self._face) {
             case E:
-                point1 = orgPoints[1];
+                point1 = CROSS.clonePoint(orgPoints[1]);
                 point1.x += spx;
-                point2 = orgPoints[2];
-                point2.x += spx;
-                break;
-            case W:
-                point1 = orgPoints[0];
-                point1.x += spx;
-                point2 = orgPoints[3];
+                point2 = CROSS.clonePoint(orgPoints[2]);
                 point2.x += spx;
                 break;
             case S:
-                point1 = orgPoints[0];
+                point1 = CROSS.clonePoint(orgPoints[0]);
                 point1.y += spy;
-                point2 = orgPoints[1];
+                point2 = CROSS.clonePoint(orgPoints[1]);
                 point2.y += spy;
                 break;
+            case W:
+                point1 = CROSS.clonePoint(orgPoints[0]);
+                point1.x += spx;
+                point2 = CROSS.clonePoint(orgPoints[3]);
+                point2.x += spx;
+                break;
             case N:
-                point1 = orgPoints[2];
+                point1 = CROSS.clonePoint(orgPoints[2]);
                 point1.y += spy;
-                point2 = orgPoints[3];
+                point2 = CROSS.clonePoint(orgPoints[3]);
                 point2.y += spy;
                 break;
         }
-        if(self.checkHit(point1, point2)){
-            self._speedX = 0;
-            self._speedY = 0;
+        if (self.checkHit(point1, point2)) {
             self._moveChoice.decide();
-        }else{
+        } else {
             self.move();
         }
     }
 
     checkHit(p1, p2) {
-        console.log(1111);
         let list = this._world.list;
         let rangeX = this._world.rangeX;
         let rangeY = this._world.rangeY;
@@ -191,19 +241,37 @@ class __TANK {
         let p = this._position;
         let spx = this._speedX;
         let spy = this._speedY;
-        for(var ele of p){
+        for (let ele of p) {
             ele['x'] += spx;
             ele['y'] += spy;
         }
-        this._brush.lineWidth = 0.5;
-        this._brush.fillStyle = "#81D8D0";
-        this._brush.strokeStyle = "#81D8D0";
+        this._brush.lineWidth = 1;
+        this._brush.strokeStyle = "#F9B4B6";
         this._brush.beginPath();
         this._brush.moveTo(p[0].x, p[0].y);
         this._brush.lineTo(p[1].x, p[1].y);
         this._brush.lineTo(p[2].x, p[2].y);
         this._brush.lineTo(p[3].x, p[3].y);
         this._brush.closePath();
-        this._brush.fill();
+        this._brush.stroke();
+        
+        // switch (self._face) {
+        //     case E:
+        //         this._speedX = speed;
+        //         this._speedY = 0;
+        //         break;
+        //     case S:
+        //         this._speedX = 0;
+        //         this._speedY = speed;
+        //         break;
+        //     case W:
+        //         this._speedX = -1 * speed;
+        //         this._speedY = 0;
+        //         break;
+        //     case N:
+        //         this._speedX = 0;
+        //         this._speedY = -1 * Fspeed;
+        //         break;
+        // }
     }
 }

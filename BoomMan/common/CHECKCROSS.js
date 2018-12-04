@@ -294,7 +294,7 @@ class __CROSS {
         }
     }
 
-    easyCheckPointRectangleCross(p, rectangele){
+    easyCheckPointRectangleCross(p, rectangele) {
         let x1, x2, x3, x4, y1, y2, y3, y4, x, y, minX, minY, maxX, maxY;
         y1 = rectangele[0].y1;
         y2 = rectangele[1].y2;
@@ -311,6 +311,14 @@ class __CROSS {
         x = p.x;
         y = p.y;
         return (minX <= x && x <= maxX) && (minY <= y && y <= maxY);
+    }
+
+    clonePoint(p) {
+        var np = {};
+        for(let key in p){
+            np[key] = p[key];
+        }
+        return np;
     }
 }
 

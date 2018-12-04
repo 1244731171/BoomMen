@@ -1,5 +1,5 @@
 class __WORLD {
-    constructor(width, height) {
+    constructor(width, height, stage) {
 
         let canvas = document.createElement('canvas');
         this._universe = window;
@@ -8,6 +8,7 @@ class __WORLD {
         this._height = height;
         this._worldBrush = canvas.getContext("2d");
         this._objectList = [];
+        this._stage = stage;
 
         this.loaded = undefined;
 
@@ -18,11 +19,11 @@ class __WORLD {
 
     _init() {
         let self = this;
-        if (document && document.body) {
+        if (this._stage || document && document.body) {
             self.init();
         } else {
             TIME.on('createEarth', () => {
-                if (document && document.body) {
+                if (this._stage || document && document.body) {
                     self.init().bind(self);
                 }
             });
@@ -31,7 +32,7 @@ class __WORLD {
 
     init() {
         let self = this;
-        document.body.append(self._canvas);
+        (self._stage || document.body).append(self._canvas);
         self._canvas.style.width = self._width;
         self._canvas.style.height = self._height;
         self._canvas.style.position = "absolute";

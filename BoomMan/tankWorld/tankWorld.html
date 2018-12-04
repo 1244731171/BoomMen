@@ -15,13 +15,20 @@
 </head>
 
 <body>
+    <div id='stage'></div>
     <script type="text/javascript">
 
         const UNIT_WIDTH = 25;
         const UNIT_HEIGHT = 25;
         const HEIGHT = UNIT_HEIGHT * 9;
         const WIDTH = UNIT_WIDTH * 9;
-        let WORLD = new __WORLD(WIDTH, HEIGHT);
+        let stage = document.querySelector("#stage");
+        stage.style.position = 'absolute';
+        stage.style.left = 400;
+        stage.style.top = 400;
+        stage.style.width = 500;
+        stage.style.height = 500;
+        let WORLD = new __WORLD(WIDTH, HEIGHT, stage);
 
         for (let i = 1; i < 9; i = i + 2) {
             for (let j = 1; j < 9; j = j + 2) {
@@ -32,7 +39,7 @@
         var tank1 = new __TANK(0, 0, UNIT_WIDTH, UNIT_HEIGHT);
         WORLD.add(tank1);
         tank1.engineStart();
-
+        tank1.addSpeed(2);
 
     </script>
 </body>
