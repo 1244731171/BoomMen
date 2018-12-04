@@ -189,6 +189,12 @@ class __TANK {
 
     move() {
         let p = this._position;
+        let spx = this._speedX;
+        let spy = this._speedY;
+        for(var ele of p){
+            ele['x'] += spx;
+            ele['y'] += spy;
+        }
         this._brush.lineWidth = 0.5;
         this._brush.fillStyle = "#81D8D0";
         this._brush.strokeStyle = "#81D8D0";
