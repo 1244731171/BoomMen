@@ -5,7 +5,7 @@
  * @param {number} x2 
  * @param {number} y2 
  */
-let getA = (x1, y1, x2, y2) => {
+let getLineA = (x1, y1, x2, y2) => {
     return (y1 - y2) / (x1 - x2);
 }
 
@@ -15,7 +15,7 @@ let getA = (x1, y1, x2, y2) => {
  * @param {number} y 
  * @param {number} a 
  */
-let getB = (x, y, a) => {
+let getLineB = (x, y, a) => {
     return y - a * x;
 }
 
@@ -26,7 +26,7 @@ let getB = (x, y, a) => {
  * @param {number} a2 
  * @param {number} b2 
  */
-let getX = (a1, b1, a2, b2) => {
+let getLineCrossPointX = (a1, b1, a2, b2) => {
     return (b2 - b1) / (a1 - a2);
 }
 
@@ -36,7 +36,7 @@ let getX = (a1, b1, a2, b2) => {
  * @param {number} x
  * @param {number} b
  */
-let getY = (a, x, b) => {
+let getLineCrossPointY = (a, x, b) => {
     return a * x + b;
 }
 
@@ -55,8 +55,8 @@ let getLineInfo = (line) => {
     let x2 = line.x2;
     let y2 = line.y2;
 
-    let a = getA(x1, y1, x2, y2);
-    let b = getB(x1, y1, a);
+    let a = getLineA(x1, y1, x2, y2);
+    let b = getLineB(x1, y1, a);
 
     return {
         a: a,
@@ -64,15 +64,28 @@ let getLineInfo = (line) => {
     };
 }
 
-let getCrashPoint = (line1, line2) => {
+let getLineSegementInfo = (x1, y1, x2, y2) => {
+    let a = getLineA(x1, y1, x2, y2);
+    let b = getLineB(x1, y1, a);
+    return {
+        x1: x1,
+        y1: y1,
+        x2: x2,
+        y2: y2,
+        a: a,
+        b: b
+    }
+}
+
+let getLinesCrossPoint = (line1, line2) => {
     let a1 = line1.a;
     let b1 = line1.b;
     let a2 = line2.a;
     let b2 = line2.b;
 
-    let x = getX(a1, b1, a2, b2);
+    let x = getLineCrossPointX(a1, b1, a2, b2);
     console.log('xxxxxx',x);
-    let y = getY(a1, x, b1);
+    let y = getLineCrossPointY(a1, x, b1);
     console.log('yyyyyy',y);
     return {
         x: x,
@@ -80,7 +93,7 @@ let getCrashPoint = (line1, line2) => {
     };
 }
 
-let checkIsCrash = (x1, y1, x2, y2, a1, b1, a2, b2) => {
+let checkIsCross = (x1, y1, x2, y2, a1, b1, a2, b2) => {
     let line1, line2;
     if(typeof x1 === 'object' && typeof x1 === 'object'){
         line1 = x1;
@@ -105,7 +118,7 @@ let checkIsCrash = (x1, y1, x2, y2, a1, b1, a2, b2) => {
         return false;
     }
 
-    let point = getCrashPoint(line1Info, line2Info);
+    let point = getLinesCrossPoint(line1Info, line2Info);
     let x = point.x;
     let y = point.y;
 
@@ -127,11 +140,11 @@ let line1Info = getLineInfo(line1);
 let line2Info = getLineInfo(line2);
 let line3Info = getLineInfo(line3);
 
-let point13 = getCrashPoint(line1Info, line3Info);
-let point23 = getCrashPoint(line2Info, line3Info);
+let point13 = getLinesCrossPoint(line1Info, line3Info);
+let point23 = getLinesCrossPoint(line2Info, line3Info);
 
-let isCrash12 = checkIsCrash(line1, line3);
-let isCrash23 = checkIsCrash(line2, line3);
+let isCross12 = checkIsCross(line1, line3);
+let isCross23 = checkIsCross(line2, line3);
 
 console.log('line1 >>>>>', JSON.stringify(line1));
 console.log('line1 info >>>>>', JSON.stringify(line1Info));
@@ -142,9 +155,9 @@ console.log('\n');
 console.log('line3 >>>>>', JSON.stringify(line3));
 console.log('line3 info >>>>>', JSON.stringify(line3Info));
 console.log('\n');
-console.log('line1, line3 crash point >>>>>', JSON.stringify(point13));
-console.log('line2, line3 crash point >>>>>', JSON.stringify(point23));
+console.log('line1, line3 cross point >>>>>', JSON.stringify(point13));
+console.log('line2, line3 cross point >>>>>', JSON.stringify(point23));
 console.log('\n');
-console.log('line2, line3 is crash ? >>>>>', isCrash12);
-console.log('line1, line3 is crash ? >>>>>', isCrash23);
+console.log('line2, line3 is cross ? >>>>>', isCross12);
+console.log('line1, line3 is cross ? >>>>>', isCross23);
 

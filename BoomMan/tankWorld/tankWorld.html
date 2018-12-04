@@ -1,0 +1,40 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript" src='../common/KIT.js'></script>
+    <script type="text/javascript" src='../common/CHECKCROSS.js'></script>
+    <script type="text/javascript" src='../common/TIME.js'></script>
+    <script type="text/javascript" src='../common/WORLD.js'></script>
+    <script type="text/javascript" src='./CHOICE.js'></script>
+    <script type="text/javascript" src='./TANK.js'></script>
+    <script type="text/javascript" src='./house.js'></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+
+        const UNIT_WIDTH = 25;
+        const UNIT_HEIGHT = 25;
+        const HEIGHT = UNIT_HEIGHT * 9;
+        const WIDTH = UNIT_WIDTH * 9;
+        let WORLD = new __WORLD(WIDTH, HEIGHT);
+
+        for (let i = 1; i < 9; i = i + 2) {
+            for (let j = 1; j < 9; j = j + 2) {
+                WORLD.add(new house(i * UNIT_WIDTH, j * UNIT_WIDTH, UNIT_WIDTH, UNIT_HEIGHT));
+            }
+        }
+
+        var tank1 = new __TANK(0, 0, UNIT_WIDTH, UNIT_HEIGHT);
+        WORLD.add(tank1);
+        tank1.engineStart();
+
+
+    </script>
+</body>
+
+</html>
