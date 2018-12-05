@@ -39,7 +39,12 @@
         var tank1 = new __TANK(0, 0, UNIT_WIDTH, UNIT_HEIGHT);
         WORLD.add(tank1);
         tank1.engineStart();
-        tank1.addSpeed(2);
+        tank1.addSpeed(1);
+
+        var tank2 = new __TANK(HEIGHT - UNIT_WIDTH, WIDTH - UNIT_WIDTH, UNIT_WIDTH, UNIT_HEIGHT);
+        WORLD.add(tank2);
+        tank2.engineStart();
+        tank2.addSpeed(1);
 
     </script>
 </body>

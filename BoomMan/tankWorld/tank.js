@@ -2,7 +2,7 @@ const E = 'east';
 const S = 'south';
 const W = 'west';
 const N = 'north';
-const FACELIST = [E, N, W, S];
+const FACELIST = [E, S, W, N];
 
 class __TANK {
     constructor(x, y, height, width, face = E) {
@@ -13,6 +13,8 @@ class __TANK {
         this._type = "tank";
         this._isMoveable = true;
         this._uid = this._type + (new Date().getTime() * Math.random());
+
+        this._viewRange = 300;
 
         width--;
         height--;
@@ -40,6 +42,7 @@ class __TANK {
         this._moveChoice = new __CHOICE();
         this._moveChoice.initPossibility(this.moveChoiceList);
         this._checkCornerChoice = new __CHOICE();
+        this._checkCornerChoice.initPossibility(this.checkCornerChoiceList);
         // this._memory = new __MEMORY();
 
         this.calculateSpeed();
@@ -61,7 +64,7 @@ class __TANK {
         return this._position;
     }
 
-    addSpeed(speed){
+    addSpeed(speed) {
         this.calculateSpeed(speed);
     }
 
@@ -94,6 +97,17 @@ class __TANK {
         }];
     }
 
+    get checkCornerChoiceList() {
+        let self = this;
+        let arr = [];
+        arr.push({
+            'actionId': 'keepWalking',
+            'actionCallback': self.move.bind(self),
+            'originTimes': 100
+        });
+        return arr;
+    }
+
     load(world) {
         this._world = world;
         this._brush = world.earth.getContext("2d");
@@ -101,7 +115,7 @@ class __TANK {
 
     engineStart() {
         let self = this;
-        self._state  = 'engineStart';
+        self._state = 'engineStart';
         TIME.on(self._uid, self.checkMoveable.bind(self));
     }
 
@@ -117,34 +131,37 @@ class __TANK {
 
     turnLeft() {
         console.log('turnLeft', this._uid);
-        this.calculateFace('left');
+        this._face = this.calculateFace(this._face, 'left');
         this.calculateSpeed();
     }
 
     turnRight() {
         console.log('turnRight', this._uid);
-        this.calculateFace('right');
+        this._face = this.calculateFace(this._face, 'right');
         this.calculateSpeed();
     }
 
-    calculateFace(turn) {
+    calculateFace(face, turn) {
         let index;
+        let newFace;
         switch (turn) {
             case 'left':
-                index = FACELIST.indexOf(this._face);
+                index = FACELIST.indexOf(face);
                 index = index ? index - 1 : FACELIST.length - 1;
-                this._face = FACELIST[index];
+                newFace = FACELIST[index];
                 break;
             case 'right':
-                index = FACELIST.indexOf(this._face);
+                index = FACELIST.indexOf(face);
                 index = index + 1 === FACELIST.length ? 0 : index + 1;
-                this._face = FACELIST[index];
+                newFace = FACELIST[index];
                 break;
         }
+        return newFace;
     }
 
-    calculateSpeed(speed){
+    calculateSpeed(speed) {
         speed = speed || this._speedX + this._speedY;
+        speed = Math.abs(speed);
         switch (this._face) {
             case E:
                 this._speedX = speed;
@@ -166,51 +183,98 @@ class __TANK {
     }
 
     checkMoveable() {
+        // console.log(JSON.stringify(this._position));
         // 先判断是不是在边界
         let self = this;
-        let spx = self._speedX;
-        let spy = self._speedY;
+        // self.draw();
+        if (self.checkMoveAbleByFace(self._face)) {
+            if (self.checkView()) {
+                self._checkCornerChoice.decide();
+                self.move();
+            } else {
+                self.move();
+            }
+        } else {
+            self._moveChoice.decide();
+            self.draw();
+        }
+    }
+
+    checkMoveAbleByFace(face) {
+        let self = this;
+        let spd = Math.abs(self._speedY + self._speedX);
 
         let orgPoints = self._position.concat();
         let point1, point2;
 
-        switch (self._face) {
+        switch (face) {
             case E:
+                // 看1,2号位
                 point1 = CROSS.clonePoint(orgPoints[1]);
-                point1.x += spx;
+                point1.x += spd;
                 point2 = CROSS.clonePoint(orgPoints[2]);
-                point2.x += spx;
+                point2.x += spd;
                 break;
             case S:
-                point1 = CROSS.clonePoint(orgPoints[0]);
-                point1.y += spy;
-                point2 = CROSS.clonePoint(orgPoints[1]);
-                point2.y += spy;
+                // 看2,3号位
+                point1 = CROSS.clonePoint(orgPoints[2]);
+                point1.y += spd;
+                point2 = CROSS.clonePoint(orgPoints[3]);
+                point2.y += spd;
                 break;
             case W:
-                point1 = CROSS.clonePoint(orgPoints[0]);
-                point1.x += spx;
-                point2 = CROSS.clonePoint(orgPoints[3]);
-                point2.x += spx;
+                // 看3,0号位
+                point1 = CROSS.clonePoint(orgPoints[3]);
+                point1.x -= spd;
+                point2 = CROSS.clonePoint(orgPoints[0]);
+                point2.x -= spd;
                 break;
             case N:
-                point1 = CROSS.clonePoint(orgPoints[2]);
-                point1.y += spy;
-                point2 = CROSS.clonePoint(orgPoints[3]);
-                point2.y += spy;
+                // 看0,1号位
+                point1 = CROSS.clonePoint(orgPoints[0]);
+                point1.y -= spd;
+                point2 = CROSS.clonePoint(orgPoints[1]);
+                point2.y -= spd;
                 break;
         }
-        if (self.checkHit(point1, point2)) {
-            self._moveChoice.decide();
-        } else {
-            self.move();
+
+        return !self.checkHit(point1, point2);
+    }
+
+    checkView() {
+        let self = this;
+        let left = self.calculateFace(self._face, 'left');
+        let right = self.calculateFace(self._face, 'right');
+        let isLeftAble = self.checkMoveAbleByFace(left);
+        let isRightAble = self.checkMoveAbleByFace(right);
+        let choiceList = self.checkCornerChoiceList;
+        if (isLeftAble) {
+            choiceList.push({
+                'actionId': 'turnLeft',
+                'actionCallback': self.turnLeft.bind(self),
+                'originTimes': 10
+            });
         }
+        if (isRightAble) {
+            choiceList.push({
+                'actionId': 'turnRight',
+                'actionCallback': self.turnRight.bind(self),
+                'originTimes': 10
+            });
+        }
+        self._checkCornerChoice.initPossibility(choiceList);
+
+        return choiceList.length !== 1;
+    }
+
+    checkCorner() {
+
     }
 
     checkHit(p1, p2) {
         let list = this._world.list;
-        let rangeX = this._world.rangeX;
-        let rangeY = this._world.rangeY;
+        let rangeX = this._world.rangeX - 1;
+        let rangeY = this._world.rangeY - 1;
         let isHit = false;
         let ps;
 
@@ -245,6 +309,11 @@ class __TANK {
             ele['x'] += spx;
             ele['y'] += spy;
         }
+        this.draw();
+    }
+
+    draw() {
+        let p = this._position;
         this._brush.lineWidth = 1;
         this._brush.strokeStyle = "#F9B4B6";
         this._brush.beginPath();
@@ -254,24 +323,5 @@ class __TANK {
         this._brush.lineTo(p[3].x, p[3].y);
         this._brush.closePath();
         this._brush.stroke();
-        
-        // switch (self._face) {
-        //     case E:
-        //         this._speedX = speed;
-        //         this._speedY = 0;
-        //         break;
-        //     case S:
-        //         this._speedX = 0;
-        //         this._speedY = speed;
-        //         break;
-        //     case W:
-        //         this._speedX = -1 * speed;
-        //         this._speedY = 0;
-        //         break;
-        //     case N:
-        //         this._speedX = 0;
-        //         this._speedY = -1 * Fspeed;
-        //         break;
-        // }
     }
 }
