@@ -46,8 +46,36 @@
         tank2.engineStart();
         tank2.addSpeed(1);
 
-        document.addEventListener('keydown',function(e){
-            console.log(e.keyCode);
+        let flag = true;
+        // left 37 up 28 right 39 down 40 blank 32
+        document.addEventListener('keydown', function (e) {
+            switch (e.keyCode) {
+                case 32:
+                    if (flag) {
+                        tank1.removeAutoControl();
+                        tank1.loadManualControl();
+                    } else {
+                        tank1.removeManualControl();
+                        tank1.loadAutoControl();
+                    }
+                    flag = !flag;
+                    break;
+                case 37:
+                    tank1.turnToWast();
+                    break;
+                case 38:
+                    tank1.turnToSouth();
+                    break;
+                case 39:
+                    tank1.turnToNorth();
+                    break;
+                case 40:
+                    tank1.turnToEast();
+                    break;
+                case 87:
+                    tank1.goForward();
+                    break;
+            }
         });
 
     </script>

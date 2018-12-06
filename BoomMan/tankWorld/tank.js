@@ -15,6 +15,7 @@ class __TANK {
         this._uid = this._type + (new Date().getTime() * Math.random());
 
         this._viewRange = 300;
+        this._host = 'auto';
 
         width--;
         height--;
@@ -128,6 +129,7 @@ class __TANK {
     }
 
     loadAutoControl() {
+        this._host = 'auto';
         let self = this;
         self._checkCornerChoice.on();
         self._moveChoice.on();
@@ -144,11 +146,10 @@ class __TANK {
     }
 
     loadManualControl() {
-
+        this._host = 'manual';
     }
 
     removeManualControl() {
-
     }
 
     load(world) {
@@ -192,18 +193,30 @@ class __TANK {
     }
 
     turnToEast() {
+        if(this._host !== 'manual'){
+            return;
+        }
         this.addSpeedX(Math.abs(this._speedX + this._speedY));
     }
 
     turnToSouth() {
+        if(this._host !== 'manual'){
+            return;
+        }
         this.addSpeedX(-1 * Math.abs(this._speedX + this._speedY));
     }
 
     turnToWast() {
+        if(this._host !== 'manual'){
+            return;
+        }
         this.addSpeedY(Math.abs(this._speedX + this._speedY));
     }
 
     turnToNorth() {
+        if(this._host !== 'manual'){
+            return;
+        }
         this.addSpeedY(-1 * Math.abs(this._speedX + this._speedY));
     }
 
