@@ -15,6 +15,8 @@ class __CHOICE {
         this._positiveStep = 1;
         // normal
         this._normalStep = 1;
+        // 是不是可以做决定
+        this._enable = true;
 
         this.initPossibility(possibilityList);
     }
@@ -55,6 +57,9 @@ class __CHOICE {
     }
 
     decide() {
+        if(!this._enable){
+            return null;
+        }
         this.normal();
         let index = Math.round(Math.random() * (this._possibilityList.length - 1));
         this._lastActionId = this._possibilityList[index];
@@ -104,5 +109,13 @@ class __CHOICE {
             this._possibilityList.push(actionId);
         }
         this._lastActionId = null;
+    }
+
+    on(){
+        this._enable = true;
+    }
+
+    off(){
+        this._enable = false;
     }
 }

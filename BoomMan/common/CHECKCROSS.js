@@ -294,22 +294,59 @@ class __CROSS {
         }
     }
 
+    easyCheckLineSegementRectangleCross(lineSegement, rectangele){
+        let y1 = rectangele[0].y;
+        let y2 = rectangele[1].y;
+        let y3 = rectangele[2].y;
+        let y4 = rectangele[3].y;
+        let x1 = rectangele[0].x;
+        let x2 = rectangele[1].x;
+        let x3 = rectangele[2].x;
+        let x4 = rectangele[3].x;
+        let minX = Math.min(x1, x2, x3, x4);
+        let maxX = Math.max(x1, x2, x3, x4);
+        let minY = Math.min(y1, y2, y3, y4);
+        let maxY = Math.max(y1, y2, y3, y4);
+        
+        let xx1 = lineSegement.x1;
+        let xx2 = lineSegement.x2;
+        let yy1 = lineSegement.y1;
+        let yy2 = lineSegement.y2;
+        let temp = yy1;
+        yy1 = Math.min(yy1, yy2);
+        yy2 = Math.max(temp, yy2);
+        if(xx1 === xx2){
+            if(minX <= xx1 && xx1 <= maxX && !(yy2 < minY && maxY < yy1)){
+                return true;
+            }else{
+                return false;
+            }
+        }else if(yy1 === yy2){
+            if(minY <= yy1 && yy1 <= maxY && !(xx2 < minX && maxX < xx1)){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
     easyCheckPointRectangleCross(p, rectangele) {
-        let x1, x2, x3, x4, y1, y2, y3, y4, x, y, minX, minY, maxX, maxY;
-        y1 = rectangele[0].y;
-        y2 = rectangele[1].y;
-        y3 = rectangele[2].y;
-        y4 = rectangele[3].y;
-        x1 = rectangele[0].x;
-        x2 = rectangele[1].x;
-        x3 = rectangele[2].x;
-        x4 = rectangele[3].x;
-        minX = Math.min(x1, x2, x3, x4);
-        maxX = Math.max(x1, x2, x3, x4);
-        minY = Math.min(y1, y2, y3, y4);
-        maxY = Math.max(y1, y2, y3, y4);
-        x = p.x;
-        y = p.y;
+        let y1 = rectangele[0].y;
+        let y2 = rectangele[1].y;
+        let y3 = rectangele[2].y;
+        let y4 = rectangele[3].y;
+        let x1 = rectangele[0].x;
+        let x2 = rectangele[1].x;
+        let x3 = rectangele[2].x;
+        let x4 = rectangele[3].x;
+        let minX = Math.min(x1, x2, x3, x4);
+        let maxX = Math.max(x1, x2, x3, x4);
+        let minY = Math.min(y1, y2, y3, y4);
+        let maxY = Math.max(y1, y2, y3, y4);
+        let x = p.x;
+        let y = p.y;
         return (minX <= x && x <= maxX) && (minY <= y && y <= maxY);
     }
 

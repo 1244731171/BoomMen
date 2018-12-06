@@ -64,6 +64,53 @@ class __TANK {
         return this._position;
     }
 
+    get left() {
+        return this._position[0]['x'];
+    }
+
+    get right() {
+        return this._position[2]['x'];
+    }
+
+    get top() {
+        return this._position[0]['y'];
+    }
+
+    get bottom() {
+        return this._position[2]['y'];
+    }
+
+    get corePosition() {
+        return {
+            x: this.left + (this.right - this.left) / 2,
+            y: this.top + (this.bottom - this.top) / 2
+        };
+    }
+
+    get moveChoiceList() {
+        let self = this;
+        return [{
+            'actionId': 'turnLeft',
+            'actionCallback': self.turnLeft.bind(self),
+            'originTimes': 10
+        }, {
+            'actionId': 'turnRight',
+            'actionCallback': self.turnRight.bind(self),
+            'originTimes': 10
+        }];
+    }
+
+    get checkCornerChoiceList() {
+        let self = this;
+        let arr = [];
+        arr.push({
+            'actionId': 'keepWalking',
+            'actionCallback': self.goForward.bind(self),
+            'originTimes': 100
+        });
+        return arr;
+    }
+
     addSpeed(speed) {
         this.calculateSpeed(speed);
     }
@@ -80,32 +127,28 @@ class __TANK {
         this._speedX = 0;
     }
 
-    get moveChoiceList() {
+    loadAutoControl() {
         let self = this;
-        return [{
-            'actionId': 'goForward',
-            'actionCallback': self.goForward.bind(self),
-            'originTimes': 10
-        }, {
-            'actionId': 'turnLeft',
-            'actionCallback': self.turnLeft.bind(self),
-            'originTimes': 10
-        }, {
-            'actionId': 'turnRight',
-            'actionCallback': self.turnRight.bind(self),
-            'originTimes': 10
-        }];
+        self._checkCornerChoice.on();
+        self._moveChoice.on();
+        TIME.off(self._uid);
+        TIME.on(self._uid, self.checkMoveable.bind(self));
     }
 
-    get checkCornerChoiceList() {
+    removeAutoControl() {
         let self = this;
-        let arr = [];
-        arr.push({
-            'actionId': 'keepWalking',
-            'actionCallback': self.move.bind(self),
-            'originTimes': 100
-        });
-        return arr;
+        self._checkCornerChoice.off();
+        self._moveChoice.off();
+        TIME.off(self._uid);
+        TIME.on(self._uid, self.draw.bind(self));
+    }
+
+    loadManualControl() {
+
+    }
+
+    removeManualControl() {
+
     }
 
     load(world) {
@@ -126,19 +169,42 @@ class __TANK {
     }
 
     goForward() {
-        console.log('goForward', this._uid);
+        // console.log('goForward', this._uid);
+        if (this.checkMoveAbleByFace(this._face)) {
+            this.move();
+        } else {
+            this._moveChoice.decide();
+            this.draw();
+            this.checkView();
+        }
     }
 
     turnLeft() {
-        console.log('turnLeft', this._uid);
+        // console.log('turnLeft', this._uid);
         this._face = this.calculateFace(this._face, 'left');
         this.calculateSpeed();
     }
 
     turnRight() {
-        console.log('turnRight', this._uid);
+        // console.log('turnRight', this._uid);
         this._face = this.calculateFace(this._face, 'right');
         this.calculateSpeed();
+    }
+
+    turnToEast() {
+        this.addSpeedX(Math.abs(this._speedX + this._speedY));
+    }
+
+    turnToSouth() {
+        this.addSpeedX(-1 * Math.abs(this._speedX + this._speedY));
+    }
+
+    turnToWast() {
+        this.addSpeedY(Math.abs(this._speedX + this._speedY));
+    }
+
+    turnToNorth() {
+        this.addSpeedY(-1 * Math.abs(this._speedX + this._speedY));
     }
 
     calculateFace(face, turn) {
@@ -183,21 +249,28 @@ class __TANK {
     }
 
     checkMoveable() {
-        // console.log(JSON.stringify(this._position));
-        // 先判断是不是在边界
-        let self = this;
-        // self.draw();
-        if (self.checkMoveAbleByFace(self._face)) {
-            if (self.checkView()) {
-                self._checkCornerChoice.decide();
-                self.move();
-            } else {
-                self.move();
-            }
+        if (this.checkCorner()) {
+            this._checkCornerChoice.decide();
         } else {
-            self._moveChoice.decide();
-            self.draw();
+            this.goForward();
         }
+        // }
+        // // console.log(JSON.stringify(this._position));
+        // // 先判断是不是在边界
+        // let self = this;
+        // // self.draw();
+        // if (self.checkMoveAbleByFace(self._face)) {
+        //     if (self.checkCorner()) {
+        //         self._checkCornerChoice.decide();
+        //         self.move();
+        //     } else {
+        //         self.move();
+        //     }
+        // } else {
+        //     self._moveChoice.decide();
+        //     self.draw();
+        // }
+        // self.checkView();
     }
 
     checkMoveAbleByFace(face) {
@@ -243,6 +316,101 @@ class __TANK {
 
     checkView() {
         let self = this;
+        let minX = self._position[0].x;
+        let maxX = self._position[2].x;
+        let minY = self._position[0].y;
+        let maxY = self._position[2].y;
+        let rangeX = self._world.rangeX - 1;
+        let rangeY = self._world.rangeY - 1;
+        let targetList, viewLineX1, viewLineX2;
+        switch (self._face) {
+            case E:
+                viewLineX1 = {
+                    x1: maxX,
+                    y1: minY,
+                    x2: rangeX,
+                    y2: minY
+                };
+                viewLineX2 = {
+                    x1: maxX,
+                    y1: maxY,
+                    x2: rangeX,
+                    y2: maxY
+                };
+                targetList = self.checkViewTarget(viewLineX1, viewLineX2);
+                break;
+            case S:
+                viewLineX1 = {
+                    x1: minX,
+                    y1: maxY,
+                    x2: minX,
+                    y2: rangeY
+                };
+                viewLineX2 = {
+                    x1: maxX,
+                    y1: maxY,
+                    x2: maxX,
+                    y2: rangeY
+                };
+                targetList = self.checkViewTarget(viewLineX1, viewLineX2);
+                break;
+            case W:
+                viewLineX1 = {
+                    x1: 0,
+                    y1: minY,
+                    x2: minX,
+                    y2: minY
+                };
+                viewLineX2 = {
+                    x1: 0,
+                    y1: maxY,
+                    x2: minX,
+                    y2: maxY
+                };
+                targetList = self.checkViewTarget(viewLineX1, viewLineX2);
+                break;
+            case N:
+                viewLineX1 = {
+                    x1: minX,
+                    y1: 0,
+                    x2: minX,
+                    y2: minY
+                };
+                viewLineX2 = {
+                    x1: maxX,
+                    y1: 0,
+                    x2: maxX,
+                    y2: minY
+                };
+                targetList = self.checkViewTarget(viewLineX1, viewLineX2);
+                break;
+        }
+        if (targetList.length) {
+            console.log("%s can see %s", this._uid, targetList[0].uid);
+        }
+    }
+
+    checkViewTarget(viewLineX1, viewLineX2) {
+        let self = this;
+        let list = self._world.list;
+        let viewList = [];
+        let target;
+        for (let i = 0, j = list.length; i < j; i++) {
+            target = list[i];
+            if (target['type'] !== self.type || this.uid === target.uid) {
+                continue;
+            }
+            if (CROSS.easyCheckLineSegementRectangleCross(viewLineX1, target.position)
+                || CROSS.easyCheckLineSegementRectangleCross(viewLineX2, target.position)) {
+                viewList.push(target);
+            }
+        }
+        return viewList;
+    }
+
+
+    checkCorner() {
+        let self = this;
         let left = self.calculateFace(self._face, 'left');
         let right = self.calculateFace(self._face, 'right');
         let isLeftAble = self.checkMoveAbleByFace(left);
@@ -265,10 +433,6 @@ class __TANK {
         self._checkCornerChoice.initPossibility(choiceList);
 
         return choiceList.length !== 1;
-    }
-
-    checkCorner() {
-
     }
 
     checkHit(p1, p2) {
@@ -310,6 +474,7 @@ class __TANK {
             ele['y'] += spy;
         }
         this.draw();
+        this.checkView();
     }
 
     draw() {
@@ -322,6 +487,24 @@ class __TANK {
         this._brush.lineTo(p[2].x, p[2].y);
         this._brush.lineTo(p[3].x, p[3].y);
         this._brush.closePath();
+
+        let midX = this.corePosition['x'];
+        let midY = this.corePosition['y'];
+        this._brush.moveTo(midX, midY);
+        switch (this._face) {
+            case E:
+                this._brush.lineTo(this.right, midY);
+                break;
+            case S:
+                this._brush.lineTo(midX, this.bottom);
+                break;
+            case W:
+                this._brush.lineTo(this.left, midY);
+                break;
+            case N:
+                this._brush.lineTo(midX, this.top);
+                break;
+        }
         this._brush.stroke();
     }
 }
