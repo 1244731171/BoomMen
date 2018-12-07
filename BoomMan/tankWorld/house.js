@@ -62,4 +62,9 @@ class house {
         this._brush.closePath();
         this._brush.fill();
     }
+
+    destroy(){
+        TIME.off(this.uid);
+        this._world.remove(this);
+    }
 }

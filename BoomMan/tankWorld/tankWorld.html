@@ -12,16 +12,19 @@
     <script type="text/javascript" src='./CHOICE.js'></script>
     <script type="text/javascript" src='./TANK.js'></script>
     <script type="text/javascript" src='./house.js'></script>
+    <script type="text/javascript" src='./shell.js'></script>
 </head>
 
 <body>
     <div id='stage'></div>
     <script type="text/javascript">
 
+        const X = 9;
+        const Y = 3;
         const UNIT_WIDTH = 25;
         const UNIT_HEIGHT = 25;
-        const HEIGHT = UNIT_HEIGHT * 9;
-        const WIDTH = UNIT_WIDTH * 9;
+        const WIDTH = UNIT_WIDTH * X;
+        const HEIGHT = UNIT_HEIGHT * Y;
         let stage = document.querySelector("#stage");
         stage.style.position = 'absolute';
         stage.style.left = 400;
@@ -30,8 +33,8 @@
         stage.style.height = 500;
         let WORLD = new __WORLD(WIDTH, HEIGHT, stage);
 
-        for (let i = 1; i < 9; i = i + 2) {
-            for (let j = 1; j < 9; j = j + 2) {
+        for (let i = 1; i < X; i = i + 2) {
+            for (let j = 1; j < 3; j = j + 2) {
                 WORLD.add(new house(i * UNIT_WIDTH, j * UNIT_WIDTH, UNIT_WIDTH, UNIT_HEIGHT));
             }
         }
@@ -41,7 +44,7 @@
         tank1.engineStart();
         tank1.addSpeed(1);
 
-        var tank2 = new __TANK(HEIGHT - UNIT_WIDTH, WIDTH - UNIT_WIDTH, UNIT_WIDTH, UNIT_HEIGHT);
+        var tank2 = new __TANK(WIDTH - UNIT_WIDTH, HEIGHT - UNIT_WIDTH, UNIT_WIDTH, UNIT_HEIGHT);
         WORLD.add(tank2);
         tank2.engineStart();
         tank2.addSpeed(1);

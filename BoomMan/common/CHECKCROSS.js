@@ -308,21 +308,23 @@ class __CROSS {
         let minY = Math.min(y1, y2, y3, y4);
         let maxY = Math.max(y1, y2, y3, y4);
         
-        let xx1 = lineSegement.x1;
-        let xx2 = lineSegement.x2;
-        let yy1 = lineSegement.y1;
-        let yy2 = lineSegement.y2;
-        let temp = yy1;
-        yy1 = Math.min(yy1, yy2);
-        yy2 = Math.max(temp, yy2);
+        let _xx1 = lineSegement.x1;
+        let _xx2 = lineSegement.x2;
+        let _yy1 = lineSegement.y1;
+        let _yy2 = lineSegement.y2;
+
+        let xx1 = Math.min(_xx1, _xx2);
+        let xx2 = Math.max(_xx1, _xx2);
+        let yy1 = Math.min(_yy1, _yy2);
+        let yy2 = Math.max(_yy1, _yy2);
         if(xx1 === xx2){
-            if(minX <= xx1 && xx1 <= maxX && !(yy2 < minY && maxY < yy1)){
+            if(minX <= xx1 && xx1 <= maxX && !(yy2 < minY || maxY < yy1)){
                 return true;
             }else{
                 return false;
             }
         }else if(yy1 === yy2){
-            if(minY <= yy1 && yy1 <= maxY && !(xx2 < minX && maxX < xx1)){
+            if(minY <= yy1 && yy1 <= maxY && !(xx2 < minX || maxX < xx1)){
                 return true;
             }else{
                 return false;

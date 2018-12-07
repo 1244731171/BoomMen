@@ -12,7 +12,7 @@ class __TANK {
 
         this._type = "tank";
         this._isMoveable = true;
-        this._uid = this._type + (new Date().getTime() * Math.random());
+        this._uid = this._type + "_" + (new Date().getTime() * Math.random()).toString().substr(1,4);
 
         this._viewRange = 300;
         this._host = 'auto';
@@ -47,6 +47,10 @@ class __TANK {
         // this._memory = new __MEMORY();
 
         this.calculateSpeed();
+
+        this._currentShell;
+        this._isReloading = false;
+        this._reloadTime = 1000;
     }
 
     get type() {
@@ -161,6 +165,7 @@ class __TANK {
         let self = this;
         self._state = 'engineStart';
         TIME.on(self._uid, self.checkMoveable.bind(self));
+        self.reload();
     }
 
     engineStop() {
@@ -398,9 +403,44 @@ class __TANK {
                 targetList = self.checkViewTarget(viewLineX1, viewLineX2);
                 break;
         }
+        // this._brush.strokeStyle = "#ff0000";
+        // this._brush.beginPath();
+        // this._brush.moveTo(viewLineX1.x1, viewLineX1.y1);
+        // this._brush.lineTo(viewLineX1.x2, viewLineX1.y2);
+        // this._brush.moveTo(viewLineX2.x1, viewLineX2.y1);
+        // this._brush.lineTo(viewLineX2.x2, viewLineX2.y2);
+        // this._brush.stroke();
         if (targetList.length) {
-            console.log("%s can see %s", this._uid, targetList[0].uid);
+            // console.log("%s >>>>>>> %s", this._uid, targetList[0].uid);
+            if(this._host === 'auto'){
+                this.checkFire();
+            }
         }
+    }
+
+    checkFire(){
+        if(this._currentShell){
+            this.fire();
+        }else{
+            this.reload();
+        }
+    }
+
+    reload(){
+        let self = this;
+        if(!self._isReloading){
+            self._isReloading = true;
+            setTimeout(function(){
+                self._currentShell = new SHELL(self._world, self.uid);
+                self._isReloading = false;
+            }, self._reloadTime);
+        }
+    }
+
+    fire(){
+        this._currentShell.fire(this.corePosition['x'], this.corePosition['y'], this._speedX, this._speedY);
+        this._currentShell = null;
+        this.reload();
     }
 
     checkViewTarget(viewLineX1, viewLineX2) {
@@ -443,6 +483,9 @@ class __TANK {
                 'originTimes': 10
             });
         }
+        // if(isLeftAble || isRightAble){
+        //     console.log('>>>>>checkCorner, left is %s, righrt is %s', isLeftAble, isRightAble);
+        // }
         self._checkCornerChoice.initPossibility(choiceList);
 
         return choiceList.length !== 1;
@@ -466,6 +509,10 @@ class __TANK {
                 continue;
             }
 
+            if(ele.type !== 'house' && ele.type !== 'tank'){
+                continue;
+            }
+
             ps = ele.position;
             if (ps && ps instanceof Array) {
                 if (CROSS.easyCheckPointRectangleCross(p1, ps)
@@ -474,6 +521,7 @@ class __TANK {
                     break;
                 }
             }
+
         }
         return isHit;
     }
@@ -519,5 +567,10 @@ class __TANK {
                 break;
         }
         this._brush.stroke();
+    }
+
+    destroy(){
+        TIME.off(this.uid);
+        this._world.remove(this);
     }
 }
