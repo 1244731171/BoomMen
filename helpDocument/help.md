@@ -45,7 +45,7 @@ $ clip < ~/.ssh/id_rsa.pub
 
 然后在github的账户页的右上角，点击配置（settings, 齿轮图形），在sidebar中点击“SSH keys”，接着点击“Add SSH key”，在"title"栏输入一个自己喜欢的标题，“key”栏中粘贴刚刚复制的公钥内容，最后点击“Add key”按钮。
 
-第四步：检查SSH key是否成功设置
+第四步：检查SSH key是否成功设置 
 ``` cmd
 $ ssh -T git@github.com
 # Attempts to ssh to GitHub
