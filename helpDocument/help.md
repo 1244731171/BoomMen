@@ -28,7 +28,7 @@ $ ssh-agent -s
 $ ssh-add ~/.ssh/id_rsa
 ```
 
-`注`“ 如果执行 ```ssh-add``` 时显示错误 ```Could not open a connection to your authentication agent.``` 那么执行
+*注*: 如果执行 ```ssh-add``` 时显示错误 ```Could not open a connection to your authentication agent.``` 那么执行
 ``` cmd
 eval `ssh-agent -s`
 ```
@@ -37,14 +37,13 @@ eval `ssh-agent -s`
 第三步：将SSH key添加到你的GitHub账户
 
 首先将公钥复制到粘贴板：
-
+``` cmd
 $ clip < ~/.ssh/id_rsa.pub
 # Copies the contents of the id_rsa.pub file to your clipboard
+```
 或者使用文本编辑工具也能解决。
 
 然后在github的账户页的右上角，点击配置（settings, 齿轮图形），在sidebar中点击“SSH keys”，接着点击“Add SSH key”，在"title"栏输入一个自己喜欢的标题，“key”栏中粘贴刚刚复制的公钥内容，最后点击“Add key”按钮。
-
- 
 
 第四步：检查SSH key是否成功设置
 ``` cmd
