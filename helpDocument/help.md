@@ -1,7 +1,5 @@
 
-## 关于git生产ssh ##
-
-生成步骤:
+## 关于git生产ssh步骤 ##
 
 生成ssh，如果多个git账户需要重命名id_rsa文件名
 ``` cmd
@@ -50,12 +48,14 @@ $ clip < ~/.ssh/id_rsa.pub
 $ ssh -T git@github.com
 # Attempts to ssh to GitHub
 ```
+
 可能会看到如下的警告：
 ``` cmd
 The authenticity of host 'github.com (207.97.227.239)' can't be established.
 # RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
 # Are you sure you want to continue connecting (yes/no)?
 ```
+
 输入“yes”，如果得到下面的结果，说明你的设置是成功的！
 ``` cmd
 Hi username! You've successfully authenticated, but GitHub does not
