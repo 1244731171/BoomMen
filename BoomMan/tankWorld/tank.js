@@ -50,7 +50,7 @@ class __TANK {
 
         this._currentShell;
         this._isReloading = false;
-        this._reloadTime = 1000;
+        this._reloadShellTime = 1000;
     }
 
     get type() {
@@ -165,7 +165,7 @@ class __TANK {
         let self = this;
         self._state = 'engineStart';
         TIME.on(self._uid, self.checkMoveable.bind(self));
-        self.reload();
+        // self.reloadShell();
     }
 
     engineStop() {
@@ -423,25 +423,25 @@ class __TANK {
         if(this._currentShell){
             this.fire();
         }else{
-            this.reload();
+            this.reloadShell();
         }
     }
 
-    reload(){
+    reloadShell(){
         let self = this;
         if(!self._isReloading){
             self._isReloading = true;
             setTimeout(function(){
                 self._currentShell = new SHELL(self._world, self.uid);
                 self._isReloading = false;
-            }, self._reloadTime);
+            }, self._reloadShellTime);
         }
     }
 
     fire(){
         this._currentShell.fire(this.corePosition['x'], this.corePosition['y'], this._speedX, this._speedY);
         this._currentShell = null;
-        this.reload();
+        this.reloadShell();
     }
 
     checkViewTarget(viewLineX1, viewLineX2) {
