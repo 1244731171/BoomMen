@@ -19,67 +19,79 @@
     <div id='stage'></div>
     <script type="text/javascript">
 
-        const X = 9;
-        const Y = 3;
+        const X = 19;
+        const Y = 19;
         const UNIT_WIDTH = 25;
         const UNIT_HEIGHT = 25;
         const WIDTH = UNIT_WIDTH * X;
         const HEIGHT = UNIT_HEIGHT * Y;
         let stage = document.querySelector("#stage");
         stage.style.position = 'absolute';
-        stage.style.left = 400;
-        stage.style.top = 400;
-        stage.style.width = 500;
-        stage.style.height = 500;
+        stage.style.left = 10;
+        stage.style.top = 10;
+        stage.style.width = WIDTH;
+        stage.style.height = HEIGHT;
         let WORLD = new __WORLD(WIDTH, HEIGHT, stage);
 
         for (let i = 1; i < X; i = i + 2) {
-            for (let j = 1; j < 3; j = j + 2) {
+            for (let j = 1; j < Y; j = j + 2) {
                 WORLD.add(new house(i * UNIT_WIDTH, j * UNIT_WIDTH, UNIT_WIDTH, UNIT_HEIGHT));
             }
         }
 
-        var tank1 = new __TANK(0, 0, UNIT_WIDTH, UNIT_HEIGHT);
-        WORLD.add(tank1);
-        tank1.engineStart();
-        tank1.addSpeed(1);
+        let tanksLength = 8;
+        while(tanksLength--){
+            let i = KIT.rondomDoubleInt(0, X);
+            let j = KIT.rondomDoubleInt(0, X);
+            i *= UNIT_WIDTH;
+            j *= UNIT_HEIGHT;
+            let tank = new __TANK(i, j, UNIT_WIDTH, UNIT_HEIGHT);
+            WORLD.add(tank);
+            tank.engineStart();
+            tank.addSpeed(1);
+        }
 
-        var tank2 = new __TANK(WIDTH - UNIT_WIDTH, HEIGHT - UNIT_WIDTH, UNIT_WIDTH, UNIT_HEIGHT);
-        WORLD.add(tank2);
-        tank2.engineStart();
-        tank2.addSpeed(1);
+        // var tank1 = new __TANK(0, 0, UNIT_WIDTH, UNIT_HEIGHT);
+        // WORLD.add(tank1);
+        // tank1.engineStart();
+        // tank1.addSpeed(1);
 
-        let flag = true;
-        // left 37 up 28 right 39 down 40 blank 32
-        document.addEventListener('keydown', function (e) {
-            switch (e.keyCode) {
-                case 32:
-                    if (flag) {
-                        tank1.removeAutoControl();
-                        tank1.loadManualControl();
-                    } else {
-                        tank1.removeManualControl();
-                        tank1.loadAutoControl();
-                    }
-                    flag = !flag;
-                    break;
-                case 37:
-                    tank1.turnToWast();
-                    break;
-                case 38:
-                    tank1.turnToSouth();
-                    break;
-                case 39:
-                    tank1.turnToNorth();
-                    break;
-                case 40:
-                    tank1.turnToEast();
-                    break;
-                case 87:
-                    tank1.goForward();
-                    break;
-            }
-        });
+        // var tank2 = new __TANK(WIDTH - UNIT_WIDTH, HEIGHT - UNIT_WIDTH, UNIT_WIDTH, UNIT_HEIGHT);
+        // WORLD.add(tank2);
+        // tank2.engineStart();
+        // tank2.addSpeed(1);
+
+        // let flag = true;
+        // // left 37 up 28 right 39 down 40 blank 32
+        // document.addEventListener('keydown', function (e) {
+        //     switch (e.keyCode) {
+        //         case 32:
+        //             if (flag) {
+        //                 tank1.removeAutoControl();
+        //                 tank1.loadManualControl();
+        //             } else {
+        //                 tank1.removeManualControl();
+        //                 tank1.loadAutoControl();
+        //             }
+        //             flag = !flag;
+        //             break;
+        //         case 37:
+        //             tank1.turnToWast();
+        //             break;
+        //         case 38:
+        //             tank1.turnToSouth();
+        //             break;
+        //         case 39:
+        //             tank1.turnToNorth();
+        //             break;
+        //         case 40:
+        //             tank1.turnToEast();
+        //             break;
+        //         case 87:
+        //             tank1.goForward();
+        //             break;
+        //     }
+        // });
 
     </script>
 </body>

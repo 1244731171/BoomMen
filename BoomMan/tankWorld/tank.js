@@ -269,6 +269,7 @@ class __TANK {
     checkMoveable() {
         if (this.checkCorner()) {
             this._checkCornerChoice.decide();
+            this.draw();
         } else {
             this.goForward();
         }
@@ -542,6 +543,7 @@ class __TANK {
         let p = this._position;
         this._brush.lineWidth = 1;
         this._brush.strokeStyle = "#F9B4B6";
+        this._brush.strokeStyle = "#FF0000";
         this._brush.beginPath();
         this._brush.moveTo(p[0].x, p[0].y);
         this._brush.lineTo(p[1].x, p[1].y);
