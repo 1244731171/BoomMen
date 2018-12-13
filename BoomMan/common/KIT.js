@@ -39,9 +39,9 @@ class __KIT {
 
     randomUInt(min, max) {
         if (max === undefined) {
-            return Math.round(Math.random() * min) || randomUInt(min);
+            return Math.round(Math.random() * min) || this.randomUInt(min);
         } else {
-            return Math.round(min + Math.random() * (max - min)) || randomUInt(min, max);
+            return Math.round(min + Math.random() * (max - min)) || this.randomUInt(min, max);
         }
     }
 }

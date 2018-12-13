@@ -1,0 +1,44 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id='ca'></canvas>
+    <script>
+        const H = 800;
+        const W = 1800;
+        const canvas = document.querySelector("#ca");
+        canvas.style.width = W;
+        canvas.style.height = H;
+        canvas.height = H;
+        canvas.width = W;
+        let ctx = canvas.getContext("2d");
+        ctx.fillStyle = "Gold";
+        let x = 0;
+        let y = 0;
+
+        let draw = () => {
+            x += 10;
+            y += 5;
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, Math.PI * 2, false);
+            ctx.fill();
+            requestAnimationFrame(draw);
+        }
+
+        let clear = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            requestAnimationFrame(clear);
+        }
+
+        requestAnimationFrame(clear);
+        requestAnimationFrame(draw);
+    </script>
+</body>
+
+</html>
