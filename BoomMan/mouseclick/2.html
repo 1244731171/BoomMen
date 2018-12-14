@@ -45,7 +45,7 @@
                         this._ctx.fillStyle = this._color = '#F9B4B6'; //F9B4B6, 81D8D0
                         break;
                     case 1:
-                        this._ctx.fillStyle = this._color  = '#81D8D0'; //F9B4B6, 81D8D0
+                        this._ctx.fillStyle = this._color = '#81D8D0'; //F9B4B6, 81D8D0
                         break;
                 }
 
@@ -96,11 +96,82 @@
             }
 
             destroy() {
+                let n = (Math.abs(this._orgSx) + Math.abs(this._orgSy)) / 5;
+                new circle(this._x, this._y, n, 0, 50 * n, this._cvs, this._color);
                 cancelAnimationFrame(this._loopId);
             }
         }
 
-        let randomCreateBall = (x, y, r = 0, area = [1, 2, 3, 4]) => {
+        class circle {
+            constructor(x, y, sr, mnr, mxr, cvs, clr, isAutoAlpha = true) {
+                this._x = x;
+                this._y = y;
+                this._sr = sr;
+                this._r = mnr;
+                this._mxr = mxr;
+
+                this._cvs = cvs;
+                this._ctx = cvs.getContext("2d");
+                this._color = '';
+                switch (KIT.randomInt(1)) {
+                    case 0:
+                        this._ctx.fillStyle = this._color = '#F9B4B6'; //F9B4B6, 81D8D0
+                        break;
+                    case 1:
+                        this._ctx.fillStyle = this._color = '#81D8D0'; //F9B4B6, 81D8D0
+                        break;
+                }
+                this._color = clr || this._color;
+
+                this._isAutoAlpha = isAutoAlpha;
+
+                this._loopId = -1;
+
+                this.init();
+            }
+
+            init() {
+                let self = this;
+                this._loopId = requestAnimationFrame(self.check.bind(self));
+            }
+
+            _getAlpha(alpha) {
+                alpha = parseInt(alpha * 255).toString(16);
+                while (alpha.length < 2) {
+                    alpha = '0' + alpha;
+                }
+                return alpha;
+            }
+
+            check() {
+                if (this._r === this._mxr) {
+                    this.destroy();
+                } else if (this._r + this._sr >= this._mxr) {
+                    // 变号的话就要归零
+                    this._r = this._mxr;
+                    this.move();
+                } else {
+                    this._r += this._sr;
+                    this.move();
+                }
+            }
+
+            move() {
+                let self = this;
+                this._ctx.strokeStyle = this._color + this._getAlpha(1 - (this._r / this._mxr));
+                this._ctx.lineWidth = 2;
+                this._ctx.beginPath();
+                this._ctx.arc(this._x, this._y, this._r, 0, Math.PI * 2, false);
+                this._ctx.stroke();
+                this._loopId = requestAnimationFrame(self.check.bind(self));
+            }
+
+            destroy() {
+                cancelAnimationFrame(this._loopId);
+            }
+        }
+
+        let randomCreateBall = (x, y, r = 0, mxs = 10, area = [1, 2, 3, 4]) => {
             let _x = KIT.randomInt(x - KIT.randomInt(0, r), x + KIT.randomInt(0, r));
             let _y = KIT.randomInt(y - KIT.randomInt(0, r), y + KIT.randomInt(0, r));
             let _r = KIT.randomInt(5, 10);
@@ -141,45 +212,59 @@
                 || area.indexOf(2) !== -1
                 || area.indexOf(3) !== -1
                 || area.indexOf(4) !== -1) {
-                _sx = KIT.randomUInt(-1, 1) > 0 ? KIT.randomInt(10) : KIT.randomInt(-10);
-                _sy = KIT.randomUInt(-1, 1) > 0 ? KIT.randomInt(10) : KIT.randomInt(-10);
+                _sx = KIT.randomUInt(-1, 1) > 0 ? KIT.randomInt(mxs) : KIT.randomInt(-1 * mxs);
+                _sy = KIT.randomUInt(-1, 1) > 0 ? KIT.randomInt(mxs) : KIT.randomInt(-1 * mxs);
             } else {
                 if (area.indexOf(1) !== -1
                     || area.indexOf(2) !== -1) {
-                    _sy = KIT.randomInt(-10);
+                    _sy = KIT.randomInt(-1 * mxs);
                 } else if (area.indexOf(3) !== -1
                     || area.indexOf(4) !== -1) {
-                    _sy = KIT.randomInt(10);
+                    _sy = KIT.randomInt(mxs);
                 }
 
                 if (area.indexOf(1) !== -1
                     || area.indexOf(4) !== -1) {
-                    _sx = KIT.randomInt(10);
+                    _sx = KIT.randomInt(mxs);
                 } else if (area.indexOf(2) !== -1
                     || area.indexOf(3) !== -1) {
-                    _sx = KIT.randomInt(-10);
+                    _sx = KIT.randomInt(-1 * mxs);
                 }
             }
 
             new ball(_x, _y, _r, _sx, _sy, 100, canvas);
         }
 
-        let mouseDown = function () {
+        let t1, t2;
+        let mouseDown = (e) => {
             canvas.addEventListener('mousemove', mouseMove);
+            t1 = new Date().getTime();
         };
 
-        let mouseUp = function () {
+        let mouseUp = (e) => {
             canvas.removeEventListener('mousemove', mouseMove);
+            t2 = new Date().getTime();
+            let n = (t2 - t1) / 200;
+            // new circle(e.offsetX, e.offsetY, n, 0, 50 * n, canvas);
         }
 
-        let mouseMove = function (e) {
-            randomCreateBall(e.offsetX, e.offsetY, 0, [1, 2, 3, 4]);
+        let mouseMove = (e) => {
+            randomCreateBall(e.offsetX, e.offsetY, 0, 5, [1, 2, 3, 4]);
         }
 
-        // canvas.addEventListener('mousedown', mouseDown);
-        // canvas.addEventListener('mouseup', mouseUp);
-        // canvas.addEventListener('click', mouseMove);
-        canvas.addEventListener('mousemove', mouseMove);
+        let click = (e) => {
+            var n = KIT.randomInt(2, 3);
+            new circle(e.offsetX, e.offsetY, n, 0, 50 * n, canvas);
+            n = KIT.randomInt(10, 15);
+            while (n--) {
+                randomCreateBall(e.offsetX, e.offsetY, 0, 4, [1, 2, 3, 4]);
+            }
+        }
+
+        canvas.addEventListener('mousedown', mouseDown);
+        canvas.addEventListener('mouseup', mouseUp);
+        canvas.addEventListener('click', click);
+        // canvas.addEventListener('mousemove', mouseMove);
     </script>
 </body>
 
