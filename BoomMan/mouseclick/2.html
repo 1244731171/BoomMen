@@ -28,6 +28,13 @@
 
         requestAnimationFrame(clear);
 
+        let getRandomColor = () => {
+            // let colorGuoup = ["#F9B4B6", "#81D8D0"];
+            let colorGuoup = ["#DDE6E5", "#BDD5D9", "#6896A6", "#456272", "#FFC1B4", "#FDF3DA"];
+
+            return colorGuoup[KIT.randomInt(colorGuoup.length - 1)];
+        }
+
         class ball {
             constructor(x, y, r, sx, sy, t, cvs, isReduceRange = true, isReduceSpeed = true, isAutoHide = true) {
                 // x坐标 y坐标 半径 x轴加速度 y轴加速度 衰减时间 是否减小半径 是否减速 是否自动消失
@@ -40,14 +47,7 @@
                 this._cvs = cvs;
                 this._ctx = cvs.getContext("2d");
                 this._color = '';
-                switch (KIT.randomInt(1)) {
-                    case 0:
-                        this._ctx.fillStyle = this._color = '#F9B4B6'; //F9B4B6, 81D8D0
-                        break;
-                    case 1:
-                        this._ctx.fillStyle = this._color = '#81D8D0'; //F9B4B6, 81D8D0
-                        break;
-                }
+                this._ctx.fillStyle = this._color = getRandomColor(); 
 
                 this._rx = -1 * parseFloat((this._sx / this._t).toFixed(2));
                 this._ry = -1 * parseFloat((this._sy / this._t).toFixed(2));
@@ -97,7 +97,7 @@
 
             destroy() {
                 let n = (Math.abs(this._orgSx) + Math.abs(this._orgSy)) / 5;
-                new circle(this._x, this._y, n, 0, 50 * n, this._cvs, this._color);
+                new circle(this._x, this._y, n, 0, 30 * n, this._cvs, this._color);
                 cancelAnimationFrame(this._loopId);
             }
         }
