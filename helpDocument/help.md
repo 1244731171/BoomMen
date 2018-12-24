@@ -129,3 +129,13 @@ git pull origin master
 ```cmd
 git push -u origin master
 ```
+
+## h5 ##
+
+``` javascript
+    let key = {'key1': 1, 'key2': 2};
+    let {key1, key3} = key;
+    key1;// 1
+    key2;// error: key2 is not defined
+    key3;// undefined
+```
