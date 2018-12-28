@@ -10,34 +10,122 @@
 <body>
     <canvas id='ca'></canvas>
     <script>
-        const H = 800;
-        const W = 1800;
-        const canvas = document.querySelector("#ca");
-        canvas.style.width = W;
-        canvas.style.height = H;
-        canvas.height = H;
-        canvas.width = W;
-        let ctx = canvas.getContext("2d");
-        ctx.fillStyle = "Gold";
-        let x = 0;
-        let y = 0;
-
-        let draw = () => {
-            x += 10;
-            y += 5;
-            ctx.beginPath();
-            ctx.arc(x, y, 5, 0, Math.PI * 2, false);
-            ctx.fill();
-            requestAnimationFrame(draw);
+        class Human {
+            constructor(name) {
+                this.name = name;
+            }
+            growup(pulgin) {
+                pulgin.load(this);
+            }
         }
 
-        let clear = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            requestAnimationFrame(clear);
+        class P {
+            constructor(hold) {
+                if (hold) {
+                    this.load(hold);
+                }
+            }
+            load(hold) {
+                this.hold = hold;
+                this.hold['show'] = this.show.bind(hold);
+            }
+            show() {
+                alert(this.name)
+            }
         }
 
-        requestAnimationFrame(clear);
-        requestAnimationFrame(draw);
+        let man = new Human('Akayee');
+        let p = new P();
+        man.growup(p);
+        man.show();
+
+        class B {
+            constructor() {
+                this.crashPanel = {};
+                this.id = 'BBBBBBBBBBBBBBBBBB';
+            }
+
+            registerCrashPanel(crashId, dom, callback) {
+                let crashList = this.crashPanel[crashId];
+                let result = true;
+                if (crashList && crashList.length) {
+                    // 遍历查重，如同id下有重复节点，直接舍弃
+                    for (let info of crashList) {
+                        if (info.dom === dom) {
+                            result = false;
+                            break;
+                        }
+                    }
+                } else {
+                    this.crashPanel[crashId] = [];
+                }
+                if (!result) {
+                    return result;
+                } else {
+                    this.crashPanel[crashId].push({
+                        dom: dom,
+                        callback: callback
+                    });
+                    let domCrashIds = (dom.attributes['__crashId'] || '').split(',');
+                    domCrashIds.push(crashId);
+                    dom.attributes['__crashId'] = domCrashIds.join(',');
+                    return result;
+                }
+            }
+            unregisterCrashPanel(crashId, dom) {
+                let crashList = this.crashPanel[crashId] || [];
+                let i = 0;
+                for (let info of crashList) {
+                    if (info.dom === dom) {
+                        this.crashPanel[crashId].splice(i, 1);
+                        let domCrashIds = (dom.attributes['__crashId'] || '').split(',');
+                        i = domCrashIds.indexOf(crashId);
+                        domCrashIds.splice(i, 1);
+                        dom.attributes['__crashId'] = domCrashIds.join(',');
+                        break;
+                    }
+                    i++;
+                }
+            }
+            checkCreashPanel(dom) {
+                let domCrashIds = (dom.attributes['__crashId'] || '').split(',');
+                for (let crashId of domCrashIds) {
+                    let crashList = this.crashPanel[crashId] || [];
+                    for (let info of crashList) {
+                        if (info.dom !== dom) {
+                            // info.dom.hide();
+                            info.callback(crashId);
+                        }
+                    }
+                }
+            }
+        }
+
+        let bbb = new B();
+
+        class A {
+            constructor(id, b) {
+                this.b = b;
+                this.dom = document.createElement('div');
+                this.dom.id = this.id = id;
+                document.body.append(this.dom);
+                this.init();
+            }
+            init() {
+                var self = this;
+                self.b.registerCrashPanel('it', self.dom, self.show.bind(self));
+            }
+            show(){
+                alert(this.id);
+            }
+            on(){
+                this.b.checkCreashPanel(this.dom);
+            }
+        }
+
+        var a1 = new A('a1a1a1a1a1', bbb);
+        var a2 = new A('a2', bbb);
+        a1.on();
     </script>
 </body>
 
