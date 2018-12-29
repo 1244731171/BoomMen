@@ -10,6 +10,8 @@ const imagePath = 'e:/hanman/欲求王';
 let iamgedata;
 let urls = [];
 let paths = [];
+
+let threadLength = 0;
 // 异步读取
 fs.readFile(path + '/' + jsonName, function (err, data) {
     if (err) {
@@ -40,31 +42,30 @@ let loopImageData = () => {
             paths.push(imagePath + '/' + pageIndex + '_' + (iamgeIndex++) + '.jpg');
         }
     }
-    // console.log(JSON.stringify(paths));
-    downloadNext();
+
+    startDownLoad();
 }
 
 // 下载方法
 var retryTimes = 2;
-var download = function (url, path, callback) {
-    callback = callback || new Function();
+var download = function (url, path) {
     request.head(url, function (err, res, body) {
         console.log("try to download, url: " + url);
         // console.log(JSON.stringify(res));
         if (!err && res.statusCode == 200) {
             request(url).pipe(fs.createWriteStream(path))
                 .on('close', function () {
+                    threadLength--;
                     retryTimes = 2;
                     console.log('img saved! path:' + path);
-                    callback();
                 });
         } else {
             // console.log(err)
             console.log("try to download failed!");
             if (retryTimes-- > 0) {
-                download(url, path, callback);
+                download(url, path);
             } else {
-                callback();
+                threadLength--;
             }
         }
     });
@@ -72,16 +73,36 @@ var download = function (url, path, callback) {
 
 let downloadIndex = 0;
 let downloadNext = function () {
+    if (threadLength < 5) {
+        threadLength++;
+    } else {
+        return;
+    }
     let url = urls[downloadIndex];
     let path = paths[downloadIndex];
     // console.log(url);
     // console.log(path);
-    if (fs.existsSync(path)) {
-        downloadNext();
-    } else {
-        if (url && path) {
-            download(url, path, downloadNext);
-            downloadIndex++;
+    if (url && path) {
+        downloadIndex++;
+        if (fs.existsSync(path)) {
+            console.log('path existed! >>>>>> ', path);
+            threadLength--;
+            downloadNext();
+        } else {
+            download(url, path);
         }
+    } else {
+        console.log('all images downloaded!');
+        clearInterval(timer);
     }
 }
+
+let timer = -1;
+let startDownLoad = () => {
+    console.log('startDownLoad');
+    timer = setInterval(() => {
+        downloadNext();
+    }, 200);
+}
+
+// 37 开始使用本方法

@@ -13,6 +13,7 @@ const request = require('request');
 
 request('http://www.hanman.co/index/books/index/id/24.html', { json: false }, (err, res, body) => {
     if (err) { return console.log(err); }
+    console.log(body);
     var matchUrl = body.match(/\/index([a-z.0-9]|\/|\.)*html/g);
     console.log(JSON.stringify(matchUrl));
 });

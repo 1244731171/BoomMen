@@ -3,6 +3,8 @@ const fs = require('fs');
 
 // http://www.runoob.com/nodejs/nodejs-fs.html
 
+console.log(fs.existsSync('./欲求王/data.json'));
+
 // 异步读取
 fs.readFile('input.txt', function (err, data) {
     if (err) {
