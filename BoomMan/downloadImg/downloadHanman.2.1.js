@@ -4,11 +4,12 @@ const mkdirp = require('mkdirp');
 const request = require("request");
 
 let index = 0;
-const path = "./好久不见老师";
-const mainUrl = 'http://www.hanman.co/index/books/index/id/101.html'
+let path = "./好久不见老师";
+let mainUrl = 'http://www.hanman.co/index/books/index/id/101.html'
 const rootUrl = 'http://www.hanman.co';
 let datas = [];
 let info = [];
+let callbacks = [];
 
 // http://www.hanman.co/index/books/index/id/67.html
 // http://www.hanman.co/index/books/index/id/62.html
@@ -36,6 +37,14 @@ let makeDir = (path) => {
 }
 
 let getPagesInfo = () => {
+    let jsonPath = path + '/data.json';
+    if(fs.existsSync(jsonPath)){
+        callbacks.forEach(element => {
+            element();
+        });
+        console.log('data.json is extisted');
+        return;
+    }
     datas = [];
     request(mainUrl, { json: false }, (err, res, body) => {
         if (err) { return console.log(err); }
@@ -43,7 +52,11 @@ let getPagesInfo = () => {
         var matchUrl = body.match(/\/index([a-z.0-9]|\/|\.)*html/g);
         console.log('html url: >>>>> ', JSON.stringify(matchUrl));
         matchUrl.forEach(element => {
-            datas.push(rootUrl + element);
+            if(element.indexOf('book') == -1){
+                if(datas.indexOf(rootUrl + element) == -1){
+                    datas.push(rootUrl + element);
+                }
+            }
         });
         loopNextPage();
     });
@@ -83,7 +96,10 @@ let loopEnd = () => {
     let str = JSON.stringify(info);
     let jsonPath = path + '/data.json';
     if(fs.existsSync(jsonPath)){
-        jsonPath = path + '/' + new Date().getTime() + 'data.json';
+        callbacks.forEach(element => {
+            element();
+        });
+        // jsonPath = path + '/' + new Date().getTime() + 'data.json';
     }
     fs.open(jsonPath, 'w', (err, fd) => {
         if (err) {
@@ -96,11 +112,28 @@ let loopEnd = () => {
             }
             fs.close(fd, (err) => {
                 console.log(err ? err : 'success!');
+                callbacks.forEach(element => {
+                    element();
+                });
             });
         });
     });
 }
 
-makeDir(path);
+// makeDir(path);
 
-getPagesInfo();
+// getPagesInfo();
+
+module.exports = {
+    setJsonPath: (p) =>{
+        path = p;
+        makeDir(path);
+    },
+    setMainPageUrl: (u) => {
+        mainUrl = u;
+    },
+    setCallBack: (callback) => {
+        callbacks.push(callback);
+    },
+    start: getPagesInfo
+};
