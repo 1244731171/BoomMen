@@ -52,17 +52,17 @@
     });
 
     let loadImage = (imageUrlArray) => {
-        let promises = [], imgs = [];
-        for (let i in imageUrlArray) {
-            let _promise = new Promise((resolve, reject) => {
-                imgs[i] = new Image();
-                imgs[i].src = imageUrlArray[i];
-                imgs[i].onload = () => {
-                    resolve(imgs[i]);
+        let promises = [];
+        imageUrlArray.forEach(url => {
+            promises.push(new Promise((resolve, reject) => {
+                let img = new Image();
+                img.src = url;
+                img.setAttribute("crossOrigin", 'Anonymous');
+                img.onload = () => {
+                    resolve(img);
                 }
-            });
-            promises.push(_promise);
-        }
+            }));
+        });
         return Promise.all(promises);
     }
 
@@ -74,18 +74,40 @@
     }
 
     // image
-    // let img1 = document.createElement('img');
-    // img1.setAttribute('src', IMG_SRC_1);
+    let img1 = new Image();
+    img1.src = IMG_SRC_1;
     // let img2 = document.createElement('img');
     // img2.setAttribute('src', IMG_SRC_HEAD);
     // let img3 = document.createElement('img');
     // img3.setAttribute('src', IMG_SRC_FACE);
-    // document.body.append(img1);
+    document.body.append(img1);
+    img1.addEventListener('click', () => {
+        let saveImg = cvs2.toDataURL("image/png") //获取图片合并后的data-URL,参数可选图片格式，图片质量，详自查API`
+        let img = new Image()
+        document.getElementsByClassName("box")[0].append(img)
+        img3.src = saveImg;
+    });
     // document.body.append(img2);
     // document.body.append(img3);
 
     let imageUrlArray = [IMG_SRC_FACE, IMG_SRC_HEAD];
     let cvs2, ctx2, head, face;
+
+    let clear = () => {
+        ctx2.clearRect(0, 0, head.width, head.height);
+        requestAnimationFrame(clear);
+    }
+
+    let d = 0;
+    let drawFace = () => {
+        ctx2.drawImage(head, 0, 0, head.width, head.height);
+        if (d >= 360) {
+            d = 0;
+        }
+        let info = circlePoint((d += 2), 115, 87, 4);
+        ctx2.drawImage(face, info.x, info.y, face.width, face.height);
+        requestAnimationFrame(drawFace);
+    }
 
     loadImage(imageUrlArray).then(e => {
         console.log(e);
@@ -93,8 +115,8 @@
         head = e[1];
         cvs2 = createCanvas(0, 300, head.width, head.height);
         ctx2 = cvs2.getContext('2d');
-        ctx2.drawImage(head, 0, 0, head.width, head.height);
-        ctx2.drawImage(face, face.width / 2, 0, face.width / 2, face.height);
+        requestAnimationFrame(clear);
+        requestAnimationFrame(drawFace);
     });
 
 
