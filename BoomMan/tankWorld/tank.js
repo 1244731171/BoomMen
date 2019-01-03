@@ -12,10 +12,14 @@ class __TANK {
 
         this._type = "tank";
         this._isMoveable = true;
-        this._uid = this._type + "_" + (new Date().getTime() * Math.random()).toString().substr(1,4);
+        this._uid = this._type + "_" + (new Date().getTime() * Math.random()).toString().substr(1, 4);
 
         this._viewRange = 300;
         this._host = 'auto';
+
+        this._team = '';
+        this._color = '#F9B4B6';
+        // this._color = '#FF0000';
 
         width--;
         height--;
@@ -116,6 +120,18 @@ class __TANK {
         return arr;
     }
 
+    get team() {
+        return this._team;
+    }
+
+    set team(team) {
+        this._team = team;
+    }
+
+    set color(color = '#F9B4B6'){
+        this._color = color;
+    }
+
     addSpeed(speed) {
         this.calculateSpeed(speed);
     }
@@ -198,28 +214,28 @@ class __TANK {
     }
 
     turnToEast() {
-        if(this._host !== 'manual'){
+        if (this._host !== 'manual') {
             return;
         }
         this.addSpeedX(Math.abs(this._speedX + this._speedY));
     }
 
     turnToSouth() {
-        if(this._host !== 'manual'){
+        if (this._host !== 'manual') {
             return;
         }
         this.addSpeedX(-1 * Math.abs(this._speedX + this._speedY));
     }
 
     turnToWast() {
-        if(this._host !== 'manual'){
+        if (this._host !== 'manual') {
             return;
         }
         this.addSpeedY(Math.abs(this._speedX + this._speedY));
     }
 
     turnToNorth() {
-        if(this._host !== 'manual'){
+        if (this._host !== 'manual') {
             return;
         }
         this.addSpeedY(-1 * Math.abs(this._speedX + this._speedY));
@@ -413,32 +429,32 @@ class __TANK {
         // this._brush.stroke();
         if (targetList.length) {
             // console.log("%s >>>>>>> %s", this._uid, targetList[0].uid);
-            if(this._host === 'auto'){
+            if (this._host === 'auto') {
                 this.checkFire();
             }
         }
     }
 
-    checkFire(){
-        if(this._currentShell){
+    checkFire() {
+        if (this._currentShell) {
             this.fire();
-        }else{
+        } else {
             this.reloadShell();
         }
     }
 
-    reloadShell(){
+    reloadShell() {
         let self = this;
-        if(!self._isReloading){
+        if (!self._isReloading) {
             self._isReloading = true;
-            setTimeout(function(){
-                self._currentShell = new SHELL(self._world, self.uid);
+            setTimeout(function () {
+                self._currentShell = new SHELL(self._world, self.uid, self);
                 self._isReloading = false;
             }, self._reloadShellTime);
         }
     }
 
-    fire(){
+    fire() {
         this._currentShell.fire(this.corePosition['x'], this.corePosition['y'], this._speedX, this._speedY);
         this._currentShell = null;
         this.reloadShell();
@@ -452,6 +468,9 @@ class __TANK {
         for (let i = 0, j = list.length; i < j; i++) {
             target = list[i];
             if (target['type'] !== self.type || this.uid === target.uid) {
+                continue;
+            }
+            if (target.team === self.team) {
                 continue;
             }
             if (CROSS.easyCheckLineSegementRectangleCross(viewLineX1, target.position)
@@ -510,7 +529,7 @@ class __TANK {
                 continue;
             }
 
-            if(ele.type !== 'house' && ele.type !== 'tank'){
+            if (ele.type !== 'house' && ele.type !== 'tank') {
                 continue;
             }
 
@@ -542,8 +561,7 @@ class __TANK {
     draw() {
         let p = this._position;
         this._brush.lineWidth = 1;
-        this._brush.strokeStyle = "#F9B4B6";
-        this._brush.strokeStyle = "#FF0000";
+        this._brush.strokeStyle = this._color;
         this._brush.beginPath();
         this._brush.moveTo(p[0].x, p[0].y);
         this._brush.lineTo(p[1].x, p[1].y);
@@ -571,7 +589,7 @@ class __TANK {
         this._brush.stroke();
     }
 
-    destroy(){
+    destroy() {
         TIME.off(this.uid);
         this._world.remove(this);
     }

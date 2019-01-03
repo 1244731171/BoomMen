@@ -1,14 +1,14 @@
 class SHELL {
-    constructor(World, parentId) {
+    constructor(World, parentId, parent) {
         this._world = null;
         this._brush = null;
         this._type = "shell";
         this._isMoveable = true;
         this._uid = this._type + "_" + (new Date().getTime() * Math.random());
         this._parentId = parentId;
+        this._parent = parent;
+        this._team = parent.team;
 
-        // this._width = 50;
-        // this._height = 10;
         this._length = 5;
         this._speedX = 0;
         this._speedY = 0;
@@ -32,6 +32,14 @@ class SHELL {
 
     get position(){
         return this._position;
+    }
+
+    get team() {
+        return this._team;
+    }
+
+    set team(team) {
+        this._team = team;
     }
 
     load(){

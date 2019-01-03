@@ -1,0 +1,105 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body style='position: relative;'>
+
+    <!-- <video id="video1" controls width="270" autoplay> -->
+    <video id="video1" controls width="270">
+        <source src="./1.mp4" type='video/mp4'>
+    </video>
+</body>
+<script>
+
+    const IMG_SRC_1 = './1.png';
+    const IMG_SRC_HEAD = './head.png';
+    const IMG_SRC_FACE = './face.png';
+
+    let createCanvas = (x = 0, y = 0, w = 800, h = 600) => {
+        let cvs = document.createElement('canvas');
+        cvs.style.position = 'absolute';
+        cvs.style.left = x;
+        cvs.style.top = y;
+        cvs.style.width = w;
+        cvs.style.height = h;
+        cvs.style.border = '1px solid red';
+        cvs.width = w;
+        cvs.height = h;
+        document.body.append(cvs);
+        return cvs;
+    }
+
+    // video
+    let video1 = document.querySelector('#video1');
+    let cvs1, ctx1, videoHeight, videoWidth;
+
+    let drawTimer = -1;
+    video1.addEventListener('play', () => {
+        videoWidth = video1.videoWidth / 5;
+        videoHeight = video1.videoHeight / 5;
+        cvs1 = cvs1 || createCanvas(0, 0, videoWidth, videoHeight);
+        ctx1 = ctx1 || cvs1.getContext("2d");
+        ctx1.beginPath();
+        clearInterval(drawTimer);
+        drawTimer = setInterval(() => {
+            ctx1.drawImage(video1, 0, 0, videoWidth, videoHeight);
+        }, 20);
+    });
+
+    let loadImage = (imageUrlArray) => {
+        let promises = [], imgs = [];
+        for (let i in imageUrlArray) {
+            let _promise = new Promise((resolve, reject) => {
+                imgs[i] = new Image();
+                imgs[i].src = imageUrlArray[i];
+                imgs[i].onload = () => {
+                    resolve(imgs[i]);
+                }
+            });
+            promises.push(_promise);
+        }
+        return Promise.all(promises);
+    }
+
+    let circlePoint = (d, x, y, r) => {
+        return {
+            'x': x + r * Math.cos(d * Math.PI / 180),
+            'y': y + r * Math.sin(d * Math.PI / 180)
+        }
+    }
+
+    // image
+    // let img1 = document.createElement('img');
+    // img1.setAttribute('src', IMG_SRC_1);
+    // let img2 = document.createElement('img');
+    // img2.setAttribute('src', IMG_SRC_HEAD);
+    // let img3 = document.createElement('img');
+    // img3.setAttribute('src', IMG_SRC_FACE);
+    // document.body.append(img1);
+    // document.body.append(img2);
+    // document.body.append(img3);
+
+    let imageUrlArray = [IMG_SRC_FACE, IMG_SRC_HEAD];
+    let cvs2, ctx2, head, face;
+
+    loadImage(imageUrlArray).then(e => {
+        console.log(e);
+        face = e[0];
+        head = e[1];
+        cvs2 = createCanvas(0, 300, head.width, head.height);
+        ctx2 = cvs2.getContext('2d');
+        ctx2.drawImage(head, 0, 0, head.width, head.height);
+        ctx2.drawImage(face, face.width / 2, 0, face.width / 2, face.height);
+    });
+
+
+
+
+</script>
+
+</html>

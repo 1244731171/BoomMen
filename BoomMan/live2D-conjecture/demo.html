@@ -1,0 +1,322 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function BoBo() {
+        this._init.apply(this, arguments);
+    };
+
+    BoBo.prototype = (function () {
+        return {
+            /**
+             * 初始化
+             * @param {[type]} src 图片地址
+             * @param {[type]} container canvas容器id
+             */
+            _init: function (src, container) {
+                this.imgSrc = src;
+                this.container = document.getElementById(container);
+
+                if (!this.container) {
+                    alert('canvas容器不存在！');
+                    return;
+                }
+
+                this.shakeAngle = 0; //当前角度
+
+                this.shakeRange = 0.3; //幅度
+                this.shakeRangeDelay = 1; //幅度衰减系数
+
+                this.shakeAngleSpeed = 0.4; //速度
+                this.shakeAngleDelay = 1; //速度衰减系数
+
+                this.interval = 40; //动画间隔
+
+                this.controlRects = [];
+            },
+
+            _getPointRGB: function (x, y) {
+                x = Math.floor(x);
+                y = Math.floor(y);
+
+                var data = this.imageData.data;
+
+                var ret = [];
+                var start = (y * this.canvasWidth + x) * 4;
+
+                for (i = start; i < start + 3; i++) {
+                    ret.push(data[i]);
+                }
+
+                return ret;
+            },
+
+            _setRectPointRGB: function (index, x, y, rgb) {
+                x = Math.floor(x);
+                y = Math.floor(y);
+
+                var imgData = this.rectImageData[index],
+                    rect = this.controlRects[index],
+                    width = rect.width,
+                    x = x - rect.x,
+                    y = y - rect.y;
+
+                var i = (y * width + x) * 4;
+
+                imgData.data[i] = rgb[0];
+                imgData.data[i + 1] = rgb[1];
+                imgData.data[i + 2] = rgb[2];
+                imgData.data[i + 3] = 255;
+            },
+
+            _makeRectShake: function (index, pc2) {
+                //控制区域的rect，pc2——新的圆心
+                var rect = this.controlRects[index];
+
+                //椭圆半径
+                var xr = rect.width * 0.5;
+                var yr = rect.height * 0.5;
+
+                var pc = {
+                    x: rect.x + xr,
+                    y: rect.y + yr
+                };
+
+                //2pi
+                var pi_2 = Math.PI * 2;
+                // x = xr * cosa, y = yr * sina, a: 0 -> 2*pi
+
+                var delta = Math.PI / (2 * (xr + yr)); //角速度
+
+                for (var a = 0; a < pi_2; a += delta) {
+                    //a是角度
+                    //v1 原始向量
+                    var v1 = {
+                        x: xr * Math.cos(a),
+                        y: yr * Math.sin(a),
+                    };
+
+                    //v2 偏移向量
+                    var v2 = {
+                        x: pc2.x - pc.x,
+                        y: pc2.y - pc.y,
+                    };
+                    //v3 形变后的向量
+                    var v3 = {
+                        x: v1.x - v2.x,
+                        y: v1.y - v2.y,
+                    };
+
+                    //取较长的分量作为增量
+                    var deltaP = 1 / Math.max(Math.abs(v3.x), Math.abs(v3.y));
+                    //var deltaP = Math.abs(1 / Math.max(v1.x, v1.y));
+                    //console.log(deltaP);
+
+                    for (var p = 0; p <= 1; p = Math.min(1, p + deltaP)) {
+                        var x0 = v1.x * p,
+                            y0 = v1.y * p;
+                        var x1 = v3.x * p,
+                            y1 = v3.y * p;
+
+                        x0 += pc.x;
+                        y0 += pc.y;
+                        x1 += pc2.x;
+                        y1 += pc2.y;
+
+                        var rgb = this._getPointRGB(x0, y0);
+                        this._setRectPointRGB(index, x1, y1, rgb);
+
+                        if (p == 1) {
+                            break;
+                        }
+                    }
+                }
+            },
+
+            _makeShake: function () {
+                var rectLen = this.controlRects.length;
+
+                for (var i = 0; i < rectLen; i++) {
+                    var rect = this.controlRects[i];
+
+                    var xr = rect.width * 0.5;
+                    var yr = rect.height * 0.5;
+
+                    var pc = {
+                        x: rect.x + xr,
+                        y: rect.y + yr
+                    };
+
+                    var dx = xr * this.shakeRange;
+                    var dy = yr * this.shakeRange;
+
+                    var pc2 = {
+                        x: pc.x + Math.sin(this.shakeAngle) * dx,
+                        y: pc.y + Math.cos(this.shakeAngle) * dy
+                    };
+
+                    this._makeRectShake(i, pc2);
+                }
+
+                this.shakeAngle += this.shakeAngleSpeed;
+                if (this.shakeAngle > 360) {
+                    this.shakeAngle -= 360;
+                }
+
+                this.shakeAngleSpeed *= this.shakeAngleDelay;
+                this.shakeRange *= this.shakeRangeDelay;
+
+                if (this.shakeRange < 0.1) {
+                    this.stop();
+                }
+            },
+
+            _getRectImageData: function () {
+                this.rectImageData = [];
+
+                for (var i = 0; i < this.controlRects.length; i++) {
+                    var rect = this.controlRects[i];
+                    var imgData = this.canvasContext.getImageData(rect.x, rect.y, rect.width, rect.height);
+
+                    this.rectImageData.push(imgData);
+                }
+            },
+
+            _putRectImageData: function () {
+                for (var i = 0; i < this.controlRects.length; i++) {
+                    var rect = this.controlRects[i];
+                    var imgData = this.rectImageData[i];
+
+                    this.canvasContext.putImageData(imgData, rect.x, rect.y);
+                }
+            },
+
+            _showDebug: function () {
+                var instance = this;
+                var el = document.getElementById('avg');
+
+                this.totalTimes = 0;
+                this.totalTime = 0;
+
+                setInterval(function () {
+                    if (instance.totalTimes <= 0) {
+                        el.innerHTML = '未运行';
+                    } else {
+                        el.innerHTML = instance.totalTimes + '帧/秒；' + parseInt(instance.totalTime / instance.totalTimes) + 'ms/帧';
+                    }
+
+                    instance.totalTimes = 0;
+                    instance.totalTime = 0;
+                }, 1000);
+            },
+
+            _run: function () {
+                var instance = this;
+
+                if (this._debug) {
+                    this._timer = setInterval(function () {
+                        instance.totalTimes++;
+
+                        var t1 = new Date;
+
+                        instance._getRectImageData();
+                        instance._makeShake();
+                        instance._putRectImageData();
+
+                        instance.totalTime += new Date - t1;
+                    }, this.interval);
+                } else {
+                    this._timer = setInterval(function () {
+                        instance._getRectImageData();
+                        instance._makeShake();
+                        instance._putRectImageData();
+                    }, this.interval);
+                }
+            },
+
+            /**
+             * 添加控制点
+             * @param {[type]} control {x, y, width, height}
+             */
+            addControl: function (control) {
+                this.controlRects.push(control);
+            },
+
+            /**
+             * 开始抖动
+             * @return {[type]} [description]
+             */
+            start: function () {
+                var instance = this;
+
+                if (!this.controlRects.length) {
+                    alert('图片没有任何控制点！');
+                    return;
+                }
+
+                if (!this._inited) {
+                    var img = new Image;
+
+                    img.onload = function () {
+                        var width = img.width;
+                        var height = img.height;
+
+                        var canvas = document.createElement('canvas'),
+                            ctx = canvas.getContext("2d");
+
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        ctx.drawImage(img, 0, 0);
+
+                        instance.container.appendChild(canvas);
+
+                        instance.canvasWidth = width;
+                        instance.canvasHeight = height;
+                        instance.canvasContext = ctx;
+                        instance.imageData = ctx.getImageData(0, 0, width, height);
+
+                        instance._inited = true;
+                        instance._run();
+                    };
+
+                    img.src = this.imgSrc;
+
+                    if (this._debug) {
+                        this._showDebug();
+                    }
+                } else {
+                    instance._run();
+                }
+            },
+
+            /**
+             * 停止抖动并重置
+             * @return {[type]} [description]
+             */
+            reset: function () {
+                this.stop();
+                this.canvasContext.putImageData(this.imageData, 0, 0);
+            },
+
+            /**
+             * 停止抖动
+             * @return {[type]} [description]
+             */
+            stop: function () {
+                clearInterval(this._timer);
+            }
+        };
+    })();
+</script>
+
+</html>

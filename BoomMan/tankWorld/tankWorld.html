@@ -40,12 +40,14 @@
         }
 
         let tanksLength = 8;
-        while(tanksLength--){
+        while (tanksLength--) {
             let i = KIT.rondomDoubleInt(0, X);
             let j = KIT.rondomDoubleInt(0, X);
             i *= UNIT_WIDTH;
             j *= UNIT_HEIGHT;
             let tank = new __TANK(i, j, UNIT_WIDTH, UNIT_HEIGHT);
+            tank.team = tanksLength % 2 ? 'A' : 'B';
+            tank.color = tanksLength % 2 ? "#FFC1B4" : "#456272";
             WORLD.add(tank);
             tank.engineStart();
             tank.addSpeed(1);
