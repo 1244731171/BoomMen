@@ -77,7 +77,7 @@ var download = function (url, path) {
 
 let downloadIndex = 0;
 let downloadNext = function () {
-    if (threadLength < 10) {
+    if (threadLength < 5) {
         threadLength++;
     } else {
         return;

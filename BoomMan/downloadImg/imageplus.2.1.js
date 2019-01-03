@@ -148,7 +148,7 @@ let getImageSize = (path, callback) => {
 let concatImageEnd = (isFinished) => {
 	let outputPath = imagePlusPath + '/' + pageIndex + (needSplit ? "_" + (littleIndex++) : "") + '.jpg';
 
-	if (fs.existsSync(imagePlusPath + '/' + pageIndex + '.jpg')) {
+	if (fs.existsSync(outputPath)) {
 		console.log('image plus is existed! >>>>> ', outputPath);
 		_height = 0;
 		_position = '+0+0';
