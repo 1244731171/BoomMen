@@ -92,6 +92,11 @@ let writeJson = () => {
             }
             fs.close(fd, (err) => {
                 logger.log(err ? ('__imageCollecter__: ERROR ' + err) : '__imageCollecter__: SUCCESSFUL!');
+                callbacks.forEach(element => {
+                    if (typeof element === 'function') {
+                        element();
+                    }
+                });
             });
         });
     });

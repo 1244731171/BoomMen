@@ -28,6 +28,7 @@ let makeDir = (_path) => {
 }
 
 let setTitle = (_title) => {
+    _title = _title.replace(/\:|\<|\>|\||\?|\*|\\|\/|\"/g,'');
     logger.log('__chapterColleter__: get title >>>> ', _title);
     title = _title;
     path = './' + title;

@@ -69,7 +69,7 @@ var download = function (url, path) {
                     logger.log('__imageDownloader__: img saved! netName >>> %s, path >>>> %s ', url.substr(-17), path);
                 });
         } else {
-            // logger.log(err)
+            logger.log(err);
             logger.log("__imageDownloader__: try to download failed!");
             if (retryTimes-- > 0) {
                 download(url, path);
