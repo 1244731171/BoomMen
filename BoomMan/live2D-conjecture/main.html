@@ -76,19 +76,13 @@
     // image
     let img1 = new Image();
     img1.src = IMG_SRC_1;
-    // let img2 = document.createElement('img');
-    // img2.setAttribute('src', IMG_SRC_HEAD);
-    // let img3 = document.createElement('img');
-    // img3.setAttribute('src', IMG_SRC_FACE);
     document.body.append(img1);
     img1.addEventListener('click', () => {
-        let saveImg = cvs2.toDataURL("image/png") //获取图片合并后的data-URL,参数可选图片格式，图片质量，详自查API`
+        let imgBase64 = cvs2.toDataURL("image/png"); //获取图片合并后的data-URL,参数可选图片格式，图片质量，详自查API`
         let img = new Image()
-        document.getElementsByClassName("box")[0].append(img)
-        img3.src = saveImg;
+        document.body.append(img)
+        img.src = imgBase64;
     });
-    // document.body.append(img2);
-    // document.body.append(img3);
 
     let imageUrlArray = [IMG_SRC_FACE, IMG_SRC_HEAD];
     let cvs2, ctx2, head, face;
@@ -104,7 +98,7 @@
         if (d >= 360) {
             d = 0;
         }
-        let info = circlePoint((d += 2), 115, 87, 4);
+        let info = circlePoint((d += 2), 114, 87, 4);
         ctx2.drawImage(face, info.x, info.y, face.width, face.height);
         requestAnimationFrame(drawFace);
     }
