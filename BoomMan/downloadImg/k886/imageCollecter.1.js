@@ -45,6 +45,7 @@ let getChapterData = () => {
 let getImageInfo = () => {
     concatImageData();
     if (chapterData.length <= 0) {
+        writeJson(true);
         return;
     }
     let mainUrl = chapterData.splice(0, 1)[0];
