@@ -19,6 +19,8 @@ let errors = [];
 let index = 1;
 let data = {};
 
+let isTrueWriteImageJson = false;
+
 let getChapterData = () => {
     logger.log('__imageCollecter__: >>>>>> START! <<<<<<');
     if (fs.existsSync(imageJsonPath)) {
@@ -123,6 +125,13 @@ let getImagePageInfo = (url, pageIndex) => {
 }
 
 let writeJson = (isFinish) => {
+    // 第一次读image.json文件时候返回的数据长度如果等于本次要写的长度
+    // 说明数据没变化
+    if(isFinish && !isTrueWriteImageJson){
+        logger.log('__imageCollecter__: IMAGE JSON is NO CHANGE NEEDED!');
+        collectEnd();
+        return;
+    }
     let str = JSON.stringify(imageData);
     fs.open(imageJsonPath, 'w', (err, fd) => {
         if (err) {
@@ -139,6 +148,7 @@ let writeJson = (isFinish) => {
                 if (err) {
                     logger.log('__imageCollecter__: ERROR ' + err);
                 }
+                isTrueWriteImageJson = true;
                 if (isFinish) {
                     if (errors.length > 0) {
                         logger.log('__imageCollecter__: errors data >>>> ', errors);

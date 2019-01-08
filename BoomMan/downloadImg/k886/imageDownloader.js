@@ -8,13 +8,13 @@ const mkdirp = require('mkdirp');
 
 let path = './欲求王';
 const imageJsonName = 'image.json';
-const errorJsonName = 'image.json';
+// const errorJsonName = 'image.json';
 let imagePath = 'e:/hanman/欲求王';
 let iamgedata;
 let urls = [];
 let paths = [];
 let callbacks = [];
-let errorList = [];
+// let errorList = [];
 
 let threadLength = 0;
 
@@ -51,7 +51,6 @@ let loopImageData = () => {
             paths.push(imagePath + '/' + pageIndex + '_' + (iamgeIndex++) + '.jpg');
         }
     }
-
     startDownLoad();
 }
 

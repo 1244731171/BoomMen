@@ -11,8 +11,12 @@ let netChapterPath = 'e:/hanman/' + title + '/netChapter';
 let callbacks = [];
 let paths = [];
 let urls = [];
-let htmlDatas = [];
+let nethtmlDatas = [];
+let localhtmlDatas = [];
 let iamgedata;
+
+let isNetHtmlFinish = false;
+let isLocalHtmlFinish = false;
 
 let readJsonData = () => {
     logger.log('__htmlCreater__: >>>>>> START! <<<<<<');
@@ -65,34 +69,38 @@ let loopPaths = () => {
             str += ('<img src="' + ele + '"/><br/>');
             str2 += ('<img src="' + urls[index] + '"/><br/>');
         } else {
-            htmlDatas.push({
+            nethtmlDatas.push({
                 index: i,
-                str: str,
-                str2: str2
+                str: str
+            });
+            localhtmlDatas.push({
+                index: i,
+                str: str2
             });
             i++;
             str = "";
             str2 = "";
         }
     }
-    writeNextHtml();
+    writeNextNetHtml();
+    writeNextLocalHtml();
 }
 
-let writeNextHtml = () => {
-    let i, str, str2;
-    if (htmlDatas.length) {
-        let data = htmlDatas.splice(0, 1)[0];
+let writeNextNetHtml = () => {
+    let i, str;
+    if (nethtmlDatas.length) {
+        let data = nethtmlDatas.splice(0, 1)[0];
         i = data['index'];
         str = data['str'];
-        str2 = data['str2'];
     } else {
+        isNetHtmlFinish = true;
         finished();
         return;
     }
-    let path = localChapterPath + '/' + i + '.html';
-    logger.log('__htmlCreater__: try to create html >>>> ', path);
+    let path = netChapterPath + '/' + i + '.html';
+    logger.log('__htmlCreater__: try to create NET html >>>> ', path);
     if (fs.existsSync(path)) {
-        writeNextHtml();
+        writeNextNetHtml();
     } else {
         fs.open(path, 'w', (err, fd) => {
             if (err) {
@@ -103,27 +111,49 @@ let writeNextHtml = () => {
                     logger.log('__htmlCreater__: ERROR ' + err);
                 }
                 fs.close(fd, (err) => {
-                    logger.log(err ? ('__htmlCreater__: ERROR ' + err) : '__htmlCreater__: SUCCESSFUL!');
+                    if(err){
+                        logger.log('__htmlCreater__: ERROR ' + err);
+                    }else{
+                        logger.log('__htmlCreater__: SUCCESSFUL!');
+                        writeNextNetHtml();
+                    }
                 });
             });
         });
     }
-    let path2 = netChapterPath + '/' + i + '.html';
-    logger.log('__htmlCreater__: try to create html >>>> ', path2);
-    if (fs.existsSync(path2)) {
-        writeNextHtml();
+}
+
+let writeNextLocalHtml = () => {
+    let i, str;
+    if (localhtmlDatas.length) {
+        let data = localhtmlDatas.splice(0, 1)[0];
+        i = data['index'];
+        str = data['str'];
     } else {
-        fs.open(path2, 'w', (err, fd) => {
+        isLocalHtmlFinish = true;
+        finished();
+        return;
+    }
+    let path = localChapterPath + '/' + i + '.html';
+    logger.log('__htmlCreater__: try to create LOCAL html >>>> ', path);
+    if (fs.existsSync(path)) {
+        writeNextLocalHtml();
+    } else {
+        fs.open(path, 'w', (err, fd) => {
             if (err) {
                 logger.log('__htmlCreater__: ERROR ' + err);
             }
-            fs.writeFile(fd, str2, (err) => {
+            fs.writeFile(fd, str, (err) => {
                 if (err) {
                     logger.log('__htmlCreater__: ERROR ' + err);
                 }
                 fs.close(fd, (err) => {
-                    logger.log(err ? ('__htmlCreater__: ERROR ' + err) : '__htmlCreater__: SUCCESSFUL!');
-                    writeNextHtml();
+                    if(err){
+                        logger.log('__htmlCreater__: ERROR ' + err);
+                    }else{
+                        logger.log('__htmlCreater__: SUCCESSFUL!');
+                        writeNextLocalHtml();
+                    }
                 });
             });
         });
@@ -131,6 +161,9 @@ let writeNextHtml = () => {
 }
 
 let finished = () => {
+    if(!isLocalHtmlFinish || !isNetHtmlFinish){
+        return;
+    }
     logger.log('__htmlCreater__: >>>>>> END! <<<<<<');
     callbacks.forEach(element => {
         if (typeof element === 'function') {

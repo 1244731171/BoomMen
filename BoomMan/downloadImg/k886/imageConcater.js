@@ -26,6 +26,7 @@ let imagePaths = [];
 let _gm = gm();
 
 let readJsonData = () => {
+    logger.log('__imageConcater__: >>>>>> START! <<<<<<');
 	// 异步读取
 	fs.readFile(path + '/' + jsonName, function (err, data) {
 		if (err) {
@@ -58,7 +59,7 @@ let startConcatImage = () => {
 		littleIndex = 1;
 		needSplit = false;
 		if (checkPath()) {
-			logger.log('__concatImage__: image plus is existed! >>>>> ' + checkPath());
+			logger.log('__imageConcater__: image plus is existed! >>>>> ' + checkPath());
 			startConcatImage();
 		} else {
 			info.data.forEach(element => {
@@ -67,10 +68,7 @@ let startConcatImage = () => {
 			getNextImage();
 		}
 	} else {
-		logger.log('__concatImage__: all the images concated');
-		callbacks.forEach(ele => {
-			ele();
-		});
+		logger.log('__imageConcater__: all the images concated');
 		let str = '';
 		imagePaths.forEach(ele => {
 			str += ('<img src="' + ele + '"/>');
@@ -79,13 +77,16 @@ let startConcatImage = () => {
 			if (err) {
 				logger.log(err);
 			}
-			logger.log(fd);
 			fs.writeFile(fd, str, (err) => {
 				if (err) {
 					logger.log(err);
 				}
 				fs.close(fd, (err) => {
-					logger.log(err ? ('__concatImage__: create main html Error ' + err) : '__concatImage__: main html create success!');
+					logger.log(err ? ('__imageConcater__: create main html Error ' + err) : '__imageConcater__: main html create success!');
+   				 	logger.log('__imageConcater__: >>>>>> END! <<<<<<');
+					callbacks.forEach(ele => {
+						ele();
+					});
 				});
 			});
 		});
@@ -121,7 +122,7 @@ let getNextImage = () => {
 }
 
 let concatImage = (path) => {
-	logger.log('__concatImage__: try to concat image >>>>>>', path);
+	logger.log('__imageConcater__: try to concat image >>>>>>', path);
 	_gm.in('-page', _position)
 		.in(path)
 	getImageSize(path, () => {
@@ -153,7 +154,7 @@ let concatImageEnd = (isFinished) => {
 	let outputPath = imagePlusPath + '/' + pageIndex + (needSplit ? "_" + (littleIndex++) : "") + '.jpg';
 
 	if (fs.existsSync(outputPath)) {
-		logger.log('__concatImage__: image plus is existed! >>>>> ', outputPath);
+		logger.log('__imageConcater__: image plus is existed! >>>>> ', outputPath);
 		_height = 0;
 		_position = '+0+0';
 		if (!isFinished) {
@@ -165,13 +166,13 @@ let concatImageEnd = (isFinished) => {
 		_gm.mosaic()
 			.write(outputPath, function (err) {
 				if (err) {
-					logger.log('__concatImage__: concat image(%s) ERROR! >>>> %s', outputPath, err);
+					logger.log('__imageConcater__: concat image(%s) ERROR! >>>> %s', outputPath, err);
 					if (err.toString().indexOf('Insufficient') !== -1) {
-						logger.log('__concatImage__: DELETE!! (Insufficient) >>>> ', outputPath);
+						logger.log('__imageConcater__: DELETE!! (Insufficient) >>>> ', outputPath);
 						fs.unlinkSync(outputPath);
 					}
 				} else {
-					logger.log('__concatImage__: concat SUCCESSFUL! >>>>> ', outputPath);
+					logger.log('__imageConcater__: concat SUCCESSFUL! >>>>> ', outputPath);
 					imagePaths.push(outputPath.replace(imagePlusPath, '.'));
 					_height = 0;
 					_position = '+0+0';
@@ -185,8 +186,6 @@ let concatImageEnd = (isFinished) => {
 	}
 }
 
-
-// 37 开始使用本方法
 module.exports = {
 	setTitle: (_title) => {
 		path = './' + _title;
