@@ -58,7 +58,7 @@ let getImageInfo = () => {
         getImageInfo();
         return;
     }
-    logger.log('__imageCollecter__: index >>>> %s <<<<, url >>>> %s', index, mainUrl);
+    logger.log('__imageCollecter__: get image data SUCCESSFUL! index >>>> %s <<<<, url >>>> %s', index, mainUrl);
     data = {};
     data['index'] = index++;
     data['url'] = mainUrl;
@@ -151,7 +151,9 @@ let writeJson = (isFinish) => {
                 isTrueWriteImageJson = true;
                 if (isFinish) {
                     if (errors.length > 0) {
-                        logger.log('__imageCollecter__: errors data >>>> ', errors);
+                        logger.log('__imageCollecter__: errors data >>>> ', errors.join(','));
+                        logger.log('__imageCollecter__: ERROR! please retry!');
+                        logger.out();
                         return;
                     }
                     logger.log('__imageCollecter__: write SUCCESSFUL!');

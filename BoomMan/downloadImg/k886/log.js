@@ -80,6 +80,8 @@ startWrite();
 module.exports = {
     log: log,
     out: () => {
+        this.log('logger out!');
+        writeLog();
         clearInterval(timer1);
     }
 };
