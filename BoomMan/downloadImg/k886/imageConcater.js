@@ -122,7 +122,7 @@ let getNextImage = () => {
 }
 
 let concatImage = (path) => {
-	logger.log('__imageConcater__: try to concat image >>>>>>', path);
+	logger.log('__imageConcater__: try to concat image >>>>>> ', path);
 	_gm.in('-page', _position)
 		.in(path)
 	getImageSize(path, () => {

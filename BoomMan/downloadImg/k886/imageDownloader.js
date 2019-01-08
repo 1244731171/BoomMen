@@ -102,7 +102,7 @@ let downloadNext = function () {
     } else {
         threadLength--;
         clearInterval(timer);
-        logger.log('__imageDownloader__: all images are downloading!');
+        // logger.log('__imageDownloader__: all images are downloading!');
         timer = setInterval(() => {
             if(threadLength === 0){
                 clearInterval(timer);
