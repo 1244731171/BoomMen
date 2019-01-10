@@ -55,35 +55,66 @@ let loopImageData = () => {
 }
 
 // 下载方法
-var download = function (url, path) {
-    logger.log("__imageDownloader__: try to download, url >>>> " + url);
-    // logger.log(JSON.stringify(res));
-    if (!err && res.statusCode == 200) {
-        let write = request(url).pipe(fs.createWriteStream(path));
-        write.on('close', () => {
+// var download = function (url, path) {
+//     logger.log("__imageDownloader__: try to download, url >>>> " + url);
+//     // logger.log(JSON.stringify(res));
+//     if (!err && res.statusCode == 200) {
+//         let write = request(url).pipe(fs.createWriteStream(path));
+//         write.on('close', () => {
+//             threadLength--;
+//             logger.log('__imageDownloader__: img saved! netName >>> %s, path >>>> %s ', url.substr(-17), path);
+//         });
+//         write.on('error', err => {
+//             logger.log('__imageDownloader__: ERROR! >>> ', err);
+//             if (fs.existsSync(path)) {
+//                 fs.unlinkSync(path);
+//             }
+//             errorList.push({
+//                 url: url,
+//                 path: path
+//             })
+//         });
+//     } else {
+//         logger.log(err);
+//         logger.log("__imageDownloader__: try to download failed!");
+//         errorList.push({
+//             url: url,
+//             path: path
+//         })
+//         threadLength--;
+//     }
+// };
+
+let download = function (url, path) {
+    threadLength++;
+    request({ url: url, encoding: 'binary' }, (error, response, body) => {
+        if (!error && response.statusCode == 200) {
+            fs.writeFile(path, body, 'binary', err => {
+                threadLength--;
+                if (err) {
+                    downloadError(err, url, path);
+                } else {
+                    logger.log('__imageDownloadPlugin__: img saved! url >>> %s, path >>>> %s ', url, path);
+                }
+            });
+        } else {
             threadLength--;
-            logger.log('__imageDownloader__: img saved! netName >>> %s, path >>>> %s ', url.substr(-17), path);
-        });
-        write.on('error', err => {
-            logger.log('__imageDownloader__: ERROR! >>>>>> ', err);
-            if (fs.existsSync(path)) {
-                fs.unlinkSync(path);
-            }
-            errorList.push({
-                url: url,
-                path: path
-            })
-        });
-    } else {
-        logger.log(err);
-        logger.log("__imageDownloader__: try to download failed!");
-        errorList.push({
-            url: url,
-            path: path
-        })
-        threadLength--;
+            downloadError(error || response.statusCode, url, path);
+        }
+    });
+}
+
+let downloadError = (err, url, path) => {
+    logger.log('__imageDownloadPlugin__: ERROR! >>> ', err);
+    if (fs.existsSync(path)) {
+        fs.unlinkSync(path);
     }
-};
+    logger.log('__imageDownloadPlugin__: delete error path >>> ', path);
+    errorList.push({
+        url: url,
+        path: path
+    });
+}
 
 let downloadIndex = 0;
 let downloadNext = function () {
@@ -99,7 +130,7 @@ let downloadNext = function () {
     if (url && path) {
         downloadIndex++;
         if (fs.existsSync(path)) {
-            logger.log('__imageDownloader__: path existed! >>>>>> ', path);
+            logger.log('__imageDownloader__: path existed! >>> ', path);
             threadLength--;
             downloadNext();
         } else {
@@ -114,7 +145,7 @@ let downloadNext = function () {
                 clearInterval(timer);
                 logger.log('__imageDownloader__: all images downloaded!');
                 if (errorList.length > 0) {
-                    logger.log('__imageDownloader__: error list >>>>>> ');
+                    logger.log('__imageDownloader__: error list >>> ');
                     logger.log(JSON.stringify(errorList));
                     logger.out();
                     return;

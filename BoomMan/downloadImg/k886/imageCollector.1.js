@@ -26,15 +26,15 @@ let isTrueWriteImageJson = false;
 let getChapterData = () => {
     logger.log('__imageCollecter__: >>>>>> START! <<<<<<');
     if (fs.existsSync(imageJsonPath)) {
-        logger.log('__imageCollecter__: image.json exist! >>>> ', imageJsonPath);
+        logger.log('__imageCollecter__: image.json exist! >>> ', imageJsonPath);
         imageData = fs.readFileSync(imageJsonPath, 'utf8');
         imageData = JSON.parse(imageData);
         imageData.forEach(ele => {
             if (ele.realMax != ele.max) {
-                logger.log('__imageCollecter__: found BAN image data! index >>>> ', ele.index);
+                logger.log('__imageCollecter__: found BAN image data! index >>> ', ele.index);
                 _imageBanData[ele.index] = ele;
             } else {
-                logger.log('__imageCollecter__: found NORMAL image data! index >>>> ', ele.index);
+                logger.log('__imageCollecter__: found NORMAL image data! index >>> ', ele.index);
                 _imageGoodData[ele.index] = ele;
             }
         });
@@ -47,7 +47,7 @@ let getChapterData = () => {
         chapterData = JSON.parse(data);
         chapterNumbers = chapterData.length;
         // chapterData.splice(0, index - 1);
-        logger.log('__imageCollecter__: all chapterData length >>>> ', chapterData.length);
+        logger.log('__imageCollecter__: all chapterData length >>> ', chapterData.length);
         getImageInfo();
     });
 }
@@ -60,17 +60,17 @@ let getImageInfo = () => {
     }
     let mainUrl = chapterData.splice(0, 1)[0];
     if (_imageGoodData[index] !== undefined) {
-        logger.log('__imageCollecter__: image data exist! index >>>> %s, url >>>> %s', index, mainUrl);
+        logger.log('__imageCollecter__: image data exist! index >>> %s, url >>> %s', index, mainUrl);
         index++;
         data = {};
         getImageInfo();
     } else if (_imageBanData[index] !== undefined) {
         data = _imageBanData[index];
-        logger.log('__imageCollecter__: part of data exist! index >>>> %s, realMax >>>> %s', index, data.realMax);
+        logger.log('__imageCollecter__: part of data exist! index >>> %s, realMax >>> %s', index, data.realMax);
         getImagePageInfo(data.url, parseInt(data.realMax) + 1);
         index++;
     } else {
-        logger.log('__imageCollecter__: get image data SUCCESSFUL! index >>>> %s <<<<, url >>>> %s', index, mainUrl);
+        logger.log('__imageCollecter__: get image data SUCCESSFUL! index >>> %s >>>, url >>> %s', index, mainUrl);
         data = {};
         data['index'] = index++;
         data['url'] = mainUrl;
@@ -83,11 +83,11 @@ let retryTimes = 2;
 let concatImageData = () => {
     if (data['data']) {
         data['realMax'] = data['data'].length.toString();
-        logger.log('__imageCollecter__: index >>>> %s <<<<, max >>>> %s, realMax >>>> %s', data['index'], data['max'], data['realMax']);
+        logger.log('__imageCollecter__: index >>> %s >>>, max >>> %s, realMax >>> %s', data['index'], data['max'], data['realMax']);
         if (data.max !== data.realMax) {
-            logger.log('__imageCollecter__: index >>>> %s <<<<, max !== realMax >>>> BAN!', data['index']);
+            logger.log('__imageCollecter__: index >>> %s >>>, max !== realMax >>> BAN!', data['index']);
             _imageBanData[data['index']] = data;
-            logger.log('__imageCollecter__: retry collect iamge datga index >>>> %s <<<<, realMax >>>> ', data['realMax']);
+            logger.log('__imageCollecter__: retry collect iamge datga index >>> %s >>>, realMax >>> ', data['realMax']);
             if (retryTimes-- > 0) {
                 // 2次重试
                 index--;
@@ -110,7 +110,7 @@ let concatImageData = () => {
         }
         writeJson(!!!chapterData.length);
     } else {
-        // logger.log('__imageCollecter__: current data ERROR! >>>> ', data);
+        // logger.log('__imageCollecter__: current data ERROR! >>> ', data);
     }
 }
 
@@ -122,10 +122,10 @@ let getImagePageInfo = (url, pageIndex) => {
 
     let mainUrl = url + '-p-' + pageIndex;
 
-    logger.log('__imageCollecter__: pageUrl >>>> ', mainUrl);
+    logger.log('__imageCollecter__: pageUrl >>> ', mainUrl);
     request(mainUrl, { json: false }, (err, res, body) => {
         if (err) {
-            logger.log('__imageCollecter__: ERROR and retry! >>>>', err);
+            logger.log('__imageCollecter__: ERROR and retry! >>>', err);
             getImagePageInfo(url, pageIndex);
             return
         }
@@ -140,7 +140,7 @@ let getImagePageInfo = (url, pageIndex) => {
             getImageInfo();
         } else {
             imageUrl = imageUrl[0];
-            logger.log('__imageCollecter__: imageUrl >>>> ', imageUrl);
+            logger.log('__imageCollecter__: imageIndex >>> %s, imageUrl >>> %s', pageIndex, imageUrl);
             downloadPlugin.download(imageUrl, data['index'] + '_' + pageIndex + '.jpg');
             if (data['data'].indexOf(imageUrl) === -1) {
                 data['data'].push(imageUrl);
@@ -180,7 +180,7 @@ let writeJson = (isFinish) => {
                 if (isFinish) {
                     let flag = false;
                     for (let key of _imageBanData) {
-                        logger.log('__imageCollecter__: errors data >>>> ', key);
+                        logger.log('__imageCollecter__: errors data >>> ', key);
                         flag = true;
                     }
                     if (flag) {
@@ -207,7 +207,7 @@ let collectEnd = () => {
 
 module.exports = {
     setTitle: (_title) => {
-        logger.log('__imageCollecter__: set title >>>> ', _title);
+        logger.log('__imageCollecter__: set title >>> ', _title);
         title = _title;
         path = './' + title;
         chapterJsonPath = './' + title + '/chapter.json';
