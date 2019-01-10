@@ -31,10 +31,10 @@ let getChapterData = () => {
         imageData = JSON.parse(imageData);
         imageData.forEach(ele => {
             if (ele.realMax != ele.max) {
-                logger.log('__imageCollecter__: found BAN image data! index >>> ', ele.index);
+                // logger.log('__imageCollecter__: found BAN image data! index >>> ', ele.index);
                 _imageBanData[ele.index] = ele;
             } else {
-                logger.log('__imageCollecter__: found NORMAL image data! index >>> ', ele.index);
+                // logger.log('__imageCollecter__: found NORMAL image data! index >>> ', ele.index);
                 _imageGoodData[ele.index] = ele;
             }
         });
@@ -60,13 +60,13 @@ let getImageInfo = () => {
     }
     let mainUrl = chapterData.splice(0, 1)[0];
     if (_imageGoodData[index] !== undefined) {
-        logger.log('__imageCollecter__: image data exist! index >>> %s, url >>> %s', index, mainUrl);
+        logger.log('__imageCollecter__: NORMAL image data exist! index >>> ', index);
         index++;
         data = {};
         getImageInfo();
     } else if (_imageBanData[index] !== undefined) {
         data = _imageBanData[index];
-        logger.log('__imageCollecter__: part of data exist! index >>> %s, realMax >>> %s', index, data.realMax);
+        logger.log('__imageCollecter__: BAN image data exist! index >>> %s, realMax >>> %s, max >>> %s', index, data.realMax, data.max);
         getImagePageInfo(data.url, parseInt(data.realMax) + 1);
         index++;
     } else {
@@ -179,8 +179,8 @@ let writeJson = (isFinish) => {
                 isTrueWriteImageJson = true;
                 if (isFinish) {
                     let flag = false;
-                    for (let key of _imageBanData) {
-                        logger.log('__imageCollecter__: errors data >>> ', key);
+                    for (let key in _imageBanData) {
+                        logger.log('__imageCollecter__: errors data >>> ', JSON.stringify(_imageBanData[key]));
                         flag = true;
                     }
                     if (flag) {

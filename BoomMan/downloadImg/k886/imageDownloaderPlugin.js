@@ -23,7 +23,7 @@ let tryDownload = (url, name, isPath = false, isRetry = false) => {
         logger.log('__imageDownloadPlugin__: path existed! >>> ', path);
         return;
     } else {
-        logger.log('__imageDownloadPlugin__: image info saved!, ready to download');
+        logger.log('__imageDownloadPlugin__: get image info! ready to download');
     }
     tryDownloadDatas.push({
         url: url,
@@ -47,7 +47,7 @@ let checkDownload = () => {
             setTimeout(function () {
                 isWaitingCheck = false;
                 checkDownload();
-            }, 1000);
+            }, 500);
         }
     }
 }
@@ -101,7 +101,7 @@ let download = function (url, path, isRetry) {
     });
 }
 
-let downloadError = (err, url, path) => {
+let downloadError = (err, url, path, isRetry) => {
     logger.log('__imageDownloadPlugin__: ERROR! >>> ', err);
     if (fs.existsSync(path)) {
         fs.unlinkSync(path);
