@@ -23,7 +23,7 @@ let readJsonData = () => {
     // 异步读取
     fs.readFile(imageJsonPath, function (err, data) {
         if (err) {
-            return logger.error(err);
+            return logger.log(err);
         }
         iamgedata = JSON.parse(data);
         makeDir(localChapterPath);
@@ -41,12 +41,12 @@ let makeDir = function (path) {
     });
 }
 
-let flag = false;
+let flag = 1;
 let loopImageData = () => {
-    if (flag) {
+    if (flag != 2) {
+        flag++;
         return;
     }
-    flag = true;
     for (let info of iamgedata) {
         let iamgeIndex = 1;
         let pageIndex = info.index;
