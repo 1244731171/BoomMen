@@ -31,7 +31,7 @@ let getChapterData = () => {
             logger.log('__imageCollecter__: found image data! index >>>> ', ele.index);
             _imageData[ele.index] = ele;
         });
-        console.log(_imageData);
+        imageData = [];
     }
     // 异步读取
     fs.readFile(chapterJsonPath, function (err, data) {
@@ -86,9 +86,12 @@ let getImagePageInfo = (mainUrl) => {
             imageUrl = imageUrl[0].replace('qTcms_S_m_murl_e=', '').replace(/\"/g, '');
             let _data = base64_decode(imageUrl).split('$qingtiandy$');
             let i = 1;
+            let _url = '';
             _data.forEach(ele => {
-                data.data.push(host + ele);
-                downloadPlugin.download(host + ele, data.index + '_' + i + '.jpg');
+                _url = host + ele;
+                logger.log('__imageCollecter__: imageUrl >>>> ', _url);
+                data.data.push(_url);
+                downloadPlugin.download(_url, data.index + '_' + i + '.jpg');
                 i++;
             });
             data.max = _data.length;
@@ -136,8 +139,12 @@ let writeJson = (isFinish) => {
                 }
                 isTrueWriteImageJson = true;
                 if (isFinish) {
-                    logger.log('__imageCollecter__: write SUCCESSFUL!');
-                    collectEnd();
+                    if(chapterNumbers === imageData.length){
+                        logger.log('__imageCollecter__: write SUCCESSFUL!');
+                        collectEnd();
+                    }else{
+                        logger.log('__imageCollecter__: finish with ERROR! chapter length >>> %s, real length >>> %s', chapterNumbers, imageData.length);
+                    }
                 }
             });
         });

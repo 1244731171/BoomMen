@@ -13,7 +13,7 @@ let paths = [];
 let urls = [];
 let nethtmlDatas = [];
 let localhtmlDatas = [];
-let iamgedata;
+let imagedata;
 
 let isNetHtmlFinish = false;
 let isLocalHtmlFinish = false;
@@ -25,7 +25,7 @@ let readJsonData = () => {
         if (err) {
             return logger.log(err);
         }
-        iamgedata = JSON.parse(data);
+        imagedata = JSON.parse(data);
         makeDir(localChapterPath);
         makeDir(netChapterPath);
     });
@@ -47,39 +47,45 @@ let loopImageData = () => {
         flag++;
         return;
     }
-    for (let info of iamgedata) {
-        let iamgeIndex = 1;
+    logger.log('__htmlCreater__: >>>>>> loopImageData! <<<<<<');
+    for (let info of imagedata) {
+        let imageIndex = 1;
         let pageIndex = parseInt(info.index);
-        let imageData = info.data;
-        for (let url of imageData) {
+        let data = info.data;
+        for (let url of data) {
             urls.push(url);
-            paths.push('../' + pageIndex + '_' + (iamgeIndex++) + '.jpg');
+            paths.push('../' + pageIndex + '_' + (imageIndex++) + '.jpg');
         }
     }
+    // logger.log('__htmlCreater__: >>>>>> loopPaths! <<<<<<', imagedata);
+    // logger.log('__htmlCreater__: >>>>>> loopPaths! <<<<<<', urls);
+    // logger.log('__htmlCreater__: >>>>>> loopPaths! <<<<<<', paths);
     loopPaths();
 }
 
 let loopPaths = () => {
     let i = 1;
-    let str = "";
-    let str2 = "";
+    let path = "";
+    let url = "";
     for (let index in paths) {
         let ele = paths[index];
+        // logger.log('__htmlCreater__: >>>>>> loopPaths! <<<<<<', ele);
+        // logger.log('__htmlCreater__: >>>>>> loopPaths! <<<<<<', '../' + i + "_");
         if (ele.startsWith('../' + i + "_")) {
-            str += ('<img src="' + ele + '"/><br/>');
-            str2 += ('<img src="' + urls[index] + '"/><br/>');
+            path += ('<img src="' + ele + '"/><br/>');
+            url += ('<img src="' + urls[index] + '"/><br/>');
         } else {
-            nethtmlDatas.push({
-                index: i,
-                str: str
-            });
             localhtmlDatas.push({
                 index: i,
-                str: str2
+                str: path
+            });
+            nethtmlDatas.push({
+                index: i,
+                str: url
             });
             i++;
-            str = "";
-            str2 = "";
+            url = "";
+            path = "";
         }
     }
     writeNextNetHtml();

@@ -17,17 +17,18 @@ let makeDir = function (path) {
 }
 
 let tryDownloadDatas = [];
-let tryDownload = (url, name, isPath = false) => {
+let tryDownload = (url, name, isPath = false, isRetry = false) => {
     let path = isPath ? name : imagePath + '/' + name;
     if (fs.existsSync(path)) {
-        logger.log('__imageDownloadPlugin__: path existed! >>>>>> ', path);
+        logger.log('__imageDownloadPlugin__: path existed! >>> ', path);
         return;
     } else {
-        logger.log('__imageDownloadPlugin__: image info saved!, ready to download');
+        logger.log('__imageDownloadPlugin__: get image info! ready to download');
     }
     tryDownloadDatas.push({
         url: url,
-        path: path
+        path: path,
+        isRetry: isRetry
     });
     checkDownload();
 }
@@ -39,14 +40,14 @@ let checkDownload = () => {
     if (!isWaitingCheck && tryDownloadDatas.length > 0) {
         if (threadLength < threadMax) {
             let data = tryDownloadDatas.splice(0, 1)[0];
-            download(data['url'], data['path']);
+            download(data['url'], data['path'], data['isRetry']);
             checkDownload();
         } else {
             isWaitingCheck = true;
             setTimeout(function () {
                 isWaitingCheck = false;
                 checkDownload();
-            }, 1000);
+            }, 500);
         }
     }
 }
@@ -59,10 +60,10 @@ let checkDownload = () => {
 //         if (!err && res.statusCode == 200) {
 //             let writer = fs.createWriteStream(path);
 //             writer.on('error', err => {
-//                 logger.log('__imageDownloadPlugin__: ERROR! >>>>>> ', err);
+//                 logger.log('__imageDownloadPlugin__: ERROR! >>> ', err);
 //                 if (fs.existsSync(path)) {
 //                     fs.unlinkSync(path);
-//                     logger.log('__imageDownloadPlugin__: delete error path, waite to retry >>>>>> ', path);
+//                     logger.log('__imageDownloadPlugin__: delete error path, waite to retry >>> ', path);
 //                     tryDownload(url, path, true);
 //                 }
 //             });
@@ -72,7 +73,7 @@ let checkDownload = () => {
 //             });
 //             request(url).pipe(writer);
 //         } else {
-//             logger.log('__imageDownloadPlugin__: ERROR! >>>>>> ', err);
+//             logger.log('__imageDownloadPlugin__: ERROR! >>> ', err);
 //             logger.log("__imageDownloadPlugin__: try to download failed!, waite to retry, url >>>> " + url);
 //             tryDownload(url, path, true);
 //             threadLength--;
@@ -80,7 +81,7 @@ let checkDownload = () => {
 //     });
 // };
 
-let download = function (url, path) {
+let download = function (url, path, isRetry) {
     threadLength++;
 
     request({ url: url, encoding: 'binary' }, (error, response, body) => {
@@ -88,9 +89,9 @@ let download = function (url, path) {
             fs.writeFile(path, body, 'binary', err => {
                 threadLength--;
                 if (err) {
-                    downloadError(err, url, path);
+                    downloadError(err, url, path, isRetry);
                 } else {
-                    logger.log('__imageDownloadPlugin__: img saved! url >>> %s, path >>>> %s ', url, path);
+                    logger.log('__imageDownloadPlugin__: img saved! urlName >>> %s, path >>> %s ', url.substr(-17), path);
                 }
             });
         } else {
@@ -100,13 +101,18 @@ let download = function (url, path) {
     });
 }
 
-let downloadError = (err, url, path) => {
-    logger.log('__imageDownloadPlugin__: ERROR! >>>>>> ', err);
+let downloadError = (err, url, path, isRetry) => {
+    logger.log('__imageDownloadPlugin__: ERROR! >>> ', err);
     if (fs.existsSync(path)) {
         fs.unlinkSync(path);
+        logger.log('__imageDownloadPlugin__: delete error path', path);
     }
-    logger.log('__imageDownloadPlugin__: delete error path, waite to retry >>>>>> ', path);
-    tryDownload(url, path, true);
+    if (isRetry) {
+        // 就重試1次 再失敗就由imageDownload去下載
+        logger.log('__imageDownloadPlugin__: ERROR ANGIN! give up to DOWNLOAD, url >>> %s, name >>> %s', url, path.replace(imagePath, ''));
+    } else {
+        tryDownload(url, path, true, true);
+    }
 }
 
 module.exports = {
