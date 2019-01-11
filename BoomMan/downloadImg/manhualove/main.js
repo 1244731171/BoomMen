@@ -5,9 +5,14 @@ const imageConcater = require('./imageConcater');
 const htmlCreater = require('./htmlCreater');
 const logger = require('./log');
 
-let mainUrl = 'http://www.manhualove.com/dushi/wufazibadekouhongjiao/';
+// let mainUrl = 'http://www.manhualove.com/dushi/wufazibadekouhongjiao/';
 // let mainUrl = 'http://www.manhualove.com/dushi/nvshenzuolie/';
+// let mainUrl = 'http://www.manhualove.com/shenghuo/yuqiuwangdierji/';
+let mainUrl = 'http://www.manhualove.com/gushi/jiemeilian/';
+
 // let mainUrl = 'http://www.manhualove.com/gushi/mylovedoll/';
+// let mainUrl = 'http://www.manhualove.com/xiaoyuan/yuqiuwang/';
+// let mainUrl = 'http://www.manhualove.com/shenghuo/nvshenwangka/';
 
 let title = '';
 let collectChapter = () => {

@@ -52,7 +52,8 @@ let getImageInfo = () => {
     if (existData && existData.index == index && existData.url == mainUrl) {
         logger.log('__imageCollecter__: exist same data! index >>>> %s <<<<', index);
         index++;
-        data = existData;
+        imageData.push(existData);
+        data = {};
         if (chapterData.length <= 0) {
             writeJson(true);
         } else {
@@ -60,6 +61,7 @@ let getImageInfo = () => {
             getImageInfo();
         }
     } else {
+        delete _imageData[index];
         logger.log('__imageCollecter__: try to get data! index >>>> %s <<<<, url >>>> %s', index, mainUrl);
         data = {};
         data['index'] = index++;
@@ -111,14 +113,19 @@ let getImagePageInfo = (mainUrl) => {
 let writeJson = (isFinish) => {
     // 第一次读image.json文件时候返回的数据长度如果等于本次要写的长度
     // 说明数据没变化
-    if (isFinish && !isTrueWriteImageJson) {
-        logger.log('__imageCollecter__: IMAGE JSON is NO CHANGE NEEDED!');
-        collectEnd();
-        return;
-    }
     if (data.data) {
         imageData.push(data);
     } else {
+        if (isFinish) {
+            if (!isTrueWriteImageJson) {
+                logger.log('__imageCollecter__: IMAGE JSON is NO CHANGE NEEDED!');
+            } else if (chapterNumbers === imageData.length) {
+                logger.log('__imageCollecter__: finish with SUCCESSFUL! chapter length >>> %s, real length >>> %s', chapterNumbers, imageData.length);
+            } else {
+                logger.log('__imageCollecter__: finish with ERROR! chapter length >>> %s, real length >>> %s', chapterNumbers, imageData.length);
+            }
+            collectEnd();
+        }
         return;
     }
     let str = JSON.stringify(imageData);
@@ -137,12 +144,13 @@ let writeJson = (isFinish) => {
                 if (err) {
                     logger.log('__imageCollecter__: ERROR ' + err);
                 }
+                logger.log('__imageCollecter__: write SUCCESSFUL!');
                 isTrueWriteImageJson = true;
                 if (isFinish) {
-                    if(chapterNumbers === imageData.length){
-                        logger.log('__imageCollecter__: write SUCCESSFUL!');
+                    if (chapterNumbers === imageData.length) {
+                        logger.log('__imageCollecter__: finish with SUCCESSFUL! chapter length >>> %s, real length >>> %s', chapterNumbers, imageData.length);
                         collectEnd();
-                    }else{
+                    } else {
                         logger.log('__imageCollecter__: finish with ERROR! chapter length >>> %s, real length >>> %s', chapterNumbers, imageData.length);
                     }
                 }

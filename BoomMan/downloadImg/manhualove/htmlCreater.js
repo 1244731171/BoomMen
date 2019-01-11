@@ -88,6 +88,15 @@ let loopPaths = () => {
             path = "";
         }
     }
+    // 最后chapter信息
+    localhtmlDatas.push({
+        index: i,
+        str: path
+    });
+    nethtmlDatas.push({
+        index: i,
+        str: url
+    });
     writeNextNetHtml();
     writeNextLocalHtml();
 }
@@ -106,6 +115,7 @@ let writeNextNetHtml = () => {
     let path = netChapterPath + '/' + i + '.html';
     logger.log('__htmlCreater__: try to create NET html >>>> ', path);
     if (fs.existsSync(path)) {
+        logger.log('__htmlCreater__: NET html EXISTED!');
         writeNextNetHtml();
     } else {
         fs.open(path, 'w', (err, fd) => {
@@ -120,7 +130,7 @@ let writeNextNetHtml = () => {
                     if(err){
                         logger.log('__htmlCreater__: ERROR ' + err);
                     }else{
-                        logger.log('__htmlCreater__: SUCCESSFUL!');
+                        logger.log('__htmlCreater__: NET html create SUCCESSFUL!');
                         writeNextNetHtml();
                     }
                 });
@@ -143,6 +153,7 @@ let writeNextLocalHtml = () => {
     let path = localChapterPath + '/' + i + '.html';
     logger.log('__htmlCreater__: try to create LOCAL html >>>> ', path);
     if (fs.existsSync(path)) {
+        logger.log('__htmlCreater__: LOCAL html EXISTED!');
         writeNextLocalHtml();
     } else {
         fs.open(path, 'w', (err, fd) => {
@@ -157,7 +168,7 @@ let writeNextLocalHtml = () => {
                     if(err){
                         logger.log('__htmlCreater__: ERROR ' + err);
                     }else{
-                        logger.log('__htmlCreater__: SUCCESSFUL!');
+                        logger.log('__htmlCreater__: LOCAL html create SUCCESSFUL!');
                         writeNextLocalHtml();
                     }
                 });

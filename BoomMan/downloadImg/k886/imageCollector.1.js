@@ -3,7 +3,7 @@ const logger = require("./log");
 
 const fs = require('fs');
 const request = require('request');
-const downloadPlugin = require('./imageDownloaderPlugin');
+const downloadPlugin = require('./imageDownloaderPlugin.1');
 
 let title = '';
 let = './' + title;

@@ -58,8 +58,10 @@ let startConcatImage = () => {
 		pageIndex = info.index;
 		littleIndex = 1;
 		needSplit = false;
-		if (checkPath()) {
-			logger.log('__imageConcater__: image plus is existed! >>>>> ' + checkPath());
+		let existedPath = checkPath();
+		if (existedPath.length) {
+			imagePaths = imagePaths.concat(existedPath);
+			logger.log('__imageConcater__: image plus is existed! >>>>> ' + existedPath.join(','));
 			startConcatImage();
 		} else {
 			info.data.forEach(element => {
@@ -95,22 +97,23 @@ let startConcatImage = () => {
 
 let checkPath = () => {
 	let __path = imagePlusPath + '/' + pageIndex + '.jpg';
+	let existedPath = [];
 	if (fs.existsSync(__path)) {
-		return __path;
+		existedPath.push(__path);
 	}
 	__path = imagePlusPath + '/' + pageIndex + '_1.jpg';
 	if (fs.existsSync(__path)) {
-		return __path;
+		existedPath.push(__path);
 	}
 	__path = imagePlusPath + '/' + pageIndex + '_2.jpg';
 	if (fs.existsSync(__path)) {
-		return __path;
+		existedPath.push(__path);
 	}
 	__path = imagePlusPath + '/' + pageIndex + '_3.jpg';
 	if (fs.existsSync(__path)) {
-		return __path;
+		existedPath.push(__path);
 	}
-	return false;
+	return existedPath;
 }
 
 let getNextImage = () => {

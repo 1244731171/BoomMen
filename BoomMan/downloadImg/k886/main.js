@@ -1,6 +1,6 @@
 const chapterCollector = require('./chapterCollector');
 const imageCollector = require('./imageCollector.1');
-const imageDownloader = require('./imageDownloader.1');
+const imageDownloader = require('./imageDownloader.2');
 const imageConcater = require('./imageConcater');
 const htmlCreater = require('./htmlCreater');
 const logger = require('./log');
