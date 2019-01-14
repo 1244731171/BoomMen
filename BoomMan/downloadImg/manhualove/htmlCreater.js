@@ -72,8 +72,8 @@ let loopPaths = () => {
         // logger.log('__htmlCreater__: >>>>>> loopPaths! <<<<<<', ele);
         // logger.log('__htmlCreater__: >>>>>> loopPaths! <<<<<<', '../' + i + "_");
         if (ele.startsWith('../' + i + "_")) {
-            path += ('<img src="' + ele + '"/><br/>');
-            url += ('<img src="' + urls[index] + '"/><br/>');
+            path += ('<img src="' + ele + '" style="width:500px"/><br/>');
+            url += ('<img src="' + urls[index] + '" style="width:500px"/><br/>');
         } else {
             localhtmlDatas.push({
                 index: i,

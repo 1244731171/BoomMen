@@ -76,7 +76,11 @@ let ppDownload = (url, path) => {
 let reDownload = function (url, path) {
     threadLength++;
     logger.log('__imageDownloader__RE__: try to save! url >>> %s', url);
-    request({ url: url, encoding: 'binary' }, (error, response, body) => {
+    request({
+        url: url,
+        encoding: 'binary',
+        timeout: 2e4
+    }, (error, response, body) => {
         threadLength--;
         if (!error && response.statusCode == 200) {
             fs.writeFile(path, body, 'binary', err => {
@@ -131,6 +135,7 @@ let downloadNext = function () {
                 clearInterval(timer);
                 logger.log('__imageDownloader__: all images downloaded!');
                 if (errorList.length > 0) {
+                    logger.log('__imageDownloader__: error list length >>> ', errorList.length);
                     logger.log('__imageDownloader__: error list >>> ');
                     logger.log(JSON.stringify(errorList));
                     logger.out();

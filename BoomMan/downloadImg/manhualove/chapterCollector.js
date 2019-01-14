@@ -29,15 +29,15 @@ let makeDir = (_path) => {
 }
 
 let setTitle = (_title) => {
-    _title = _title.replace(/\:|\<|\>|\||\?|\*|\\|\/|\"/g,'');
+    _title = _title.replace(/\:|\<|\>|\||\?|\*|\\|\/|\"/g, '');
     logger.log('__chapterColleter__: get title >>>> ', _title);
     title = _title;
     path = './' + title;
     jsonPath = './' + title + '/chapter.json';
-    if(fs.existsSync(jsonPath)){
+    if (fs.existsSync(jsonPath)) {
         logger.log('__chapterColleter__: chapter.json exist! >>>> ', jsonPath);
         collectEnd();
-    }else{
+    } else {
         makeDir(path);
     }
 }
@@ -67,7 +67,7 @@ let writeJson = () => {
 let collectEnd = () => {
     logger.log('__chapterColleter__: >>>>>> END! <<<<<<');
     callbacks.forEach(element => {
-        if(typeof element === 'function'){
+        if (typeof element === 'function') {
             element();
         }
     });
@@ -76,7 +76,11 @@ let collectEnd = () => {
 let getPagesInfo = () => {
     logger.log('__chapterColleter__: >>>>>> START! <<<<<<');
     request(mainUrl, { json: false }, (err, res, body) => {
-        if (err) { return logger.log(err); }
+        if (err) {
+            getPagesInfo();
+            logger.log('__chapterColleter__: ERROR! >>> ', err);
+            return;
+        }
         let dom = new JSDOM(body);
         setTitle(dom.window.document.querySelector('title').text.split('_')[0]);
         let as = dom.window.document.querySelector('#mh-chapter-list-ol-0').querySelectorAll('a');

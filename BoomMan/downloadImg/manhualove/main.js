@@ -8,11 +8,11 @@ const logger = require('./log');
 // let mainUrl = 'http://www.manhualove.com/dushi/wufazibadekouhongjiao/';
 // let mainUrl = 'http://www.manhualove.com/dushi/nvshenzuolie/';
 // let mainUrl = 'http://www.manhualove.com/shenghuo/yuqiuwangdierji/';
-let mainUrl = 'http://www.manhualove.com/gushi/jiemeilian/';
-
+// let mainUrl = 'http://www.manhualove.com/gushi/jiemeilian/';
 // let mainUrl = 'http://www.manhualove.com/gushi/mylovedoll/';
+let mainUrl = 'http://www.manhualove.com/shenghuo/nvshenwangka/';
+
 // let mainUrl = 'http://www.manhualove.com/xiaoyuan/yuqiuwang/';
-// let mainUrl = 'http://www.manhualove.com/shenghuo/nvshenwangka/';
 
 let title = '';
 let collectChapter = () => {
@@ -69,6 +69,7 @@ let wellDone = () => {
     logger.log('NET HTML PATH >>> E:/hanman/%s/netChapter/', title);
     logger.log('LOCAL HTML PATH >>> E:/hanman/%s/localChapter/', title);
     logger.log('CONCAT IMAGE PATH >>> E:/hanman/%s/plus', title);
+    logger.log('PDF PATH >>> E:/hanman/%s/pdf', title);
     logger.log('================>.<= WELL DONE! =>.<================ ');
     logger.out();
 }

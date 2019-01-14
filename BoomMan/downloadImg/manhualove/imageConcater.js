@@ -1,4 +1,5 @@
 const logger = require("./log");
+const jpg2pdf = require('./jpg2pdfPlugin');
 
 const gm = require('gm');
 const fs = require('fs');
@@ -8,6 +9,7 @@ let path = './欲求王';
 let jsonName = 'data.json';
 let imagePath = 'e:/hanman/欲求王';
 let imagePlusPath = imagePath + '/plus';
+let imagePdfPath = imagePath + '/pdf';
 
 let imagedata = [];
 let paths = [];
@@ -27,6 +29,7 @@ let _gm = gm();
 
 let readJsonData = () => {
 	logger.log('__imageConcater__: >>>>>> START! <<<<<<');
+	makeDir(imagePdfPath);
 	// 异步读取
 	fs.readFile(path + '/' + jsonName, function (err, data) {
 		if (err) {
@@ -34,22 +37,36 @@ let readJsonData = () => {
 		}
 		// logger.log("异步读取: " + data.toString());
 		imagedata = JSON.parse(data);
-		makeDir(imagePlusPath);
+		makeDir(imagePlusPath, startConcatImage);
 	});
 
 }
 
 //创建目录
-let makeDir = function (path) {
+let makeDir = function (path, callback) {
 	mkdirp(path, function (err) {
 		if (err) {
 			logger.log(err);
 		}
-		startConcatImage();
+		if (callback && typeof callback === 'function') {
+			callback();
+		}
 	});
-
 }
 
+let addImagePath = (path) => {
+	if (path instanceof Array) {
+		path.forEach(p => {
+			jpg2pdf.add(p, p.replace(/plus|jpg/g, 'pdf'));
+		});
+		imagePaths = imagePaths.concat(path);
+	} else {
+		jpg2pdf.add(path, path.replace(/plus|jpg/g, 'pdf'));
+		imagePaths.push(path);
+	}
+}
+
+let timer = -1;
 let startConcatImage = () => {
 	paths = [];
 	if (imagedata.length > 0) {
@@ -60,7 +77,7 @@ let startConcatImage = () => {
 		needSplit = false;
 		let existedPath = checkPath();
 		if (existedPath.length) {
-			imagePaths = imagePaths.concat(existedPath);
+			addImagePath(existedPath);
 			logger.log('__imageConcater__: image plus is existed! >>>>> ' + existedPath.join(','));
 			startConcatImage();
 		} else {
@@ -73,7 +90,7 @@ let startConcatImage = () => {
 		logger.log('__imageConcater__: all the images concated');
 		let str = '';
 		imagePaths.forEach(ele => {
-			str += ('<img src="' + ele + '"/>');
+			str += ('<img src="' + ele.replace(imagePlusPath, '.') + '"/>');
 		});
 		fs.open(imagePlusPath + '/0.html', 'w', (err, fd) => {
 			if (err) {
@@ -85,10 +102,17 @@ let startConcatImage = () => {
 				}
 				fs.close(fd, (err) => {
 					logger.log(err ? ('__imageConcater__: create main html Error ' + err) : '__imageConcater__: main html create success!');
-					logger.log('__imageConcater__: >>>>>> END! <<<<<<');
-					callbacks.forEach(ele => {
-						ele();
-					});
+					
+					logger.log('__imageConcater__: all the image conncat SUCCESSFUL! waite create pdf');
+					timer = setInterval(() => {
+						if (jpg2pdf.isFinish()) {
+							clearInterval(timer);
+							logger.log('__imageConcater__: >>>>>> END! <<<<<<');
+							callbacks.forEach(ele => {
+								ele();
+							});
+						}
+					}, 200);
 				});
 			});
 		});
@@ -96,9 +120,9 @@ let startConcatImage = () => {
 }
 
 let checkPath = () => {
-	let __path = imagePlusPath + '/' + pageIndex;
+	let __path = imagePlusPath + '/' + pageIndex + '.jpg';
 	let existedPath = [];
-	if (fs.existsSync(__path + '.jpg')) {
+	if (fs.existsSync(__path)) {
 		existedPath.push(__path);
 	}
 	let index = 1;
@@ -171,7 +195,7 @@ let concatImageEnd = (isFinished) => {
 					}
 				} else {
 					logger.log('__imageConcater__: concat SUCCESSFUL! >>>>> ', outputPath);
-					imagePaths.push(outputPath.replace(imagePlusPath, '.'));
+					addImagePath(outputPath);
 					_height = 0;
 					_position = '+0+0';
 					if (!isFinished) {
@@ -190,6 +214,7 @@ module.exports = {
 		jsonName = 'image.json';
 		imagePath = 'e:/hanman/' + _title;
 		imagePlusPath = imagePath + '/plus';
+		imagePdfPath = imagePath + '/pdf';
 	},
 	setJsonPath: (p) => {
 		path = p;

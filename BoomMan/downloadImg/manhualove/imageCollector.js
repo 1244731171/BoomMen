@@ -93,7 +93,9 @@ let getImagePageInfo = (mainUrl) => {
                 _url = host + ele;
                 logger.log('__imageCollecter__: imageUrl >>>> ', _url);
                 data.data.push(_url);
-                downloadPlugin.download(_url, data.index + '_' + i + '.jpg');
+                setTimeout(() => {
+                    downloadPlugin.download(_url, data.index + '_' + i + '.jpg');
+                }, 100);
                 i++;
             });
             data.max = _data.length;
@@ -160,6 +162,7 @@ let writeJson = (isFinish) => {
 }
 
 let collectEnd = () => {
+    downloadPlugin.stop();
     logger.log('__imageCollecter__: >>>>>> END! <<<<<<');
     callbacks.forEach(element => {
         if (typeof element === 'function') {
