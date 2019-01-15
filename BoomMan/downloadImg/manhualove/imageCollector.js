@@ -93,9 +93,7 @@ let getImagePageInfo = (mainUrl) => {
                 _url = host + ele;
                 logger.log('__imageCollecter__: imageUrl >>>> ', _url);
                 data.data.push(_url);
-                setTimeout(() => {
-                    downloadPlugin.download(_url, data.index + '_' + i + '.jpg');
-                }, 100);
+                downloadPlugin.download(_url, data.index + '_' + i + '.jpg');
                 i++;
             });
             data.max = _data.length;
@@ -119,10 +117,12 @@ let writeJson = (isFinish) => {
         imageData.push(data);
     } else {
         if (isFinish) {
-            if (!isTrueWriteImageJson) {
-                logger.log('__imageCollecter__: IMAGE JSON is NO CHANGE NEEDED!');
-            } else if (chapterNumbers === imageData.length) {
-                logger.log('__imageCollecter__: finish with SUCCESSFUL! chapter length >>> %s, real length >>> %s', chapterNumbers, imageData.length);
+            if (chapterNumbers === imageData.length) {
+                if (!isTrueWriteImageJson) {
+                    logger.log('__imageCollecter__: IMAGE JSON is NO CHANGE NEEDED!');
+                } else {
+                    logger.log('__imageCollecter__: finish with SUCCESSFUL! chapter length >>> %s, real length >>> %s', chapterNumbers, imageData.length);
+                }
             } else {
                 logger.log('__imageCollecter__: finish with ERROR! chapter length >>> %s, real length >>> %s', chapterNumbers, imageData.length);
             }
@@ -183,5 +183,18 @@ module.exports = {
     setCallBack: (callback) => {
         callbacks.push(callback);
     },
-    start: getChapterData
+    start: getChapterData,
+    totalLength: () => {
+        let rl = 0;
+        let ml = 0;
+        imageData.forEach(ele => {
+            rl += parseInt(ele.realMax);
+            ml += parseInt(ele.max);
+        });
+        return {
+            realLength: rl,
+            maxLength: ml,
+            chapterLength: chapterNumbers
+        };
+    }
 };

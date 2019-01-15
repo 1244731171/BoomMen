@@ -10,9 +10,16 @@ const logger = require('./log');
 // let mainUrl = 'http://www.manhualove.com/shenghuo/yuqiuwangdierji/';
 // let mainUrl = 'http://www.manhualove.com/gushi/jiemeilian/';
 // let mainUrl = 'http://www.manhualove.com/gushi/mylovedoll/';
-let mainUrl = 'http://www.manhualove.com/shenghuo/nvshenwangka/';
-
+// let mainUrl = 'http://www.manhualove.com/shenghuo/nvshenwangka/';
 // let mainUrl = 'http://www.manhualove.com/xiaoyuan/yuqiuwang/';
+// let mainUrl = 'http://www.manhualove.com/dushi/tadegaogenxie/';
+// let mainUrl = 'http://www.manhualove.com/rexue/shunvhuayuandisanji/';
+let mainUrl = 'http://www.manhualove.com/dushi/linjiashaonv/';
+
+// let mainUrl = 'http://www.manhualove.com/dushi/toukuidierji/';
+// let mainUrl = 'http://www.manhualove.com/shenghuo/toukui1/';
+// let mainUrl = 'http://www.manhualove.com/dushi/liewu/';
+
 
 let title = '';
 let collectChapter = () => {
@@ -59,17 +66,23 @@ let concatImage = () => {
 
 let wellDone = () => {
     t6 = new Date().getTime();
+    let len = imageCollector.totalLength();
     logger.log('COLLECT CHAPTER INFO. spend time >>> ', t2 - t1);
     logger.log('COLLECT IMAGE INFO. spend time >>> ', t3 - t2);
     logger.log('CREATE CHAPTER HTML. spend time >>> ', t4 - t3);
     logger.log('DOWNLOAD IMAGE. spend time >>> ', t5 - t4);    
     logger.log('CONCAT IMAGE. spend time >>> ', t6 - t5);    
     logger.log('======================================================');
+    logger.log('TITLE >>> ', title);
     logger.log('IMAGE SAVE PATH >>> E:/hanman/%s/', title);
     logger.log('NET HTML PATH >>> E:/hanman/%s/netChapter/', title);
     logger.log('LOCAL HTML PATH >>> E:/hanman/%s/localChapter/', title);
     logger.log('CONCAT IMAGE PATH >>> E:/hanman/%s/plus', title);
-    logger.log('PDF PATH >>> E:/hanman/%s/pdf', title);
+    logger.log('PDF PATH >>> E:/hanman/%s/pdf', title);  
+    logger.log('======================================================');
+    logger.log('CHARPTER LENGTH >>> ', len.chapterLength);
+    logger.log('MAX IMAGE LENGTH >>> ', len.maxLength); 
+    logger.log('REAL IMAGE LENGTH >>> ', len.realLength);
     logger.log('================>.<= WELL DONE! =>.<================ ');
     logger.out();
 }

@@ -1,7 +1,5 @@
 //依赖模块
 const logger = require("./log");
-// const Event = require("./event");
-// const event = new Event();
 
 const fs = require('fs');
 const request = require("request");
@@ -20,7 +18,6 @@ let makeDir = function (path) {
 
 let tryDownloadDatas = [];
 let tryDownload = (url, name, isPath = false, isRetry = false) => {
-    isStop = false;
     let path = isPath ? name : imagePath + '/' + name;
     if (fs.existsSync(path)) {
         logger.log('__imageDownloadPlugin__: path existed! >>> ', path);
@@ -52,8 +49,6 @@ let checkDownload = () => {
                 checkDownload();
             }, 500);
         }
-    }else if(tryDownloadDatas.length === 0){
-        // event.fire('downloadEnd');
     }
 }
 
@@ -71,9 +66,9 @@ let ppDownload = (url, path, isRetry) => {
         threadLength--;
         downloadError(err, url, path, isRetry);
     });
-    try {
+    try{
         reader.pipe(writer);
-    } catch (err) {
+    }catch(err){
         downloadError(err, url, path, isRetry);
     }
 }
@@ -115,8 +110,6 @@ let downloadError = (err, url, path, isRetry) => {
     }
 }
 
-let isStop = false;
-
 module.exports = {
     setTitle: (_title) => {
         path = './' + _title;
@@ -124,9 +117,8 @@ module.exports = {
         makeDir(imagePath);
     },
     download: tryDownload,
-    stop: () => {
+    stop: () =>{
         logger.log('__imageDownloadPlugin__: stop download! rest length >>> ', tryDownloadDatas.length);
         tryDownloadDatas = [];
-        isStop = true;
     }
-}
+};

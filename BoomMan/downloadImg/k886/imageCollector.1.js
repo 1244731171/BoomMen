@@ -3,7 +3,7 @@ const logger = require("./log");
 
 const fs = require('fs');
 const request = require('request');
-const downloadPlugin = require('./imageDownloaderPlugin.1');
+const downloadPlugin = require('./imageDownloaderPlugin.2');
 
 let title = '';
 let = './' + title;
@@ -188,7 +188,7 @@ let writeJson = (isFinish) => {
                 if (isFinish) {
                     let flag = false;
                     for (let key of _imageBanData) {
-                        logger.log('__imageCollecter__: errors data >>>> ', key);
+                        logger.log('__imageCollecter__: errors data >>>> ', JSON.stringify(_imageBanData[key]));
                         flag = true;
                     }
                     if (flag) {

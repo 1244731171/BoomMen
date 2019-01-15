@@ -24,9 +24,7 @@ let threadLength = 0;
 let readJsonData = () => {
     logger.log('__imageDownloader__: >>>>>> START! <<<<<<');
     // 异步读取
-    if (file.isExists('./downloadError.json')) {
-        checkErrorList();
-    }
+    checkErrorList();
     fs.readFile(path + '/' + imageJsonName, function (err, data) {
         if (err) {
             return logger.error(err);
@@ -48,15 +46,16 @@ let makeDir = (path) => {
 }
 
 let checkErrorList = () => {
-    // imageDownloaderPlugin.on('downloadEnd', downloadEnd);
-    file.read('./downloadError.json', function (data) {
-        if (data) {
-            let errorList = JSON.parse(data || []);
-            errorList.forEach(ele => {
-                imageDownloaderPlugin.download(ele.url, ele.path, true);
-            });
-        }
-    });
+    if(file.isExists('./downloadError.json')){
+        file.read('./downloadError.json', function(data){
+            if(data){
+                let errorList = JSON.parse(data||[]);
+                errorList.forEach(ele => {
+                    imageDownloaderPlugin.download(ele.url, ele.path);
+                });
+            }
+        });
+    }
 }
 
 let loopImageData = () => {
@@ -142,7 +141,8 @@ let downloadNext = function () {
             downloadImageLength++;
             downloadNext();
         } else {
-            reDownload(url, path);
+            // reDownload(url, path);
+            ppDownload(url, path);
         }
     } else {
         clearInterval(timer);
@@ -163,18 +163,14 @@ let downloadNext = function () {
                     logger.out();
                     return;
                 }
-                downloadEnd();
+                file.delete('./downloadError.json');
+                logger.log('__imageDownloader__: >>>>>> END! <<<<<<');
+                callbacks.forEach(ele => {
+                    ele();
+                });
             }
         }, 200);
     }
-}
-
-let downloadEnd = () => {
-    file.delete('./downloadError.json');
-    logger.log('__imageDownloader__: >>>>>> END! <<<<<<');
-    callbacks.forEach(ele => {
-        ele();
-    });
 }
 
 let timer = -1;
