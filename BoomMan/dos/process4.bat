@@ -13,6 +13,7 @@ for /l %%i in (1,1,25) do (
 )
 echo Init...
 choice /t 5 /d y /n >nul
+cls
 echo Connecting...
 :1
     set /a r=!random!*60
