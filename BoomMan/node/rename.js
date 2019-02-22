@@ -1,21 +1,20 @@
 const fs = require('fs');
 
-const path = 'E:/hanman/Super Dick(欲求王)/';
+// const PATH = 'Q:/0127/';
+// const PATH = 'Q:/好孩子看不到/国内写真/（萝莉）柚木写真/[柚木]红白调教(50P)_files/'
+const PATH = 'O:/H/yundown/'
 
-fs.readdir(path, (err, path)=>{
+fs.readdir(PATH, (err, path)=>{
     path.forEach(ele => {
-        if(ele.endsWith('.jpg')){
+        if(ele.indexOf('part') !== -1){
             let eles = ele.split('_');
-            let i = parseInt(eles[0]);
-            // if(22 <= i && i <= 26){
-            //     rename(path+ele, (path+(i+1)+"_"+eles[1]));
-            // }else if(i === 27){
-            //     fs.unlinkSync(path+ele);
-            // }else if(74 <= i && i <= 100){
-            //     rename(path+ele, (path+i+1+"_"+eles[1]));
-            // }
-            console.log(ele)
+            console.log(ele);
+            if(eles.length>=2){
+                console.log(PATH+eles[0]+'.rar');
+                rename(PATH+ele, PATH+eles[0]+'.rar')
+            }
         }
+        // rename(PATH+ele,PATH+ele+'.jpg')
     })
 })
 
