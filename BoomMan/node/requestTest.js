@@ -11,9 +11,20 @@ const request = require('request');
 //     console.log(JSON.stringify(matchUrl));
 // });
 
-request('http://www.hanman.co/index/books/index/id/24.html', { json: false }, (err, res, body) => {
+// request('http://www.hanman.co/index/books/index/id/24.html', { json: false }, (err, res, body) => {
+//     if (err) { return console.log(err); }
+//     console.log(body);
+//     var matchUrl = body.match(/\/index([a-z.0-9]|\/|\.)*html/g);
+//     console.log(JSON.stringify(matchUrl));
+// });
+
+let id = '1';
+let Burl = 'http://189671.com/d/t/' + id + '.txt';
+let getCurl = (cid) => {
+    return 'http://189671.com/d/d/' + id['substr'](0, 2) + '/' + (id['substr'](- 2) * 1) + '/' + id + '.txt';
+}
+request(Burl, { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }
-    console.log(body);
-    var matchUrl = body.match(/\/index([a-z.0-9]|\/|\.)*html/g);
-    console.log(JSON.stringify(matchUrl));
+    var data = body[1];
+    console.log(data);
 });

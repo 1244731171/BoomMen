@@ -21,7 +21,6 @@ echo Connecting...
     set /a nub+=1
     choice /t %r% /d y /n >nul
     cls
-    echo Init...
     echo Connected
     echo.
     if %nub% geq 2 goto 2
