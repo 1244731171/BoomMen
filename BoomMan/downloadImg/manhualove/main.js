@@ -15,10 +15,9 @@ const logger = require('./log');
 // let mainUrl = 'http://www.manhualove.com/dushi/tadegaogenxie/';
 // let mainUrl = 'http://www.manhualove.com/rexue/shunvhuayuandisanji/';
 // let mainUrl = 'http://www.manhualove.com/dushi/linjiashaonv/';
-
-// let mainUrl = 'http://www.manhualove.com/shenghuo/chaojinvhai/';
 // let mainUrl = 'http://www.manhualove.com/dushi/toukuidierji/';
-// let mainUrl = 'http://www.manhualove.com/shenghuo/toukui1/';
+let mainUrl = 'http://www.manhualove.com/shenghuo/toukui1/';
+
 // let mainUrl = 'http://www.manhualove.com/dushi/liewu/';
 // let mainUrl = 'http://www.manhualove.com/rexue/yahaludiyiji/';
 let mainUrl = 'http://www.manhualove.com/kehuan/yahaludierji/';
