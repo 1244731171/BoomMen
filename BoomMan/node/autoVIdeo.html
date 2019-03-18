@@ -1,0 +1,25 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>autoVIdeo</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let data = ["https://wuma.oss-cn-qingdao.aliyuncs.com/2019/3/14/608/1552576616581.mp4","https://wuma.oss-cn-qingdao.aliyuncs.com/wuma/2019/03/14/44197/ios_15525746631101998649326.mp4","https://wuma.oss-cn-qingdao.aliyuncs.com/2019/3/14/156/1552567589127.mp4","https://wuma.oss-cn-qingdao.aliyuncs.com/2019/3/14/608/1552566749181.mp4","https://wuma.oss-cn-qingdao.aliyuncs.com/wuma/2019/03/14/149/ios_1552559894504238978132.mp4","https://wuma.oss-cn-qingdao.aliyuncs.com/2019/3/14/608/1552563426777.mp4","https://wuma.oss-cn-qingdao.aliyuncs.com/2019/3/14/16210/1552555542554.mp4","https://wuma.oss-cn-qingdao.aliyuncs.com/2019/3/14/153/1552547719232.mp4"]
+    
+    
+    for (let url of data) {
+        let video = document.createElement('video');
+        video.src = url;
+        video.controls = 'controls';
+        document.body.append(video);
+    }
+</script>
+
+</html>

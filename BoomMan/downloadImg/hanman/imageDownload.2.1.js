@@ -4,8 +4,10 @@ const http = require("http");
 const request = require("request");
 const mkdirp = require('mkdirp');
 
+const logger = require('./log');
+
 let path = './欲求王';
-const jsonName = 'data.json';
+const jsonName = 'image.json';
 let imagePath = 'e:/hanman/欲求王';
 let iamgedata;
 let urls = [];
@@ -52,34 +54,55 @@ let loopImageData = () => {
 
 // 下载方法
 var retryTimes = 2;
-var download = function (url, path) {
-    request.head(url, function (err, res, body) {
-        console.log("try to download, url: " + url);
-        // console.log(JSON.stringify(res));
-        if (!err && res.statusCode == 200) {
-            request(url).pipe(fs.createWriteStream(path))
-                .on('close', function () {
-                    threadLength--;
-                    retryTimes = 2;
-                    console.log('img saved! path:' + path);
-                });
+let reDownload = function (url, path) {
+    threadLength++;
+    logger.log('__imageDownloader__RE__: try to save! url >>> %s', url);
+    request({
+        url: url,
+        encoding: 'binary',
+        timeout: 2e4
+    }, (error, response, body) => {
+        threadLength--;
+        if (!error && response.statusCode == 200) {
+            fs.writeFile(path, body, 'binary', err => {
+                if (err) {
+                    downloadError(err, url, path);
+                } else {
+                    logger.log('__imageDownloader__RE__: img saved! urlName >>> %s, path >>>> %s ', url.substr(-43), path);
+                }
+            });
         } else {
-            // console.log(err)
-            console.log("try to download failed!");
-            if (retryTimes-- > 0) {
-                download(url, path);
-            } else {
-                threadLength--;
-            }
+            downloadError(error || response.statusCode, url, path);
         }
     });
-};
+}
+
+// var download = function (url, path) {
+//     request.head(url, function (err, res, body) {
+//         console.log("try to download, url: " + url);
+//         // console.log(JSON.stringify(res));
+//         if (!err && res.statusCode == 200) {
+//             request(url).pipe(fs.createWriteStream(path))
+//                 .on('close', function () {
+//                     threadLength--;
+//                     retryTimes = 2;
+//                     console.log('img saved! path:' + path);
+//                 });
+//         } else {
+//             // console.log(err)
+//             console.log("try to download failed!");
+//             if (retryTimes-- > 0) {
+//                 download(url, path);
+//             } else {
+//                 threadLength--;
+//             }
+//         }
+//     });
+// };
 
 let downloadIndex = 0;
 let downloadNext = function () {
-    if (threadLength < 5) {
-        threadLength++;
-    } else {
+    if (threadLength > 5) {
         return;
     }
     let url = urls[downloadIndex];
@@ -93,7 +116,7 @@ let downloadNext = function () {
             threadLength--;
             downloadNext();
         } else {
-            download(url, path);
+            reDownload(url, path);
         }
     } else {
         console.log('all images downloaded!');

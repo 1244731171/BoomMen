@@ -1,6 +1,8 @@
 let InfoCollector = require('./downloadHanman.2.1');
 let ImageDownloader = require('./imageDownload.2.1');
-let ImageConcater = require('./imageplus.2.1');
+let ImageConcater = require('./imageConcater');
+let htmlCreater = require('./htmlCreater');
+const logger = require('./log');
 
 // let mainPageUrl = "http://www.hanman.co/index/books/index/id/67.html"
 // let mainPageUrl = "http://www.hanman.co/index/books/index/id/62.html"
@@ -15,8 +17,8 @@ let ImageConcater = require('./imageplus.2.1');
 // let mainPageUrl = "http://www.hanman.co/index/books/index/id/21.html"
 // let mainPageUrl = "http://www.hanman.co/index/books/index/id/41.html"
 
-let name = '新面孔New Face';
-let mainPageUrl = "http://www.hanman.co/index/books/index/id/5.html";
+// let name = '新面孔New Face';
+// let mainPageUrl = "http://www.hanman.co/index/books/index/id/5.html";
 // let name = '调教家政妇-双面保姆';
 // let mainPageUrl = "http://www.hanman.co/index/books/index/id/18.html";
 // let name = '淑女花苑第二季';
@@ -37,6 +39,18 @@ let mainPageUrl = "http://www.hanman.co/index/books/index/id/5.html";
 // let mainPageUrl = "http://www.hanman.co/index/books/index/id/241.html";
 
 // let mainPageUrl = "http://www.hanman.co/index/books/index/id/101.html";
+// let name = 'goodnight';
+// let mainPageUrl = "https://www.hanman.co/index/books/index/id/735.html";
+let name = '阿姨的秘密情事（有码）';
+let mainPageUrl = "https://www.hanman.co/index/books/index/id/688.html";
+let name = '阿姨的秘密情事1-9（无码）';
+let mainPageUrl = "https://www.hanman.co/index/books/index/id/424.html";
+
+
+// let name = '全职看护';
+// let mainPageUrl = "https://www.hanman.co/index/books/index/id/762.html";
+
+
 
 
 let dataPath = './' + name;
@@ -50,8 +64,16 @@ let collectPageurls = () => {
     time1 = time0 = time = new Date().getTime();
     InfoCollector.setJsonPath(dataPath);
     InfoCollector.setMainPageUrl(mainPageUrl);
-    InfoCollector.setCallBack(downloadImages);
+    InfoCollector.setCallBack(createChapterHtml);
     InfoCollector.start();
+}
+
+let createChapterHtml = () => {
+    logger.log(' >>>>>> CTEATECHAPTERHTML <<<<<< ');
+    t3 = new Date().getTime();
+    htmlCreater.setTitle(name);
+    htmlCreater.setCallBack(downloadImages);
+    htmlCreater.start();
 }
 
 let downloadImages = () => {
@@ -68,8 +90,7 @@ let concatImage = () => {
     time = new Date().getTime();
     console.log('COLLECT TIME: ', (time - time1) / 1000);
     time1 = time;
-    ImageConcater.setJsonPath(dataPath);
-    ImageConcater.setImagePath(imageataPath);
+    ImageConcater.setTitle(name);
     ImageConcater.setCallBack(doFinish);
     ImageConcater.start();
 }

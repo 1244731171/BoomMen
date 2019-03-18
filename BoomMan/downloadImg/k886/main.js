@@ -17,8 +17,9 @@ const logger = require('./log');
 // let mainUrl = 'https://www.k886.net/index-comic-name-%E5%82%80%E5%84%A1-id-36455';
 // let mainUrl = 'https://www.k886.net/index-comic-name-%E5%A5%B9%E7%9A%84%E9%AB%98%E8%B7%9F%E9%9E%8B-id-36222';
 // let mainUrl = 'https://www.k886.net/index-comic-name-DarkSea-id-36126';
-let mainUrl = 'https://www.k886.net/index-comic-name-SuperDick-id-36391';
+// let mainUrl = 'https://www.k886.net/index-comic-name-SuperDick-id-36391';
 
+let mainUrl = 'https://m.k886.net/comic/name/%E8%A7%A3%E7%A6%81%E5%88%9D%E5%A7%8B%E7%9A%84%E5%BF%AB%E6%84%9F/id/36291'
 // 海贼王
 // https://www.k886.net/index-comic-name-%E8%88%AA%E6%B5%B7%E7%8E%8B%E6%B5%B7%E8%B3%8A%E7%8E%8B-id-24676
 

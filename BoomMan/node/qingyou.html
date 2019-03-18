@@ -1,0 +1,194 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- <script src="jquery.js"></script> -->
+</head>
+
+<body>
+    <input type="text" name="" id="id">
+    <input type="button" value="video" id='v'>
+    <input type="button" value="album" id='a'>
+    <div id="show"></div>
+    <script>
+        let id = document.querySelector("#id");
+        let v = document.querySelector("#v");
+        let a = document.querySelector("#a");
+        let show = document.querySelector("#show");
+
+        v.addEventListener('click', function () {
+            r(id.value, 'v');
+        });
+        a.addEventListener('click', function () {
+            r(id.value, 'a');
+        });
+
+        let r = (id, type) => {
+            var uv = `http://qingyou.wumacps.com/appjsonv2/videoMain?video_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
+            var ua = `http://qingyou.wumacps.com/appjsonv2/albumMain?album_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
+            var url = type === 'a' ? ua : uv;
+            // $.ajax({
+            //     url: url,
+            //     type: 'JSONP',
+            //     success: function (e) {
+            //         debugger;
+            //     }
+            // })
+            ajax({
+                url: url,    // 请求地址
+
+                jsonp: 'jsonpCallback',  // 采用jsonp请求，且回调函数名为"jsonpCallbak"，可以设置为合法的字符串
+
+                data: {},   // 传输数据
+
+                success: function (res) {   // 请求成功的回调函数
+
+                    console.log(res);
+
+                },
+
+                error: function (error) { }   // 请求失败的回调函数
+
+            });
+        }
+
+        let an = () => {
+            var d = [];
+            if (j.data.video_url) {
+                d = ['<video src="' + j.data.video_url + '" autoplay controls>'];
+            } else {
+                var data = j.data.picture.photo;
+                data.forEach(ele => {
+                    d.push('<img src="' + ele.photo + '">');
+                });
+            }
+
+            fs.open('./1.html', 'w', (err, fd) => {
+                fs.writeFile(fd, d.join(''), (err) => {
+
+                    fs.close(fd, (err) => {
+                        console.log('over!')
+                    });
+                });
+            });
+        }
+
+
+        function ajax(params) {
+
+            params = params || {};
+
+            params.data = params.data || {};
+
+            var json = params.jsonp ? jsonp(params) : json(params);
+
+
+
+            // jsonp请求   
+
+            function jsonp(params) {
+
+                //创建script标签并加入到页面中   
+
+                var callbackName = params.jsonp;
+
+                var head = document.getElementsByTagName('head')[0];
+
+                // 设置传递给后台的回调参数名   
+
+                params.data['callback'] = callbackName;
+
+                var data = formatParams(params.data);
+
+                var script = document.createElement('script');
+
+                head.appendChild(script);
+
+
+
+                //创建jsonp回调函数   
+
+                window[callbackName] = function (json) {
+
+                    head.removeChild(script);
+
+                    clearTimeout(script.timer);
+
+                    window[callbackName] = null;
+
+                    params.success && params.success(json);
+
+                };
+
+
+
+                //发送请求   
+
+                script.src = params.url + '?' + data;
+
+
+
+                //为了得知此次请求是否成功，设置超时处理   
+
+                if (params.time) {
+
+                    script.timer = setTimeout(function () {
+
+                        window[callbackName] = null;
+
+                        head.removeChild(script);
+
+                        params.error && params.error({
+
+                            message: '超时'
+
+                        });
+
+                    }, time);
+
+                }
+
+            };
+
+
+
+            //格式化参数   
+
+            function formatParams(data) {
+
+                var arr = [];
+
+                for (var name in data) {
+
+                    arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
+
+                };
+
+
+
+                // 添加一个随机数，防止缓存   
+
+                arr.push('v=' + random());
+
+                return arr.join('&');
+
+            }
+
+
+
+            // 获取随机数   
+
+            function random() {
+
+                return Math.floor(Math.random() * 10000 + 500);
+
+            }
+        }
+
+    </script>
+</body>
+
+</html>

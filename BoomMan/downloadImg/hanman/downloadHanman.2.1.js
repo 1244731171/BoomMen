@@ -37,12 +37,12 @@ let makeDir = (path) => {
 }
 
 let getPagesInfo = () => {
-    let jsonPath = path + '/data.json';
+    let jsonPath = path + '/image.json';
     if(fs.existsSync(jsonPath)){
         callbacks.forEach(element => {
             element();
         });
-        console.log('data.json is extisted');
+        console.log('image.json is extisted');
         return;
     }
     datas = [];
@@ -81,8 +81,8 @@ let getImage = (url) => {
             loopEnd();
             return;
         }
-        var matchUrl = body.match(/http\:\/\/([a-z]|\.|[0-9]|\/)*.jpg/g);
-        console.log(index + "： " + url + ">>>" + JSON.stringify(matchUrl));
+        var matchUrl = body.match(/(http|https)\:\/\/([a-z]|\.|[0-9]|\/)*.jpg/g);
+        console.log(index + "： " + url + " >>> " + JSON.stringify(matchUrl));
         info.push({
             index: index,
             url: url,
@@ -94,12 +94,12 @@ let getImage = (url) => {
 
 let loopEnd = () => {
     let str = JSON.stringify(info);
-    let jsonPath = path + '/data.json';
+    let jsonPath = path + '/image.json';
     if(fs.existsSync(jsonPath)){
         callbacks.forEach(element => {
             element();
         });
-        // jsonPath = path + '/' + new Date().getTime() + 'data.json';
+        // jsonPath = path + '/' + new Date().getTime() + 'image.json';
     }
     fs.open(jsonPath, 'w', (err, fd) => {
         if (err) {

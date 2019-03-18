@@ -1,7 +1,7 @@
 const request = require('request');
 const fs = require('fs');
 
-let id = '1';
+let id = '3';
 let Bname = '';
 let Burl = 'http://189671.com/d/t/' + id + '.txt';
 let imgUrl = 'http://mhtp.q9090.com/img/'
@@ -10,7 +10,8 @@ let max = 5;
 let cur = 0;
 let totalInfo = {
     name: "",
-    data: {}
+    data: {},
+    ctxts: []
 };
 
 let index = 0;
@@ -30,16 +31,29 @@ let loopGet = (data) => {
                 });
             });
         });
+        let htmlStr = "<html><head></head><body>"
+        + "<script src='lazyload.js' type='text/javascript'></script>"
+        + "<script type='text/javascript'>"
+        + "var a = " + JSON.stringify(totalInfo) + ";addData(a);"
+        + "</script></body></html>"
+        fs.open(Bname+'.html', 'w', (err, fd) => {
+            fs.writeFile(fd, htmlStr, (err) => {
+                fs.close(fd, (err) => {
+                });
+            });
+        });
     }
 }
 
 let getCTurl = (cid) => {
-    return 'http://189671.com/d/d/' + id['substr'](0, 2) + '/' + (id['substr'](- 2) * 1) + '/' + id + '.txt';
+    return 'http://189671.com/d/d/' + cid['substr'](0, 2) + '/' + (cid['substr'](- 2) * 1) + '/' + cid + '.txt';
 }
 
 let getIUrls = (cid, index) => {
     cur++;
-    request(getCTurl(cid), { json: true }, (err, res, body) => {
+    let url = getCTurl(cid);
+    totalInfo.ctxts.push(url);
+    request(url, { json: true }, (err, res, body) => {
         cur--;
         loopGet();
         if (err) { return console.log(err); }
