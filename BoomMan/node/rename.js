@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-// const PATH = 'Q:/0127/';
+// const PATH = 'E:/soft/yundown/yundown/download/';
 // const PATH = 'Q:/好孩子看不到/国内写真/（萝莉）柚木写真/[柚木]红白调教(50P)_files/'
-const PATH = 'O:/H/yundown/'
+const PATH = 'O:/新建文件夹/'
 
 fs.readdir(PATH, (err, path)=>{
     path.forEach(ele => {

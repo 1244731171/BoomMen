@@ -5,8 +5,11 @@ const fs = require('fs');
 // const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]圈套/';
 // const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]她的高跟鞋/';
 // const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]女神狩猎/';
-const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]无名岛00-43/';
-
+// const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]无名岛00-43/';
+// const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]不伦驾训班/';
+// const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]暧昧/';
+// const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]White Girl 第2季/';
+const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]淑女花苑 第3季/';
 
 let arr = [];
 let index = 1;

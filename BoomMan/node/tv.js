@@ -11,17 +11,9 @@ var j = {};//{ "msg": "\u8bf7\u6c42\u6210\u529f.", "code": 1, "data": { "cover":
 
 //
 let id = '3382';
-var url = `https://qingyou.wumacps.com/appjsonv2/videoMain?video_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
+// var url = `https://qingyou.wumacps.com/appjsonv2/videoMain?video_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
 // var url = `https://qingyou.wumacps.com/appjsonv2/albumMain?album_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
 
-let r = (cb) => {
-    request(url, { json: true }, (err, res, body) => {
-        if (err) { return console.log(err); }
-        // console.log(body);
-        j = body;
-        cb();
-    });
-}
 
 var d = [];
 let a = () => {
@@ -46,17 +38,35 @@ let a = () => {
 }
 
 // r(a);
-
+var url = '';
 let c = () => {
     id = i--;
     url = `https://qingyou.wumacps.com/appjsonv2/videoMain?video_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
-    // var url = `https://qingyou.wumacps.com/appjsonv2/albumMain?album_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
+    // url = `https://qingyou.wumacps.com/appjsonv2/albumMain?album_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
     r(cj);
+}
+
+let r = (cb) => {
+    console.log(url);
+    request(url, { json: true }, (err, res, body) => {
+        if (err) { return console.log(err); }
+        // console.log(body);
+        j = body;
+        if (j.data && j.data.video_url) {
+            d.push(`<video src="${j.data.video_url}" controls></video>`);
+        }else if(j.data && j.data.picture){
+            var data = j.data.picture.photo;
+            data.forEach(ele => {
+                d.push('<img src="' + ele.photo + '">');
+            });
+        }
+        cb();
+    });
 }
 
 let out = () => {
     console.log(JSON.stringify(d));
-    console.log(id + ' out!');
+    console.log((--id) + ' out!');
 
     fs.open('./2.html', 'w', (err, fd) => {
         fs.writeFile(fd, d.join(''), (err) => {
@@ -72,13 +82,17 @@ let cj = () => {
     if (id < min) {
         out();
     } else {
-        if (j.data) {
-            d.push(`<video src="${j.data.video_url}" controls></video>`);
-        }
         c();
     }
 }
 
-let i = 3307;
-let min = i - 20;
+// let i = 1820;//img
+// let i = 3286; //3286 video
+let i = 1538;//1658; //3463 video
+let min = i - 38;
 c();
+
+// id = 1800;
+// // url = `https://qingyou.wumacps.com/appjsonv2/videoMain?video_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
+// url = `https://qingyou.wumacps.com/appjsonv2/albumMain?album_id=${id}&urlencode=false&app_type=android&version=16&user_id=95476&token=xfXcIqDvryMLYFaiTOytSCXbtUTZzMjd`
+// r(out);
