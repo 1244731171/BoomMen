@@ -42,3 +42,12 @@
 
 1. checkout恢复操作影响范围
 2. 如何撤销commit
+
+https://blog.csdn.net/afzaici/article/details/52711985
+https://www.jianshu.com/p/4090ba4f9963
+https://www.yiibai.com/git/git_checkout.html
+https://www.cnblogs.com/qianqiannian/p/6010219.html
+https://blog.csdn.net/lixiuxiu2017/article/details/79495884
+https://blog.csdn.net/meng19910117/article/details/84402456
+https://blog.csdn.net/u013374164/article/details/78831273
+https://www.cnblogs.com/yelbosh/p/7471979.html
