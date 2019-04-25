@@ -13,11 +13,11 @@
 ### git commit ###
 ``` shell
     // 缓存区 ==> 本地仓库（只将已经执行过 `git add .`的代码提交）
-    git commit -m 'log'
+    git commit -m "log" # log 单引号的话 空格会报错
     // 工作区 ==> 本地仓库（将没执行过 `git add .`的代码一并提交）
-    git commit -am 'log'
+    git commit -am "log" # log 单引号的话 空格会报错
     // 或
-    git commit -a -m 'log'
+    git commit -a -m "log" # log 单引号的话 空格会报错
 ```
   
 ### git diff ### 
@@ -35,3 +35,10 @@
     // 不会删除物理文件，只是将已经add进缓存的文件删除
     git rm --cached [<path>...]
 ```
+
+### git checkout ###
+``` shell
+```
+
+1. checkout恢复操作影响范围
+2. 如何撤销commit
