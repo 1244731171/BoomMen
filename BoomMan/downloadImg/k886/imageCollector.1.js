@@ -3,7 +3,7 @@ const logger = require("./log");
 
 const fs = require('fs');
 const request = require('request');
-const downloadPlugin = require('./imageDownloaderPlugin.2');
+// const downloadPlugin = require('./imageDownloaderPlugin.2');
 
 let title = '';
 let = './' + title;
@@ -149,7 +149,7 @@ let getImagePageInfo = (url, pageIndex) => {
         } else {
             imageUrl = imageUrl[0];
             logger.log('__imageCollecter__: imageUrl >>>> ', imageUrl);
-            downloadPlugin.download(imageUrl, data['index'] + '_' + pageIndex + '.jpg');
+            // downloadPlugin.download(imageUrl, data['index'] + '_' + pageIndex + '.jpg');
             if (data['data'].indexOf(imageUrl) === -1) {
                 data['data'].push(imageUrl);
                 getImagePageInfo(url, pageIndex + 1);
@@ -220,7 +220,7 @@ module.exports = {
         path = './' + title;
         chapterJsonPath = './' + title + '/chapter.json';
         imageJsonPath = './' + title + '/image.json';
-        downloadPlugin.setTitle(_title);
+        // downloadPlugin.setTitle(_title);
     },
     setCallBack: (callback) => {
         callbacks.push(callback);

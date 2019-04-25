@@ -77,7 +77,7 @@ let out = () => {
 }
 
 let cj = () => {
-    if (id < min) {
+    if (id <= min) {
         out();
     } else {
         c();
@@ -86,8 +86,8 @@ let cj = () => {
 
 // let i = 1820;//img
 // let i = 3286; //3286 video
-let i = 1680;//1658; //3463 video
-let min = i - 38;
+let i = 1784;//1658; //3463 video
+let min = i;// - 38;
 c();
 
 // id = 1800;
