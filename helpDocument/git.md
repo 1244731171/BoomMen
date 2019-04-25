@@ -19,7 +19,7 @@
     // 或
     git commit -a -m 'log'
 ```
-
+  
 ### git diff意义 ### 
 ``` shell
     // 查看工作区和缓存区的区别
