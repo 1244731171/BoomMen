@@ -10,16 +10,6 @@
 `git add .` 后 `git diff` 无区别  
 `git diff HEAD` 后 `git diff` 无区别  
 
-### 简写 ###
-``` shell
-    git st          # git status
-    git ci          # git commit
-    git br          # git branch
-    git co          # git checkout
-    git mg          # git merge
-    git line        # git log --oneline
-``` 
-
 ### git commit ###
 ``` shell
     // 缓存区 ==> 本地仓库（只将已经执行过 `git add .`的代码提交）
