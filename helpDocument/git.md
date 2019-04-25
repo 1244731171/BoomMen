@@ -7,9 +7,8 @@
 缓存区 git commit ==> 本地仓库
 本地仓库 git push ==> 远程仓库
 
-# git diff意义
-```
-
+### git diff意义
+``` shell
     // 查看工作区和缓存区的区别
     git diff [<path>...]
     // 查看工作区和本地仓库的区别
