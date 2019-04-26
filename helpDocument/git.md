@@ -38,6 +38,7 @@
 
 ### git checkout ###
 ``` shell
+    // 1. 恢复文件
     // -- 很重要，没有--就变成切换分支了
     git checkout -- path
 ```
