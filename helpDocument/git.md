@@ -12,9 +12,9 @@
 
 ### git commit ###
 ``` shell
-    // 缓存区 ==> 本地仓库（只将已经执行过 `git add .`的代码提交）
+    // 缓存区 ==> 本地仓库(只将已经执行过 `git add .`的代码提交)
     git commit -m "log" # log 单引号的话 空格会报错
-    // 工作区 ==> 本地仓库（将没执行过 `git add .`的代码一并提交）
+    // 工作区 ==> 本地仓库(将没执行过 `git add .`的代码一并提交)
     git commit -am "log" # log 单引号的话 空格会报错
     // 或
     git commit -a -m "log" # log 单引号的话 空格会报错
@@ -38,9 +38,10 @@
 
 ### git checkout ###
 ``` shell
-    // 1. 恢复文件
-    // -- 很重要，没有--就变成切换分支了
-    git checkout -- path
+    // 1. 从本地仓库恢复文件
+    // 1.1. --|HEAD很重要,不加就变成切分支了
+    // 1.2. 执行后会直接覆盖工作区和缓存区的代码
+    git checkout <--|HEAD> <path>
 ```
 
 1. checkout恢复操作影响范围
