@@ -38,6 +38,8 @@
 
 ### git checkout ###
 ``` shell
+    // -- 很重要，没有--就变成切换分支了
+    git checkout -- path
 ```
 
 1. checkout恢复操作影响范围
