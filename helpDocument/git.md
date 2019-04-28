@@ -1,6 +1,6 @@
 工作区 ide  
 缓存区 stage index  
-本地仓库 本地版本库 local  
+本地仓库 本地版本库 local HEAD  
 远程仓库 远程版本库 remote  
   
 ### 提交操作 ###
