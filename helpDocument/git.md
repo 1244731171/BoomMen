@@ -1,6 +1,6 @@
-工作区 ide  
-缓存区 stage index  
-本地仓库 本地版本库 local HEAD  
+工作区 working tree | ide  
+缓存区 stage | index  
+本地仓库 本地版本库 local | HEAD  
 远程仓库 远程版本库 remote  
   
 ### 提交操作 ###  
@@ -53,8 +53,15 @@
 
 ### git reset ###
 ``` shell
-    // 恢复缓存区的文件（本地仓库 ==覆盖==> 缓存区）
+    // 1.撤销add操作（本地仓库 ==覆盖==> 缓存区）
     git reset [HEAD] [.|<path>...]
+    // 2.撤销commit操作
+    // 2.1.撤销commit操作，重置 本地仓库 + 缓存区 + 工作区
+    git reset --hard commit_id
+    // 2.1.撤销commit操作，重置 本地仓库 + 缓存区, 保留 工作区 修改
+    git reset commit_id
+    git reset --mixed commit_id
+    // 2.1.撤销commit操作，重置 本地仓库, 保留 工作区 + 缓存区 修改
 ```
 
 1. checkout恢复操作影响范围
