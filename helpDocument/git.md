@@ -8,11 +8,7 @@
 `git commit -m xx` 缓存区 ==更新==> 本地仓库  
 `git commit -am xx` 工作区 ==更新==> 本地仓库  
 `git push` 本地仓库 ==更新==> 远程仓库  
-  
-### 文件操作 ###  
-`git checkout -- xx` 缓存区 ==回滚==> 工作区  
-`git checkout HEAD xx` 本地仓库 ==回滚==> 工作区 + 缓存区  
-  
+    
 ### 对比操作 ###
 `git add .` 后 `git diff` 无区别  
 `git commit` 后 `git diff --cached` 无区别  
@@ -48,14 +44,23 @@
     # 1. 从本地仓库恢复文件, --|HEAD很重要, 不加就变成切分支了
     # 1.1. -- 前缀, 缓存区 ==覆盖==> 工作区, 只涉及缓存区和工作区的操作
     git checkout -- [.|<path>...]
+    # 验证
+    git diff # 工作区和缓存区 无区别
+    
     # 1.2. HEAD 前缀, 本地仓库 ==覆盖==> 工作区 + 缓存区
     git checkout HEAD [.|<path>...]
+    # 验证
+    git diff # 工作区和缓存区 无区别
+    git diff HEAD # 工作区和本地仓库 无区别
+    git diff --cached # 缓存区和本地仓库 无区别
 ```
   
 ### git reset ###
 ``` shell
     # 1.撤销add操作（本地仓库 ==覆盖==> 缓存区）
-    git reset [HEAD] [.|<path>...]
+    git reset [HEAD] [<path>...]
+    # 验证
+    git diff # 工作区和缓存区 无区别
 
     # 2.撤销commit操作
     # 2.1.撤销commit操作, 重置 本地仓库 + 缓存区 + 工作区, 直接覆盖, 不保留代码
@@ -81,15 +86,23 @@
     git diff HEAD # 工作区和本地仓库 有区别
     git diff --cached # 缓存区和本地仓库 有区别
 ```
+
+### git revert ###
+``` shell
+    #回退到上一次提交的状态，按照某一次的commit完全反向的进行一次commit.(代码回滚到上个版本，并提交git)
+    git revert HEAD
+```
   
 ### 参考 ###
-https:#blog.csdn.net/cankingapp/article/details/18312117
-https:#blog.csdn.net/ustccw/article/details/79068547
-https:#blog.csdn.net/afzaici/article/details/52711985
-https:#www.jianshu.com/p/4090ba4f9963
-https:#www.yiibai.com/git/git_checkout.html
-https:#www.cnblogs.com/qianqiannian/p/6010219.html
-https:#blog.csdn.net/lixiuxiu2017/article/details/79495884
-https:#blog.csdn.net/meng19910117/article/details/84402456
-https:#blog.csdn.net/u013374164/article/details/78831273
-https:#www.cnblogs.com/yelbosh/p/7471979.html
+https://blog.csdn.net/cankingapp/article/details/18312117
+https://blog.csdn.net/ustccw/article/details/79068547
+https://blog.csdn.net/afzaici/article/details/52711985
+https://www.jianshu.com/p/4090ba4f9963
+https://www.yiibai.com/git/git_checkout.html
+https://www.cnblogs.com/qianqiannian/p/6010219.html
+https://blog.csdn.net/lixiuxiu2017/article/details/79495884
+https://blog.csdn.net/meng19910117/article/details/84402456
+https://blog.csdn.net/u013374164/article/details/78831273
+https://www.cnblogs.com/yelbosh/p/7471979.html
+https://blog.csdn.net/ustccw/article/details/79068547
+https://blog.csdn.net/cankingapp/article/details/18312117
