@@ -4,13 +4,14 @@
 远程仓库 远程版本库 remote  
   
 ### 提交操作 ###  
-工作区 `git add .` ==覆盖==> 缓存区  
-缓存区 `git commit` ==覆盖==> 本地仓库  
-本地仓库 `git push` ==覆盖==> 远程仓库  
+`git add .` 工作区 ==更新==> 缓存区  
+`git commit -m xx` 缓存区 ==更新==> 本地仓库  
+`git commit -am xx` 工作区 ==更新==> 本地仓库  
+`git push` 本地仓库 ==更新==> 远程仓库  
   
 ### 文件操作 ###  
-`git checkout -- xx` 缓存区 ==覆盖==> 工作区  
-`git checkout HEAD xx` 本地仓库 ==覆盖==> 工作区 + 缓存区  
+`git checkout -- xx` 缓存区 ==回滚==> 工作区  
+`git checkout HEAD xx` 本地仓库 ==回滚==> 工作区 + 缓存区  
   
 ### 对比操作 ###
 `git add .` 后 `git diff` 无区别  
