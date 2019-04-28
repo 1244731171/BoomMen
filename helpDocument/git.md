@@ -3,17 +3,20 @@
 本地仓库 本地版本库 local HEAD  
 远程仓库 远程版本库 remote  
   
-### 提交操作 ###
-工作区 `git add .` ==> 缓存区  
-缓存区 `git commit` ==> 本地仓库  
-本地仓库 `git push` ==> 远程仓库  
-
-### 文件操作 ###
-`git checkout -- xx` 本地仓库 ==覆盖==> 工作区+缓存区
-
+### 提交操作 ###  
+工作区 `git add .` ==覆盖==> 缓存区  
+缓存区 `git commit` ==覆盖==> 本地仓库  
+本地仓库 `git push` ==覆盖==> 远程仓库  
+  
+### 文件操作 ###  
+`git checkout -- xx` 缓存区 ==覆盖==> 工作区  
+`git checkout HEAD xx` 本地仓库 ==覆盖==> 工作区 + 缓存区  
+  
+### 对比操作 ###
 `git add .` 后 `git diff` 无区别  
-
-### git commit ###
+`git commit` 后 `git diff --cached` 无区别  
+  
+### git commit ###  
 ``` shell
     // 缓存区 ==> 本地仓库(只将已经执行过 `git add .`的代码提交)
     git commit -m "log" # log 单引号的话 空格会报错
