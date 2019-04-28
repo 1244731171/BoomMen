@@ -1,7 +1,8 @@
-工作区 working tree | ide  
-缓存区 stage | index  
-本地仓库 本地版本库 local | HEAD  
-远程仓库 远程版本库 remote  
+### 名词对照 ###  
+工作区                   working tree | ide  
+缓存区                   stage | index  
+本地仓库 | 本地版本库     local | HEAD  
+远程仓库 | 远程版本库     remote  
   
 ### 提交操作 ###  
 `git add .` 工作区 ==更新==> 缓存区  
