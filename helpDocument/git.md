@@ -44,7 +44,13 @@
     // 1. 从本地仓库恢复文件
     // 1.1. --|HEAD很重要,不加就变成切分支了
     // 1.2. 执行后会直接覆盖工作区和缓存区的代码
-    git checkout <--|HEAD> <path>
+    git checkout [--|HEAD] [.|<path>...]
+```
+
+### git reset ###
+``` shell
+    // 恢复缓存区的文件（本地仓库 ==覆盖==> 缓存区）
+    git reset [HEAD] [.|<path>...]
 ```
 
 1. checkout恢复操作影响范围
