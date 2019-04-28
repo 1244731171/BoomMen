@@ -3,17 +3,15 @@
 本地仓库 本地版本库 local  
 远程仓库 远程版本库 remote  
   
-提交操作  
+### 提交操作 ###
 工作区 `git add .` ==> 缓存区  
 缓存区 `git commit` ==> 本地仓库  
 本地仓库 `git push` ==> 远程仓库  
 
-文件操作  
+### 文件操作 ###
 `git checkout -- xx` 本地仓库 ==覆盖==> 工作区+缓存区
 
-  
 `git add .` 后 `git diff` 无区别  
-`git diff HEAD` 后 `git diff` 无区别  
 
 ### git commit ###
 ``` shell
