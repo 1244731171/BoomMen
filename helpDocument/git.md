@@ -42,7 +42,7 @@
     # 不会删除物理文件, 只是将已经add进缓存的文件删除
     git rm --cached [<path>...]
 ```
-
+  
 ### git checkout ###
 ``` shell
     # 1. 从本地仓库恢复文件, --|HEAD很重要, 不加就变成切分支了
@@ -51,7 +51,7 @@
     # 1.2. HEAD 前缀, 本地仓库 ==覆盖==> 工作区 + 缓存区
     git checkout HEAD [.|<path>...]
 ```
-
+  
 ### git reset ###
 ``` shell
     # 1.撤销add操作（本地仓库 ==覆盖==> 缓存区）
@@ -81,10 +81,8 @@
     git diff HEAD # 工作区和本地仓库 有区别
     git diff --cached # 缓存区和本地仓库 有区别
 ```
-
-1. checkout恢复操作影响范围
-2. 如何撤销commit
-
+  
+### 参考 ###
 https:#blog.csdn.net/cankingapp/article/details/18312117
 https:#blog.csdn.net/ustccw/article/details/79068547
 https:#blog.csdn.net/afzaici/article/details/52711985
