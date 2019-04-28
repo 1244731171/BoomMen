@@ -3,9 +3,14 @@
 本地仓库 本地版本库 local  
 远程仓库 远程版本库 remote  
   
+提交操作  
 工作区 `git add .` ==> 缓存区  
 缓存区 `git commit` ==> 本地仓库  
 本地仓库 `git push` ==> 远程仓库  
+
+文件操作  
+`git checkout -- xx` 本地仓库 ==覆盖==> 工作区+缓存区
+
   
 `git add .` 后 `git diff` 无区别  
 `git diff HEAD` 后 `git diff` 无区别  
@@ -47,6 +52,8 @@
 1. checkout恢复操作影响范围
 2. 如何撤销commit
 
+https://blog.csdn.net/cankingapp/article/details/18312117
+https://blog.csdn.net/ustccw/article/details/79068547
 https://blog.csdn.net/afzaici/article/details/52711985
 https://www.jianshu.com/p/4090ba4f9963
 https://www.yiibai.com/git/git_checkout.html
