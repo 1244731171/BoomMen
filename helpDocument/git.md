@@ -90,9 +90,25 @@
 
 ### git revert ###
 ``` shell
-    #回退到上一次提交的状态，按照某一次的commit完全反向的进行一次commit.(代码回滚到上个版本，并提交git)
+    # 回退到上一次提交的状态，按照某一次的commit完全反向的进行一次commit.(代码回滚到上个版本，并提交git)
     git revert HEAD
 ```
+
+### 退出mergeing状态 ###
+``` shell
+    git merge --abort #如果Git版本 >= 1.7.4
+    git reset --merge #如果Git版本 >= 1.6.1
+```
+
+### git merge时“交换文件.MERGE_MSG.swp已经存在”的问题 ###
+``` shell
+    # 中止合并
+    git merge -abort  
+    # 删除 vim 非正常关闭产生的文件
+    rm .git/.MERGE_MSG.sw* 
+```
+
+### git fetch 和 git pull 的区别 ###
   
 ### 参考 ###
 https://blog.csdn.net/cankingapp/article/details/18312117
@@ -107,3 +123,4 @@ https://blog.csdn.net/u013374164/article/details/78831273
 https://www.cnblogs.com/yelbosh/p/7471979.html
 https://blog.csdn.net/ustccw/article/details/79068547
 https://blog.csdn.net/cankingapp/article/details/18312117
+https://blog.csdn.net/riddle1981/article/details/74938111

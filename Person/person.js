@@ -34,14 +34,51 @@ module.exports = class Person {
         if (parent) {
             this.parentMade(parent);
         } else {
-            this.godMade(parent);
+            this.godMade();
         }
     }
     static SEX() {
-        return this.SEX;
+        return this.INBORN.SEX;
     }
-    parentMade() {
+    static ID(){
+        return this.INBORN.ID;
+    }
+    static MAX_AGE(){
+        return this.INBORN.MAX_AGE;
+    }
+    static IQ(){
+        return this.INBORN.IQ;
+    }
+    static SAN_LOW(){
+        return this.ACQUIRED.SAN_LOW;
+    }
+    static AGE(){
+        return this.STATUS.AGE;
+    }
+    static MONEY(){
+        return this.STATUS.MONEY;
+    }
+    static SAN(){
+        return this.STATUS.SAN;
+    }
+    static HP(){
+        return this.STATUS.HP;
+    }
+    parentMade(parent) {
+        let MAMA = parent[0].SEX === SEX_F ? parent[0] : parent[1];
+        let BABA = parent[0].SEX !== SEX_F ? parent[0] : parent[1];
 
+        this.INBORN.SEX = MAMA[this.random(2)] + BABA[this.random(2)];
+        this.INBORN.ID = new Date().getTime();
+        this.INBORN.MAX_AGE = this.random(MAMA.MAX_AGE, BABA.MAX_AGE);
+        this.INBORN.IQ = this.random(MAMA.IQ, BABA.IQ);
+
+        this.ACQUIRED.SAN_LOW = SAN_LOW;
+        
+        this.STATUS.AGE = 0;
+        this.STATUS.MONEY = 1e3;
+        this.STATUS.SAN = SAN_MAX;
+        this.STATUS.HP = HP_MAX;
     }
     godMade() {
         this.INBORN.SEX = this.random(2) ? SEX_F : SEX_M;
@@ -62,6 +99,8 @@ module.exports = class Person {
         this.STATUS = {};
     }
     random(max, min = 0) {
+        max = Math.max(max, min);
+        min = Math.min(max, min);
         return parseInt(Math.random() * (max - min)) + min;
     }
     born(){
