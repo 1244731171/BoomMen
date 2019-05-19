@@ -24,7 +24,7 @@ let makeDir = (_path) => {
         }
         logger.log('__chapterColleter__: path created >>>> ', _path);
         isCreatePath = true;
-        writeJson();
+        // writeJson();
     });
 }
 
@@ -36,7 +36,8 @@ let setTitle = (_title) => {
     jsonPath = './' + title + '/chapter.json';
     if (fs.existsSync(jsonPath)) {
         logger.log('__chapterColleter__: chapter.json exist! >>>> ', jsonPath);
-        collectEnd();
+        datas = fs.readFileSync(jsonPath);
+        isCreatePath = true;
     } else {
         makeDir(path);
     }
@@ -84,12 +85,17 @@ let getPagesInfo = () => {
         let dom = new JSDOM(body);
         setTitle(dom.window.document.querySelector('title').text.split('_')[0]);
         let as = dom.window.document.querySelector('#mh-chapter-list-ol-0').querySelectorAll('a');
-        datas = [];
+        let _datas = [];
         as.forEach(a => {
-            datas.push(host + a.href);
+            _datas.push(host + a.href);
         });
-        datas.reverse();
-        writeJson();
+        _datas.reverse();
+        if(_datas.length === datas.length){
+            collectEnd();
+        }else{
+            datas = _datas;
+            writeJson();
+        }
     });
 }
 
