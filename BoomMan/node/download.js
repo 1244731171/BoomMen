@@ -1,5 +1,6 @@
-const url1 = 'http://www.manhualove.com/upload2/20630/2018/10-19/20181019183441_086118ivc410re_small.jpeg';
-const url2 = 'https://img.k886.net/upload/attachment/201809/13/5b99fa6c5f428.jpg';
+// const url1 = 'http://www.manhualove.com/upload2/20630/2018/10-19/20181019183441_086118ivc410re_small.jpeg';
+// const url2 = 'https://img.k886.net/upload/attachment/201809/13/5b99fa6c5f428.jpg';
+const url1= 'https://www.cartoonmad.com/comic/comicpic.asp?file=/4270/001/001&rimg=3';
 
 const request = require('request');
 const fs = require('fs');
@@ -53,6 +54,8 @@ let download2 = (cb = download2) => {
                 if (cb) cb();
                 // console.log('__imageDownloader__: img saved! path >>>> ' + path1);
             });
+        }else{
+            console.log('error');
         }
     });
 }

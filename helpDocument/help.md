@@ -1,4 +1,9 @@
 
+解决'gulp' 不是内部或外部命令，也不是可运行的程序
+``` shell
+    npm install  -g gulp-cli 
+```
+
 ## 关于git生产ssh步骤 ##
 
 生成ssh，如果多个git账户需要重命名id_rsa文件名

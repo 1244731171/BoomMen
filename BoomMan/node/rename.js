@@ -14,6 +14,12 @@ fs.readdir(PATH, (err, path)=>{
                 rename(PATH+ele, PATH+eles[0]+'.rar')
             }
         }
+        let nele = ele.replace('[井上雄彦] ', '');
+        nele = nele.replace('Vol_', ' 第');
+        nele = nele.replace('_', ' ');
+        nele = nele.replace('.mobi', '卷.mobi');
+        // console.log(PATH+nele);
+        rename(PATH+ele, PATH+nele);
         // rename(PATH+ele,PATH+ele+'.jpg')
     })
 });
