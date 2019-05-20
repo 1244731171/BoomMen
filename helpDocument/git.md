@@ -108,6 +108,24 @@
     rm .git/.MERGE_MSG.sw* 
 ```
 
+### git branch 和 git checkout ###
+``` shell
+    # 查看全部分支
+    git branch -a
+    # 查看本地分支
+    git branch
+    # 生成本地分支
+    git branch xxx
+    # 切换本地分支
+    git checkout xxx
+    # 生产并切换本地分支（等同上面两步）
+    git checkout -b xxx
+    # 拽取并切换远程分支
+    git checkout -b xxx origin/yyy
+    # 删除分支
+    git branch -d xxx
+```
+
 ### git fetch 和 git pull 的区别 ###
   
 ### 参考 ###
