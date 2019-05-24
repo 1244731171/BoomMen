@@ -126,6 +126,8 @@
     git branch -d xxx
 ```
 
+git pull -rebase
+
 ### git fetch 和 git pull 的区别 ###
   
 ### 参考 ###
