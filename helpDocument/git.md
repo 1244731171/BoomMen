@@ -126,7 +126,14 @@
     git branch -d xxx
 ```
 
-git pull -rebase
+### git pull ###
+``` shell
+    # 拉取分支自动合并（经常冲突，或者覆盖源码）
+    # 等同于 git fetch + git merge
+    git pull 
+    # 等同于 git fetch + git rebase
+    git pull --rebase
+```
 
 ### git fetch 和 git pull 的区别 ###
   
