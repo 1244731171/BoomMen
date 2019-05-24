@@ -135,6 +135,15 @@
     git pull --rebase
 ```
 
+### git merge ###
+``` shell
+    # 手动合并代码（分支中的commit记录会被合并到master中，分支和master没有分支）
+    git merge branchxxx
+    # 手动合并代码（将分支以分叉形式合并到master中，分支中的commmit记录不会合并到master中，分支和maste分明显分开）
+    git merge branchxxx --no-ff
+```
+![图示](https://raw.githubusercontent.com/CJuNing/BoomMen/master/helpDocument/git merge.png)
+
 ### git fetch 和 git pull 的区别 ###
   
 ### 参考 ###
