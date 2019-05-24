@@ -142,7 +142,7 @@
     # 手动合并代码（将分支以分叉形式合并到master中，分支中的commmit记录不会合并到master中，分支和maste分明显分开）
     git merge branchxxx --no-ff
 ```
-![图示](https://raw.githubusercontent.com/CJuNing/BoomMen/master/helpDocument/git merge.png)
+![图示](https://github.com/CJuNing/BoomMen/blob/master/helpDocument/git%20merge.png)
 
 ### git fetch 和 git pull 的区别 ###
   
