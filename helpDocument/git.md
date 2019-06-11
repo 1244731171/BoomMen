@@ -23,6 +23,17 @@
     # 或
     git commit -a -m "log" # log 单引号的话 空格会报错
 ```
+
+### git push ###
+``` shell
+    # 如果远端分支名字和本地分支名字一样
+    git push
+    # 如果不一样
+    git push origin HEAD:remoteBranchName
+    # 删除远端分支
+    git push --delete origin remoteBranchName
+    # 改分支名称参见 git branch
+```
   
 ### git diff ### 
 ``` shell
@@ -130,15 +141,29 @@
     # 查看本地分支
     git branch
     # 生成本地分支
-    git branch xxx
+    git branch localBranchName
     # 切换本地分支
-    git checkout xxx
+    git checkout localBranchName
     # 生产并切换本地分支（等同上面两步）
-    git checkout -b xxx
+    git checkout -b localBranchName
     # 拽取并切换远程分支
-    git checkout -b xxx origin/yyy
-    # 删除分支
-    git branch -d xxx
+    git checkout -b localBranchName origin/remoteBranchName
+    # 删除本地分支（没有commit的话会删除失败）
+    git branch -d localBranchName
+    # 删除本地分支（强制删除）
+    git branch -D localBranchName
+    # 重命名本地仓库分支（远端分支名不受到影响）
+    git branch -m oldBranchName newBranchName
+
+    # 重命名远端分支
+    # 1.重命名远程分支对应的本地分支
+    git branch -m oldBranchName newBranchName
+    # 2.删除远程分支
+    git push --delete origin oldBranchName
+    # 3.上传新命名的本地分支
+    git push origin newName
+    # 4.把修改后的本地分支与远程分支关联
+    git branch --set-upstream-to origin/newName
 ```
 
 ### git pull ###
