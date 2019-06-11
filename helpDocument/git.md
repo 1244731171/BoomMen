@@ -55,6 +55,16 @@
     git diff HEAD # 工作区和本地仓库 无区别
     git diff --cached # 缓存区和本地仓库 无区别
 ```
+
+### git 放弃本地仓库修改，强制拽取远程仓库代码 ###
+``` shell
+    # git fetch 指令是下载远程仓库最新内容，不做合并 
+    git fetch --all
+    # git reset 指令把HEAD指向master最新版本
+    git reset --hard origin/master
+    # 可以省略
+    git pull
+```
   
 ### git reset ###
 ``` shell
