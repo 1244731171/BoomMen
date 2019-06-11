@@ -110,8 +110,13 @@
 
 ### git branch 和 git checkout ###
 ``` shell
-    # 查看全部分支
+    # 查看全部分支(最后一次pull时候拉取到的全部分支信息)
     git branch -a
+    # 如果远端仓库主动打了分支则要执行以下操作
+    git pull
+    git branch -a
+    # 直接查看远端分支（实时的）
+    git branch -r
     # 查看本地分支
     git branch
     # 生成本地分支
@@ -131,8 +136,18 @@
     # 拉取分支自动合并（经常冲突，或者覆盖源码）
     # 等同于 git fetch + git merge
     git pull 
+    # 先把自己本地的修改退回工作区，完后pull最新代码，并且逐步merge（会删除commit记录？？）
     # 等同于 git fetch + git rebase
     git pull --rebase
+    # 在执行git pull --rebase以后可能会发现冲突（rebaseing），可以执行以下2种操作
+    # 1.退出本次pull，将代码回复到git pull --rebase操作前
+    git rebase --abort 
+    # 2.1.查看并解决冲突
+    git am --show-current-patch
+    # 2.2.提交修复
+    git add .
+    # 2.3.合并代码
+    git rebase --continue
 ```
 
 ### git merge ###
