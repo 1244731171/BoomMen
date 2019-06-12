@@ -1,0 +1,40 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>autoVIdeo</title>
+</head>
+
+<body>
+    <input type="text" id='txt'></input>
+    <div id="image"></div>
+</body>
+<script>
+    var src = document.getElementById('txt').value;
+    var images = document.getElementById('image');
+    var orgSrc = "";
+    setInterval(() => {
+        src = document.getElementById('txt').value;
+        if (src != orgSrc) {
+            orgSrc = src;
+            let imgsrc = src.match(/http\:\/\/([a-z]|\.|\_|[0-9]|\/)*.jpg/g);
+            images.innerHTML = '';
+            let lastImgSrc = '';
+            var arr = [];
+            imgsrc.forEach(element => {
+                if(lastImgSrc != element){
+                    let img = new Image();
+                    img.src = element;
+                    images.append(img);
+                    lastImgSrc = element;
+                    arr.push(element);
+                }
+            });
+            console.log(JSON.stringify(arr));
+        }
+    }, 500)
+</script>
+
+</html>

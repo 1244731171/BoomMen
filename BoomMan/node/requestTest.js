@@ -1,6 +1,6 @@
-// const request = require('request');
-// const jsdom = require("jsdom");
-// const { JSDOM } = jsdom;
+const request = require('request');
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 // https://github.com/jsdom/jsdom
 // https://www.npmjs.com/package/jsdom
@@ -35,8 +35,15 @@
 //     console.log(data);
 // });
 
-// request.post({uri:'http://s6e.yaaja.com/album/reward', form: {id:'2672',s:'sssssssssssssss'}},(err, res, body) => {
+request.post({uri:'http://www.manhuacun.com/Mh/inforedit.html&mhid=731&ji_no=15', form: {}},(err, res, body) => {
+    if (err) { return console.log(err); }
+    console.log(res,11111111111);
+    console.log(body,22222222);
+});
+
+// request('http://www.manhuacun.com/Mh/inforedit.html&mhid=731&ji_no=15', { json: false }, (err, res, body) => {
 //     if (err) { return console.log(err); }
-//     console.log(res,11111111111);
-//     console.log(body,22222222);
+//     console.log(body);
+//     // var matchUrl = body.match(/\/index([a-z.0-9]|\/|\.)*html/g);
+//     // console.log(JSON.stringify(matchUrl));
 // });
