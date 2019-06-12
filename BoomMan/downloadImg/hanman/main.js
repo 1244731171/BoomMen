@@ -46,6 +46,8 @@ let mainPageUrl = "https://www.hanman.co/index/books/index/id/688.html";
 let name = '阿姨的秘密情事1-9（无码）';
 let mainPageUrl = "https://www.hanman.co/index/books/index/id/424.html";
 
+https://www.manhwa.cc/
+
 
 // let name = '全职看护';
 // let mainPageUrl = "https://www.hanman.co/index/books/index/id/762.html";
