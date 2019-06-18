@@ -8,13 +8,18 @@
 </head>
 
 <body>
-    <input type="text" id='txt'></input>
+    <input type="text" id='txt'></input><br/>
+    <input type="text" id='txt2'></input><br/>
+    <button value="enter" id='btn'>enter</button><br/>
+    <textarea name="" id="ta" cols="300" rows="100"></textarea>
     <div id="image"></div>
 </body>
 <script>
     var src = document.getElementById('txt').value;
     var images = document.getElementById('image');
     var orgSrc = "";
+    var orgSrc2 = "";
+    var ta = document.getElementById('ta');
     setInterval(() => {
         src = document.getElementById('txt').value;
         if (src != orgSrc) {
@@ -24,7 +29,7 @@
             let lastImgSrc = '';
             var arr = [];
             imgsrc.forEach(element => {
-                if(lastImgSrc != element){
+                if (lastImgSrc != element) {
                     // let img = new Image();
                     // img.src = element;
                     // images.append(img);
@@ -33,21 +38,32 @@
                 }
             });
             console.log(JSON.stringify(arr));
+            ta.value = (JSON.stringify(arr));
         }
     }, 500);
 
     let mkj = (name, length) => {
         let arr = [];
-        while(length-- > 0){
+        while (length-- > 0) {
             arr.push({
                 "name": name,
-                "index": arr.length+1,
-                "data":[],
-                "failedUrl":""
+                "index": arr.length + 1,
+                "data": [],
+                "failedUrl": ""
             });
         }
-		console.log(JSON.stringify(arr))
+        console.log(JSON.stringify(arr))
+        ta.value = (JSON.stringify(arr));
     }
+
+    document.querySelector("#btn").addEventListener('click', () => {
+        let src = document.getElementById('txt2').value;
+        if (src != "") {
+            src = src.replace("，",',');
+            var srcs = src.split(',');
+            mkj(srcs[0], srcs[1]);
+        }
+    })
 </script>
 
 </html>

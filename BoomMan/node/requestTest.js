@@ -35,15 +35,34 @@ const { JSDOM } = jsdom;
 //     console.log(data);
 // });
 
-request.post({uri:'http://www.manhuacun.com/Mh/inforedit.html&mhid=731&ji_no=15', form: {}},(err, res, body) => {
-    if (err) { return console.log(err); }
-    console.log(res,11111111111);
-    console.log(body,22222222);
-});
+// request.post(
+//     {
+//         uri: 'http://www.manhuacun.com/Mh/inforedit.html&mhid=692&ji_no=11',
+//         form: {},
+//         Cookie: ''
+//     }, (err, res, body) => {
+//         if (err) { return console.log(err); }
+//         console.log(res, 11111111111);
+//         console.log(body, 22222222);
+//     });
 
-// request('http://www.manhuacun.com/Mh/inforedit.html&mhid=731&ji_no=15', { json: false }, (err, res, body) => {
-//     if (err) { return console.log(err); }
-//     console.log(body);
-//     // var matchUrl = body.match(/\/index([a-z.0-9]|\/|\.)*html/g);
-//     // console.log(JSON.stringify(matchUrl));
-// });
+
+// Set the headers for the request
+var headers = {
+    'Content-Type': 'application/json',
+    // 'Content-Length': Buffer.byteLength(post_data),
+    'Cookie': 'PHPSESSID=p3nr1fprr7hfk4r0l4ahg8u2b2; UM_distinctid=16b6a463d9444a-0b46708abc4994-3e385a0a-1fa400-16b6a463d952e6; CNZZDATA1277644898=1671604651-1560855448-%7C1560859256; uloginid=7961519809'
+};
+// Configure the request
+var options = {
+    url: 'http://www.manhuacun.com/Mh/inforedit.html&mhid=692&ji_no=11',
+    method: 'GET',
+    headers: headers
+};
+request(options, (err, res, body) => {
+    if (err) { return console.log(err); }
+    let imgsrc = body.match(/http\:\/\/([a-z]|\.|\_|[0-9]|\/)*.jpg/g);
+    console.log(JSON.stringify(imgsrc));
+    // var matchUrl = body.match(/\/index([a-z.0-9]|\/|\.)*html/g);
+    // console.log(JSON.stringify(matchUrl));
+});

@@ -1,28 +1,30 @@
 //依赖模块
 
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=338&ji_no=54
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=563&ji_no=8
+// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=563&ji_no=8
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=593&ji_no=77
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=680&ji_no=103
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=67&ji_no=103
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=692&ji_no=11
+// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=692&ji_no=11
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=697&ji_no=32
+// 哥哥的秘密
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=700&ji_no=12
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=715&ji_no=26
+// 狩猎母猪
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=716&ji_no=15
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=723&ji_no=64
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=728&ji_no=38
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=15&ji_no=16
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=19&ji_no=14&sub=
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=74&ji_no=11
+// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=74&ji_no=11
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=69&ji_no=20
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=741&ji_no=22
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=741&ji_no=45
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=40&ji_no=25
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=44&ji_no=24
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=142&ji_no=32
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=100&ji_no=12
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=117&ji_no=12
+// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=100&ji_no=12
+// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=117&ji_no=12
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=122&ji_no=59
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=130&ji_no=18
 // http://www.manhuacun.com/Mh/inforedit.html&mhid=127&ji_no=23&sub=
@@ -39,7 +41,7 @@ let errorList = [];
 let downloadImageLength = 0;
 let threadLength = 0;
 
-let name = '漂亮干姐姐';
+let name = '共享情人';
 let dataJson = name + '/data.json';
 let savePath = 'e:/hanman/' + name + '/';
 let savePath_html = 'e:/hanman/' + name + '/localHtml/';
@@ -148,17 +150,19 @@ let checkChapPath = () => {
     let sameChap = [];
     let sameChapPath = [];
     while (chapMark.length > 0) {
-        console.log('chapMark.length =>' + chapMark.length + ',curIndex =>' + curIndex);
+        // console.log('chapMark.length =>' + chapMark.length + ',curIndex =>' + curIndex);
         if (last != chapMark[curIndex]) {
-            sameChap = chapMark.splice(0, curIndex+1);
-            sameChapPath = paths.splice(0, curIndex+1);
+            console.log('last =>' + last + 'chapMark =>' + chapMark[curIndex] + ',paths =>' + paths[curIndex] + ',curIndex =>' + curIndex);
             last = chapMark[curIndex];
+            sameChap = chapMark.splice(0, curIndex);
+            sameChapPath = paths.splice(0, curIndex);
             curIndex = 0;
             markHTML(sameChapPath, sameChap[0]);
         } else if (curIndex === (chapMark.length - 1)) {
-            sameChap = chapMark.splice(0, curIndex+1);
-            sameChapPath = paths.splice(0, curIndex+1);
+            console.log('last =>' + last + 'chapMark =>' + chapMark[curIndex] + ',paths =>' + paths[curIndex] + ',curIndex =>' + curIndex);
             last = chapMark[curIndex];
+            sameChap = chapMark.splice(0, curIndex + 1);
+            sameChapPath = paths.splice(0, curIndex + 1);
             curIndex = 0;
             markHTML(sameChapPath, sameChap[0]);
         } else {
@@ -195,7 +199,6 @@ let markHTML = (data, index) => {
     });
 }
 
-readJsonData();
 
 // 下载方法
 let ppDownload = (url, path) => {
@@ -266,3 +269,15 @@ let downloadError = (err, url, path) => {
 //     },
 //     start: readJsonData
 // };
+
+module.exports = {
+    setName: (_name) => {
+        name = _name;
+        dataJson = name + '/data.json';
+        savePath = 'e:/hanman/' + name + '/';
+        savePath_html = 'e:/hanman/' + name + '/localHtml/';
+    },
+    go: () =>{
+        readJsonData();
+    }
+}
