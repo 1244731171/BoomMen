@@ -41,7 +41,7 @@ let errorList = [];
 let downloadImageLength = 0;
 let threadLength = 0;
 
-let name = '共享情人';
+let name = '冲突';
 let dataJson = name + '/data.json';
 let savePath = 'e:/hanman/' + name + '/';
 let savePath_html = 'e:/hanman/' + name + '/localHtml/';
