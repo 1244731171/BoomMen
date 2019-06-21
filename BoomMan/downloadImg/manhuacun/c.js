@@ -11,7 +11,8 @@ let rq = (id, index) => {
     let headers = {
         'Content-Type': 'application/json',
         // 'Content-Length': Buffer.byteLength(post_data),
-        'Cookie': 'UM_distinctid=16b6b2fb9fa2e1-09863dca910f83-3e385a0a-1fa400-16b6b2fb9fb61a; CNZZDATA1277644898=1938338913-1560870063-http%253A%252F%252Fwww.manhuacun.com%252F%7C1560870063; PHPSESSID=clq746ur7p6llnd4k1p73s7bt7; uloginid=8021548042'
+        // 'Cookie': 'UM_distinctid=16b6b2fb9 fa2e1-09863dca910f83-3e385a0a-1fa400-16b6b2fb9fb61a; PHPSESSID=a8lf0evl082163vkpn7ddfhp97; CNZZDATA1277644898=1938338913-1560870063-http%253A%252F%252Fwww.manhuacun.com%252F%7C1561031580; uloginid=5441548042'
+        'Cookie': 'UM_distinctid=16b6a45c1923f-03df5d2bb78235-4048032c-1fa400-16b6a45c193317; PHPSESSID=aq4o5dgc98sq0loqe7to1p8125; CNZZDATA1277644898=1000072972-1561026763-%7C1561026763; uloginid=3101820341'
     };
     // Configure the request
     let options = {
@@ -21,6 +22,7 @@ let rq = (id, index) => {
     };
     request(options, (err, res, body) => {
         if (err) {
+            clearInterval(timer);
             output();
             return console.log(err);
         }
@@ -36,6 +38,7 @@ let rq = (id, index) => {
             //     output();
             // }
         } else {
+            clearInterval(timer);
             output();
         }
     });
@@ -45,6 +48,18 @@ let save = (index, _data) => {
     console.log(`index => ${index}, length => ${_data.length}`);
     data[index] = _data;
 };
+
+let lastStr = '';
+let protectSave = () => {
+    let str = '';
+    for(var k in data){
+        str += k;
+    }
+    if(str != '' && str != lastStr){
+        lastStr = str;
+        output();
+    }
+}
 
 let output = () => {
     console.log(`output`);
@@ -117,8 +132,10 @@ let doEnd = () => {
     download.go();
 }
 
-let cnName = '上门女婿（郑女婿）';
-let maxIndex = 52;
-let id = '203';
+let cnName = '缝隙';
+let maxIndex = 60;
+let id = '728';
 
 checkPath();
+
+let timer = setInterval(protectSave, 60*1000*3);
