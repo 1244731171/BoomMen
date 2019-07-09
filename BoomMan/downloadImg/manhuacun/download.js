@@ -103,7 +103,7 @@ let startDownLoad = () => {
 }
 
 let downloadNext = function () {
-    if (threadLength > 10) {
+    if (threadLength > 3) {
         return;
     }
     let url = urls[downloadIndex];
@@ -223,7 +223,7 @@ let reDownload = function (url, path) {
     request({
         url: url,
         encoding: 'binary',
-        timeout: 2e4
+        timeout: 6e4
     }, (error, response, body) => {
         threadLength--;
         if (!error && response.statusCode == 200) {
@@ -242,7 +242,7 @@ let reDownload = function (url, path) {
 }
 
 let downloadError = (err, url, path) => {
-    console.log('__imageDownloader__: ERROR! >>> ', err);
+    console.log(`__imageDownloader__: ERROR! >>> ${url}`, err);
     if (fs.existsSync(path)) {
         fs.unlinkSync(path);
     }

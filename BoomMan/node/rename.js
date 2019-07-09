@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-// const PATH = 'E:/soft/yundown/yundown/download/';
+const PATH = 'E:/soft/yundown/yundown/download/';
 // const PATH = 'Q:/好孩子看不到/国内写真/（萝莉）柚木写真/[柚木]红白调教(50P)_files/'
-const PATH = 'L:/新建文件夹/';
+// const PATH = 'L:/新建文件夹/';
 // const PATH = 'Q:/好孩子看不到/超级精品图片/bunnybunny_love/';
 // const PATH = 'O:/散图/';
 // const PATH = 'O:/temp/';

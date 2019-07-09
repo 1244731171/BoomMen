@@ -135,8 +135,9 @@ let doEnd = () => {
     download.go();
 }
 
-let cnName = '阿姨的秘密情事';
-let id = '741';
+
+// let cnName = '阿姨的秘密情事';
+// let id = '741';
 // let cnName = '冲突';
 // let id = '731';
 // let cnName = '老师好久不见';
@@ -145,8 +146,10 @@ let id = '741';
 // let id = '690';
 // let cnName = '漂亮干姐姐';
 // let id = '114';
-// let cnName = '夺爱的滋味';
-// let id = '706';
+let cnName = '夺爱的滋味';
+let id = '706';
+// let cnName = '共享情人';
+// let id = '74';
 
 checkPath();
 
