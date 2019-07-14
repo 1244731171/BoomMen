@@ -11,8 +11,9 @@ let rq = (id, index) => {
     let headers = {
         'Content-Type': 'application/json',
         // 'Content-Length': Buffer.byteLength(post_data),
+        'Cookie': 'UM_distinctid=16b6b2fb9fa2e1-09863dca910f83-3e385a0a-1fa400-16b6b2fb9fb61a; PHPSESSID=ls4jhdapm3ojooq4lt87s3t3g6; CNZZDATA1277644898=1938338913-1560870063-http%253A%252F%252Fwww.manhuacun.com%252F%7C1563109511; uloginid=1645528233'
         // 'Cookie': 'UM_distinctid=16b6b2fb9 fa2e1-09863dca910f83-3e385a0a-1fa400-16b6b2fb9fb61a; PHPSESSID=a8lf0evl082163vkpn7ddfhp97; CNZZDATA1277644898=1938338913-1560870063-http%253A%252F%252Fwww.manhuacun.com%252F%7C1561031580; uloginid=5441548042'
-        'Cookie': 'UM_distinctid=16b6a45c1923f-03df5d2bb78235-4048032c-1fa400-16b6a45c193317; PHPSESSID=c7fgplrb9sru5lcbfek8q530t2; CNZZDATA1277644898=1000072972-1561026763-%7C1561496733; uloginid=8391820341'
+        // 'Cookie': 'UM_distinctid=16b6a45c1923f-03df5d2bb78235-4048032c-1fa400-16b6a45c193317; PHPSESSID=c7fgplrb9sru5lcbfek8q530t2; CNZZDATA1277644898=1000072972-1561026763-%7C1561496733; uloginid=8391820341'
     };
     // Configure the request
     let options = {
@@ -135,8 +136,9 @@ let doEnd = () => {
     download.go();
 }
 
-let cnName = '阿姨的秘密情事';
-let id = '741';
+
+// let cnName = '阿姨的秘密情事';
+// let id = '741';
 // let cnName = '冲突';
 // let id = '731';
 // let cnName = '老师好久不见';
@@ -147,6 +149,17 @@ let id = '741';
 // let id = '114';
 // let cnName = '夺爱的滋味';
 // let id = '706';
+// let cnName = '共享情人';
+// let id = '74';
+// let cnName = '上门女婿（郑女婿）';
+// let id = '203';
+// let cnName = '迷人的她';
+// let id = '137';
+// let cnName = '猜不透的心';
+// let id = '723';
+let cnName = '那里的香气';
+let id = '127';
+
 
 checkPath();
 
