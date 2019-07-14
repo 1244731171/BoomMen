@@ -159,13 +159,16 @@ let doEnd = () => {
 // let id = '723';
 // let cnName = '那里的香气';
 // let id = '127';
-let cnName = '我们的非常关系';
-let id = '44';
+// let cnName = '我们的非常关系';
+// let id = '44';
 // let cnName = '新生淫乱日记';
 // let id = '30';
 // let cnName = '流浪猫';
-// let forceFisrt = 33;
 // let id = '70';
+// let cnName = '女上男下';
+// let id = '71';
+let cnName = '帮人家画嘛';
+let id = '708';
 
 
 
