@@ -10,7 +10,8 @@ const fs = require('fs');
 // const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]暧昧/';
 // const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]White Girl 第2季/';
 // const PATH = 'J:/yundownload/韩国漫画/压缩01-50/[韩漫]淑女花苑 第3季/';
-const PATH = 'K:/yundownload/韩国漫画/压缩01-50/[韩漫]偶然 (by chance)/'
+// const PATH = 'K:/yundownload/韩国漫画/压缩01-50/[韩漫]偶然 (by chance)/';
+const PATH = 'L:/yundownload/韩国漫画/压缩01-50/[韩漫]女妖之祸/';
 
 let arr = [];
 let index = 1;

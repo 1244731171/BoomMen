@@ -118,7 +118,7 @@ let checkData = () => {
         if (err) {
             return console.error(err);
         }
-        let index = 1;
+        let index = 0;
         console.log("异步读取: " + _data.toString());
         imagedata = JSON.parse(_data);
         for (const i of imagedata) {
@@ -157,8 +157,12 @@ let doEnd = () => {
 // let id = '137';
 // let cnName = '猜不透的心';
 // let id = '723';
-let cnName = '那里的香气';
-let id = '127';
+// let cnName = '那里的香气';
+// let id = '127';
+// let cnName = '我们的非常关系';
+// let id = '44';
+let cnName = '新生淫乱日记';
+let id = '30';
 
 
 checkPath();
