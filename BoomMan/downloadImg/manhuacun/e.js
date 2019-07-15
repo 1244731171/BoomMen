@@ -11,9 +11,8 @@ let rq = (id, index) => {
     let headers = {
         'Content-Type': 'application/json',
         // 'Content-Length': Buffer.byteLength(post_data),
-        'Cookie': 'PHPSESSID=9sn0i5vdnadgtu7eqadqcphdd3; __51cke__=; uloginid=627865; __tins__2994155=%7B%22sid%22%3A%201563146425283%2C%20%22vd%22%3A%2022%2C%20%22expires%22%3A%201563148822168%7D; __51laig__=22'
-        // 'Cookie': 'UM_distinctid=16b6b2fb9 fa2e1-09863dca910f83-3e385a0a-1fa400-16b6b2fb9fb61a; PHPSESSID=a8lf0evl082163vkpn7ddfhp97; CNZZDATA1277644898=1938338913-1560870063-http%253A%252F%252Fwww.manhuacun.com%252F%7C1561031580; uloginid=5441548042'
-        // 'Cookie': 'UM_distinctid=16b6a45c1923f-03df5d2bb78235-4048032c-1fa400-16b6a45c193317; PHPSESSID=c7fgplrb9sru5lcbfek8q530t2; CNZZDATA1277644898=1000072972-1561026763-%7C1561496733; uloginid=8391820341'
+        // 'Cookie': 'PHPSESSID=9sn0i5vdnadgtu7eqadqcphdd3; __51cke__=; uloginid=627865; __tins__2994155=%7B%22sid%22%3A%201563146425283%2C%20%22vd%22%3A%2022%2C%20%22expires%22%3A%201563148822168%7D; __51laig__=22'
+        'Cookie': 'PHPSESSID=9bisg0tcng8orvodpim0e7pp94; __tins__2994155=%7B%22sid%22%3A%201563200860004%2C%20%22vd%22%3A%2017%2C%20%22expires%22%3A%201563202984277%7D; __51cke__=; __51laig__=17; uloginid=627951'
     };
     // Configure the request
     let options = {
@@ -34,6 +33,7 @@ let rq = (id, index) => {
         if(imgsrc.length == 0){
             imgsrc = body.match(/http\:\/\/([a-z]|\.|\_|[0-9]|\/)*.gif/g) || [];
         }
+        checkArray(imgsrc);
         // console.log(JSON.stringify(imgsrc));
         console.log(`${index} back, image length => ${imgsrc.length}`);
         if (imgsrc.length > 0) {
@@ -49,6 +49,13 @@ let rq = (id, index) => {
             output();
         }
     });
+}
+let checkArray = (arr) => {
+    let max = arr.length - 1;
+    while(max > 0){
+        arr.splice(max, 1);
+        max -= 2;
+    }
 }
 
 let save = (index, _data) => {
@@ -144,6 +151,9 @@ let cnName = '美丽新世界';
 let id = '980';
 // let cnName = '干爹我还要';
 // let id = '337';
+// let cnName = '母豬養成計畫';
+// let id = '297';
+
 
 
 
