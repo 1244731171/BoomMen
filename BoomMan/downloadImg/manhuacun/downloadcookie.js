@@ -217,14 +217,27 @@ let ppDownload = (url, path) => {
     reader.pipe(writer);
 }
 
+let headers = {
+    'Content-Type': 'application/json',
+    // 'Content-Length': Buffer.byteLength(post_data),
+    'Cookie': 'PHPSESSID=9sn0i5vdnadgtu7eqadqcphdd3; __51cke__=; uloginid=627865; __tins__2994155=%7B%22sid%22%3A%201563146425283%2C%20%22vd%22%3A%2022%2C%20%22expires%22%3A%201563148822168%7D; __51laig__=22'
+    // 'Cookie': 'UM_distinctid=16b6b2fb9 fa2e1-09863dca910f83-3e385a0a-1fa400-16b6b2fb9fb61a; PHPSESSID=a8lf0evl082163vkpn7ddfhp97; CNZZDATA1277644898=1938338913-1560870063-http%253A%252F%252Fwww.manhuacun.com%252F%7C1561031580; uloginid=5441548042'
+    // 'Cookie': 'UM_distinctid=16b6a45c1923f-03df5d2bb78235-4048032c-1fa400-16b6a45c193317; PHPSESSID=c7fgplrb9sru5lcbfek8q530t2; CNZZDATA1277644898=1000072972-1561026763-%7C1561496733; uloginid=8391820341'
+};
 let reDownload = function (url, path) {
     threadLength++;
     console.log('__imageDownloader__RE__: try to save! url >>> %s', url);
-    request({
+    
+    // Configure the request
+    let options = {
         url: url,
+        method: 'GET',
+        headers: headers,
         encoding: 'binary',
         timeout: 6e4
-    }, (error, response, body) => {
+    };
+
+    request(options, (error, response, body) => {
         threadLength--;
         if (!error && response.statusCode == 200) {
             fs.writeFile(path, body, 'binary', err => {

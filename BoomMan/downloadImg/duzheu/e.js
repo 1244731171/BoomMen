@@ -1,37 +1,5 @@
 //依赖模块
 
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=338&ji_no=54
-// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=563&ji_no=8
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=593&ji_no=77
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=680&ji_no=103
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=67&ji_no=103
-// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=692&ji_no=11
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=697&ji_no=32
-// 哥哥的秘密
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=700&ji_no=12
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=715&ji_no=26
-// 狩猎母猪
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=716&ji_no=15
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=723&ji_no=64
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=728&ji_no=38
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=15&ji_no=16
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=19&ji_no=14&sub=
-// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=74&ji_no=11
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=69&ji_no=20
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=741&ji_no=22
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=741&ji_no=45
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=40&ji_no=25
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=44&ji_no=24
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=142&ji_no=32
-// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=100&ji_no=12
-// ！http://www.manhuacun.com/Mh/inforedit.html&mhid=117&ji_no=12
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=122&ji_no=59
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=130&ji_no=18
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=127&ji_no=23&sub=
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=168&ji_no=26
-// http://www.manhuacun.com/Mh/inforedit.html&mhid=140&ji_no=18&sub=
-
-
 const fs = require('fs');
 const request = require("request");
 const mkdirp = require('mkdirp');
@@ -42,14 +10,14 @@ let downloadImageLength = 0;
 let threadLength = 0;
 
 let name = '冲突';
-let dataJson = name + '/data.json';
+let dataJson = './data.json';
 let savePath = 'e:/hanman/' + name + '/';
 let savePath_html = 'e:/hanman/' + name + '/localHtml/';
 
 let imagedata;
 let urls = [];
 let paths = [];
-let chapMark = [];
+let localPath = [];
 let downloadIndex = 0;
 
 let readJsonData = () => {
@@ -81,14 +49,10 @@ let makeDir = () => {
 let loopImageData = () => {
     let index = 1;
     for (let info of imagedata) {
-        let data = info.data;
-        let imgIndex = 1;
-        for (let url of data) {
-            urls.push(url);
-            paths.push(savePath + index + '_' + (imgIndex++) + '.jpg');
-            chapMark.push(index);
-        }
-        index++;
+        urls.push(url);
+        paths.push(savePath + imgIndex + '.jpg');
+        localPath.push("../" + imgIndex + '.jpg');
+        imgIndex++;
     }
     console.log('__imageDownloader__: calculated! image number length >>> ', urls.length);
     startDownLoad();
@@ -145,31 +109,7 @@ let downloadEnd = () => {
 }
 
 let checkChapPath = () => {
-    let last = 1;
-    let curIndex = 0;
-    let sameChap = [];
-    let sameChapPath = [];
-    while (chapMark.length > 0) {
-        // console.log('chapMark.length =>' + chapMark.length + ',curIndex =>' + curIndex);
-        if (last != chapMark[curIndex]) {
-            console.log('last =>' + last + 'chapMark =>' + chapMark[curIndex] + ',paths =>' + paths[curIndex] + ',curIndex =>' + curIndex);
-            last = chapMark[curIndex];
-            sameChap = chapMark.splice(0, curIndex);
-            sameChapPath = paths.splice(0, curIndex);
-            curIndex = 0;
-            markHTML(sameChapPath, sameChap[0]);
-        } else if (curIndex === (chapMark.length - 1)) {
-            console.log('last =>' + last + 'chapMark =>' + chapMark[curIndex] + ',paths =>' + paths[curIndex] + ',curIndex =>' + curIndex);
-            last = chapMark[curIndex];
-            sameChap = chapMark.splice(0, curIndex + 1);
-            sameChapPath = paths.splice(0, curIndex + 1);
-            curIndex = 0;
-            markHTML(sameChapPath, sameChap[0]);
-        } else {
-            curIndex++;
-        }
-    }
-
+    markHTML(localPath, 0);
 }
 
 let markHTML = (data, index) => {
@@ -253,22 +193,6 @@ let downloadError = (err, url, path) => {
     });
 }
 
-
-
-
-// module.exports = {
-//     setTitle: (_title) => {
-//         path = './' + _title;
-//         imagePath = 'e:/hanman/' + _title;
-//     },
-//     setImagePath: (p) => {
-//         imagePath = p;
-//     },
-//     setCallBack: (callback) => {
-//         callbacks.push(callback);
-//     },
-//     start: readJsonData
-// };
 
 module.exports = {
     setName: (_name) => {
