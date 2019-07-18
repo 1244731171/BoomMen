@@ -11,8 +11,8 @@ let rq = (id, index) => {
     let headers = {
         'Content-Type': 'application/json',
         // 'Content-Length': Buffer.byteLength(post_data),
-        // 'Cookie': 'PHPSESSID=9sn0i5vdnadgtu7eqadqcphdd3; __51cke__=; uloginid=627865; __tins__2994155=%7B%22sid%22%3A%201563146425283%2C%20%22vd%22%3A%2022%2C%20%22expires%22%3A%201563148822168%7D; __51laig__=22'
-        'Cookie': 'PHPSESSID=9bisg0tcng8orvodpim0e7pp94; __tins__2994155=%7B%22sid%22%3A%201563200860004%2C%20%22vd%22%3A%2017%2C%20%22expires%22%3A%201563202984277%7D; __51cke__=; __51laig__=17; uloginid=627951'
+        'Cookie': 'uloginid=627865; PHPSESSID=60muffghmi46erdfunbjtreg77; __51cke__=; iknow1=ok; __tins__20198685=%7B%22sid%22%3A%201563474997918%2C%20%22vd%22%3A%2020%2C%20%22expires%22%3A%201563477483198%7D; __51laig__=20'
+        // 'Cookie': 'PHPSESSID=9bisg0tcng8orvodpim0e7pp94; __tins__2994155=%7B%22sid%22%3A%201563200860004%2C%20%22vd%22%3A%2017%2C%20%22expires%22%3A%201563202984277%7D; __51cke__=; __51laig__=17; uloginid=627951'
     };
     // Configure the request
     let options = {
@@ -55,6 +55,9 @@ let checkArray = (arr) => {
     while(max > 0){
         arr.splice(max, 1);
         max -= 2;
+    }
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].replace('pic01.mh009.com/', 'pic01_009.2kd.cc');
     }
 }
 
@@ -147,8 +150,8 @@ let doEnd = () => {
 }
 
 
-let cnName = '美丽新世界';
-let id = '980';
+let cnName = '女大生世晶';
+let id = '260';
 // let cnName = '干爹我还要';
 // let id = '337';
 // let cnName = '母豬養成計畫';

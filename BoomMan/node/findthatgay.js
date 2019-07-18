@@ -10,10 +10,10 @@ let matchUid = (target) => {
     return target.match(/(\&|\?)u\=([a-z]|[0-9]){32}/g) || target.match(/ ([a-z]|[0-9]){32} /g) || [];
 }
 let matchDate = (target) => {
-    return target.match(/stime\=([0-9]){13}/g) || target.match(/ [0-9]{13} /g) || [''];
+    return target.match(/stime\=([0-9]){13}/g) || target.match(/\"[0-9]{13}\"/g) || target.match(/ [0-9]{13} /g) || [''];
 }
 let matchDateStr = (target) => {
-    return matchDate(target)[0].toString().replace('stime=', '').replace(/ /g, '');
+    return matchDate(target)[0].toString().replace('stime=', '').replace(/"/g, '').replace(/ /g, '');
 }
 let matchFlashVersion = (target) => {
     return target.match(/plyrv\=3\.3\.12\.33/g) || [];
@@ -22,9 +22,10 @@ let matchH5Version = (target) => {
     return target.match(/v\=4\.1\.8/g) || [];
 }
 
-console.log(matchDate(dataOld));
+// console.log(matchDate(dataNew));
+// console.log(matchDate(dataOld));
 
-return;
+// return;
 console.log('=================  NEW ================');
 
 let b = dataNew.split('\n');
@@ -135,7 +136,6 @@ let invalidDateLength = 0;
 for (let i = 0; i < oldDateArr.length; i++) {
     if(oldDateArr[i] > newDateArr[0]){
         console.log(`invalid data from old case date, length: ${i}`);
-        console.log(newDateArr[0] - oldDateArr[i]);
         break;
     }
 }
@@ -152,21 +152,28 @@ console.log(`version: plyrv length: ${nv2.length}, v length: ${nv1.length}; \n v
 
 console.log(`\n ========== CHECK SAME DATE ========== \n`);
 
-let oldDateSameDate = matchDate(dataOld);
+// let oldDateSameDate = matchDate(dataOld);
+let oldDateSameDate = matchDate(dataNew);
 let oldDateSameDateMap = {};
 oldDateSameDate.forEach(e=>{
-    let id = parseInt(e.replace('stime=', '').replace(/ /g, ''));
+    let id = parseInt(e.replace('stime=', '').replace(/"/g, '').replace(/ /g, ''));
     let odsmid = oldDateSameDateMap[id];
     oldDateSameDateMap[id] = odsmid === undefined ? 1 : odsmid + 1;
 });
-let oldDateSameDateLength = 0;
+let oldDataSameDateLength = 0;
+let oldDataNotSameDateLength = 0;
+let oldDateLength = 0;
 for(let did in oldDateSameDateMap){
+    oldDateLength++;
     if(oldDateSameDateMap[did] !== 1){
-        oldDateSameDateLength += oldDateSameDateMap[did];
+        oldDataSameDateLength += oldDateSameDateMap[did];
         console.log(`get same date in old data: ${did}, length: ${oldDateSameDateMap[did]}`);
+    }else{
+        oldDataNotSameDateLength++;
     }
 }
-console.log(`same date in old data percent: ${oldDateSameDateLength / ob.length}`);
+console.log(`total: ${oldDateLength}, same: ${oldDataSameDateLength}, diff: ${oldDataNotSameDateLength}`);
+console.log(`same date in old data percent: ${oldDataSameDateLength / oldDateLength}`);
 
 console.log(`\n ========== DIFF USER ========== \n`);
 
