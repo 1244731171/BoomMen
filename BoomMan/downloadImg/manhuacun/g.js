@@ -11,8 +11,7 @@ let rq = (id, index) => {
     let headers = {
         'Content-Type': 'application/json',
         // 'Content-Length': Buffer.byteLength(post_data),
-        'Cookie': 'uloginid=627865; PHPSESSID=60muffghmi46erdfunbjtreg77; __51cke__=; iknow1=ok; __tins__20198685=%7B%22sid%22%3A%201563474997918%2C%20%22vd%22%3A%2020%2C%20%22expires%22%3A%201563477483198%7D; __51laig__=20'
-        // 'Cookie': 'PHPSESSID=9bisg0tcng8orvodpim0e7pp94; __tins__2994155=%7B%22sid%22%3A%201563200860004%2C%20%22vd%22%3A%2017%2C%20%22expires%22%3A%201563202984277%7D; __51cke__=; __51laig__=17; uloginid=627951'
+        'Cookie': 'uloginid=627865; PHPSESSID=6dssr95qad5lbq42mkv3ltjij7; __51cke__=; __tins__20198685=%7B%22sid%22%3A%201564071485414%2C%20%22vd%22%3A%207%2C%20%22expires%22%3A%201564073575526%7D; __51laig__=25'
     };
     // Configure the request
     let options = {
@@ -20,6 +19,7 @@ let rq = (id, index) => {
         method: 'GET',
         headers: headers
     };
+    console.log(`request id => ${id}, index => ${index}, url => ${options.url}`);
     // console.log(options.url);
     request(options, (err, res, body) => {
         if (err) {
@@ -56,9 +56,9 @@ let checkArray = (arr) => {
         arr.splice(max, 1);
         max -= 2;
     }
-    for (let i = 0; i < arr.length; i++) {
-        arr[i] = arr[i].replace('pic01.mh009.com/', 'pic01_009.2kd.cc');
-    }
+    // for (let i = 0; i < arr.length; i++) {
+    //     arr[i] = arr[i].replace('pic01.mh009.com/', 'pic01_009.2kd.cc');
+    // }
 }
 
 let save = (index, _data) => {
@@ -149,9 +149,8 @@ let doEnd = () => {
     download.go();
 }
 
-
-let cnName = '冲突';
-let id = '458';
+let cnName = '猜不透的心';
+let id = '385';
 
 
 

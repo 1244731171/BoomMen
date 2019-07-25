@@ -57,7 +57,7 @@ let readJsonData = () => {
         if (err) {
             return console.error(err);
         }
-        console.log("异步读取: " + data.toString());
+        // console.log("异步读取: " + data.toString());
         imagedata = JSON.parse(data);
         makeDir();
     });
@@ -111,7 +111,7 @@ let downloadNext = function () {
     if (url && path) {
         downloadIndex++;
         if (fs.existsSync(path)) {
-            console.log('__imageDownloader__: path existed! >>> ', path);
+            // console.log('__imageDownloader__: path existed! >>> ', path);
             downloadImageLength++;
             downloadNext();
         } else {
