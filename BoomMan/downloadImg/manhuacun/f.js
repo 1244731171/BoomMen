@@ -5,13 +5,14 @@ const download = require("./download");
 const { JSDOM } = jsdom;
 
 let data = {};
+let cookie = fs.readFileSync("./cookie.txt");
 let rq = (id, index) => {
     console.log(`request id => ${id}, index => ${index}`);
     // Set the headers for the request
     let headers = {
         'Content-Type': 'application/json',
         // 'Content-Length': Buffer.byteLength(post_data),
-        'Cookie': 'uloginid=627865; PHPSESSID=6dssr95qad5lbq42mkv3ltjij7; __51cke__=; __tins__20198685=%7B%22sid%22%3A%201564071485414%2C%20%22vd%22%3A%207%2C%20%22expires%22%3A%201564073575526%7D; __51laig__=25'
+        'Cookie': cookie//'uloginid=627865; PHPSESSID=g6grdpf1rq5a08c7n2rb60s6c0; __51cke__=; __tins__20198685=%7B%22sid%22%3A%201564767720431%2C%20%22vd%22%3A%2017%2C%20%22expires%22%3A%201564769972036%7D; __51laig__=17'
     };
     // Configure the request
     let options = {
@@ -149,13 +150,12 @@ let doEnd = () => {
     download.go();
 }
 
-
-let cnName = 'Bodychange';
-let id = '369';
+let cnName = '姐夫硬起来';
+let id = '996';
 
 
 
 
 checkPath();
 
-let timer = setInterval(protectSave, 60*1000*3);
+let timer = setInterval(protectSave, 60*1000*3);    

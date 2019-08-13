@@ -11,7 +11,7 @@ let rq = (id, index) => {
     let headers = {
         'Content-Type': 'application/json',
         // 'Content-Length': Buffer.byteLength(post_data),
-        'Cookie': 'uloginid=627865; PHPSESSID=6dssr95qad5lbq42mkv3ltjij7; __51cke__=; __tins__20198685=%7B%22sid%22%3A%201564071485414%2C%20%22vd%22%3A%207%2C%20%22expires%22%3A%201564073575526%7D; __51laig__=25'
+        'Cookie': 'uloginid=627865; PHPSESSID=51fel8edv2glhl5td2vsse2g50; __51cke__=; __tins__20198685=%7B%22sid%22%3A%201564250243140%2C%20%22vd%22%3A%204%2C%20%22expires%22%3A%201564253215069%7D; __51laig__=4'
     };
     // Configure the request
     let options = {
@@ -56,9 +56,9 @@ let checkArray = (arr) => {
         arr.splice(max, 1);
         max -= 2;
     }
-    // for (let i = 0; i < arr.length; i++) {
-    //     arr[i] = arr[i].replace('pic01.mh009.com/', 'pic01_009.2kd.cc');
-    // }
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].replace('pic01.mh009.com/', 'pic01_009.2kd.cc');
+    }
 }
 
 let save = (index, _data) => {
@@ -149,8 +149,11 @@ let doEnd = () => {
     download.go();
 }
 
-let cnName = '猜不透的心';
-let id = '385';
+let cnName = '女演员';
+let id = '484';
+
+
+
 
 
 

@@ -2,16 +2,21 @@ const request = require('request');
 const jsdom = require("jsdom");
 const fs = require("fs");
 const download = require("./download");
+const event = require("./listener");
 const { JSDOM } = jsdom;
 
+let cnName = '';
+let id = '';
+
 let data = {};
+let cookie = fs.readFileSync("./cookie.txt");
 let rq = (id, index) => {
     console.log(`request id => ${id}, index => ${index}`);
     // Set the headers for the request
     let headers = {
         'Content-Type': 'application/json',
         // 'Content-Length': Buffer.byteLength(post_data),
-        'Cookie': 'uloginid=627865; PHPSESSID=6dssr95qad5lbq42mkv3ltjij7; __51cke__=; __tins__20198685=%7B%22sid%22%3A%201564071485414%2C%20%22vd%22%3A%207%2C%20%22expires%22%3A%201564073575526%7D; __51laig__=25'
+        'Cookie': cookie//'uloginid=627865; PHPSESSID=g6grdpf1rq5a08c7n2rb60s6c0; __51cke__=; __tins__20198685=%7B%22sid%22%3A%201564767720431%2C%20%22vd%22%3A%2017%2C%20%22expires%22%3A%201564769972036%7D; __51laig__=17'
     };
     // Configure the request
     let options = {
@@ -23,7 +28,7 @@ let rq = (id, index) => {
     // console.log(options.url);
     request(options, (err, res, body) => {
         if (err) {
-            clearInterval(timer);
+            // clearInterval(timer);
             output();
             return console.log(err);
         }else{
@@ -45,7 +50,7 @@ let rq = (id, index) => {
             //     output();
             // }
         } else {
-            clearInterval(timer);
+            // clearInterval(timer);
             output();
         }
     });
@@ -56,9 +61,9 @@ let checkArray = (arr) => {
         arr.splice(max, 1);
         max -= 2;
     }
-    // for (let i = 0; i < arr.length; i++) {
-    //     arr[i] = arr[i].replace('pic01.mh009.com/', 'pic01_009.2kd.cc');
-    // }
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].replace('pic01.mh009.com/', 'pic01_009.2kd.cc');
+    }
 }
 
 let save = (index, _data) => {
@@ -132,8 +137,9 @@ let checkData = () => {
             return console.error(err);
         }
         let index = 0;
-        console.log("异步读取: " + _data.toString());
+        // console.log("异步读取: " + _data.toString());
         imagedata = JSON.parse(_data);
+        console.log("异步读取: " + imagedata.length);
         for (const i of imagedata) {
             if (i && i.data && i.index) {
                 index = i.index;
@@ -149,13 +155,45 @@ let doEnd = () => {
     download.go();
 }
 
+let all_data = fs.readFileSync('./netData.json');
+all_data = JSON.parse(all_data);
+all_data.reverse();
+// let cnName = '危险性赌注';
+// let id = '961';
 
-let cnName = '偷窥';
-let id = '324';
+
+event.on('downloadEnd', () => {
+    console.log(all_data.length);
+    checkNext();
+});
+
+event.on('error', () => {
+    checkNext();
+    // all_data = fs.readFileSync('./netData.json');
+    // all_data = JSON.parse(all_data);
+    // all_data.reverse();
+    // checkNext();
+    console.log("error")
+});
 
 
+let checkNext = () => {
+    data = {};
+    lastStr = '';
+    path = '';
+    let d = all_data.shift();
+    if(d){
+        if(d.json_length !== d.net_length || d.json_length !== d.html_length){
+            console.log(`name=${d.name}, net_length=${d['net_length']}, json_length=${d['json_length']}, html_length=${d['html_length']}`);
+            cnName = d.name;
+            id = d.id;
+            checkPath();
+        }else{
+            checkNext();
+        }
+    }
+}
 
+checkNext();
 
-checkPath();
-
-let timer = setInterval(protectSave, 60*1000*3);
+// let timer = setInterval(protectSave, 60*1000*3);
