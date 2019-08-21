@@ -130,32 +130,14 @@ let listener = (request, response) => {
         return;
     }
 
-    if (query) {
-        // console.log(`path is ${pathName}`);
-        // let qs = query.split("&");
-        // qs.forEach(e => {
-        //     if(e.indexOf('checkstring=') != -1){
-        //         query = e.replace('checkstring=', '');
-        //     }
-        // });
-        // console.log(`get query ==> ${query}`);
-        // query = decodeURIComponent(atob(query));
-        // // response.writeHead(301, {
-        // //     location: `http://${host.local}:${post}${pathName}`
-        // // });
-        // console.log(`return query ==> ${query}`);
-        // response.write(query);
-        // response.end();
+    let htmlstr = '';
+    if (fs.existsSync(html1)) {
+        response.writeHead(200, { 'content-type': 'text/html' });
+        htmlstr = fs.readFileSync(html1) || '';
     } else {
-        let htmlstr = '';
-        if (fs.existsSync(html1)) {
-            response.writeHead(200, { 'content-type': 'text/html' });
-            htmlstr = fs.readFileSync(html1) || '';
-        } else {
-            response.writeHead(404, { 'content-type': 'text/html' });
-        }
-        response.end(htmlstr);
+        response.writeHead(404, { 'content-type': 'text/html' });
     }
+    response.end(htmlstr);
 };
 
 //2. 创建http服务器
@@ -169,3 +151,5 @@ server.listen(post, host.local, () => {
 
 //4. 执行
 console.log('执行了3030')
+
+// http://192.168.1.7:3030/itunes/like/comment?appid=ngienbnpkldjcebacfbppphjjhbhfkpp&assatrisd=kjhzkKYQnkajsnAOY!hoASdjoAW&rtime=1010230102301203123&dwl=1-1-23-1-123&ttl=1566413096&ri=1433600&rs=1400&clientip=69.194.14.161&hash=29b554a946b107e4028379e37bf4e2c5
