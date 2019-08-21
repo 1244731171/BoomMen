@@ -138,6 +138,20 @@
     rm .git/.MERGE_MSG.sw* 
 ```
 
+### git 更新本地分支和远程分支的关系 ###
+``` shell
+    # 删除远程分支
+    git push --delete origin 远程分支名字
+    # 重命名本地分支
+    git branch -m 旧的本地分支名字 新的本地分支名字
+    # 1.如果远程直接又重命名了新分支的名字，想要关联的话直接拉取就行，保证名字一样
+    git pull
+    # 2.也可以直接将本地分支改名字后push到远程分支
+    git push origin 新的本地分支的名字
+    # 3.直接关联远程现有分支
+    git branch --set-upstream-to=origin/远程分支名字
+```
+
 ### git branch 和 git checkout ###
 ``` shell
     # 查看全部分支(最后一次pull时候拉取到的全部分支信息)
