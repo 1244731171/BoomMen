@@ -35,7 +35,9 @@
 const fs = require('fs');
 const request = require("request");
 const mkdirp = require('mkdirp');
+const event = require("./listener");
 
+let cookie = fs.readFileSync("./cookie.txt");
 let errorList = [];
 
 let downloadImageLength = 0;
@@ -57,7 +59,7 @@ let readJsonData = () => {
         if (err) {
             return console.error(err);
         }
-        console.log("异步读取: " + data.toString());
+        // console.log("异步读取: " + data.toString());
         imagedata = JSON.parse(data);
         makeDir();
     });
@@ -111,7 +113,7 @@ let downloadNext = function () {
     if (url && path) {
         downloadIndex++;
         if (fs.existsSync(path)) {
-            console.log('__imageDownloader__: path existed! >>> ', path);
+            // console.log('__imageDownloader__: path existed! >>> ', path);
             downloadImageLength++;
             downloadNext();
         } else {
@@ -128,9 +130,11 @@ let downloadNext = function () {
                     console.log('__imageDownloader__: error list >>> ');
                     console.log(JSON.stringify(errorList));
                     console.log('__imageDownloader__: error list length >>> ', errorList.length);
+                    event.fire("error");
                     return;
                 } else if (downloadImageLength != urls.length) {
                     console.log('__imageDownloader__: ERROR! download length(%s) != total length(%s)', downloadImageLength, urls.length);
+                    event.fire("error");
                     return;
                 }
                 downloadEnd();
@@ -144,6 +148,8 @@ let downloadEnd = () => {
     checkChapPath();
 }
 
+let markHTMLength = 0;
+let isLastMarkHTML = false;
 let checkChapPath = () => {
     let last = 1;
     let curIndex = 0;
@@ -158,6 +164,7 @@ let checkChapPath = () => {
             sameChapPath = paths.splice(0, curIndex);
             curIndex = 0;
             markHTML(sameChapPath, sameChap[0]);
+            isLastMarkHTML = true;
         } else if (curIndex === (chapMark.length - 1)) {
             console.log('last =>' + last + 'chapMark =>' + chapMark[curIndex] + ',paths =>' + paths[curIndex] + ',curIndex =>' + curIndex);
             last = chapMark[curIndex];
@@ -173,12 +180,13 @@ let checkChapPath = () => {
 }
 
 let markHTML = (data, index) => {
+    markHTMLength++;
     var newData = [];
     data.forEach(e => {
         newData.push('<img src="' + e + '"/>');
     });
     let path = savePath_html + name + ' - 第' + index + '话.html';
-    let str = '<html><head><title>' + name + ' - 第' + index + '话' + '</title></head>'
+    let str = '<html><head><title>' + name + ' - 第' + index + '话' + '</title><script type="text/javascript" src="../../1.js"></script></head>'
         + '<body>' + newData.join('<br>') + '</body><html>';
     fs.open(path, 'w', (err, fd) => {
         if (err) {
@@ -193,12 +201,20 @@ let markHTML = (data, index) => {
                     console.log('__htmlCreater__: ERROR ' + err);
                 } else {
                     console.log('__htmlCreater__: NET html create SUCCESSFUL!');
+                    markHTMLength--;
+                    doCheck();
                 }
             });
         });
     });
 }
 
+let doCheck = () => {
+    if (isLastMarkHTML && markHTMLength === 0) {
+        console.log("!!!!!!!!!!!!! DOWNLOAD END !!!!!!!!!!!!!");
+        event.fire("downloadEnd");
+    }
+}
 
 // 下载方法
 let ppDownload = (url, path) => {
@@ -219,11 +235,19 @@ let ppDownload = (url, path) => {
 
 let reDownload = function (url, path) {
     threadLength++;
+    let headers = {
+        'Content-Type': 'application/json',
+        // 'Content-Length': Buffer.byteLength(post_data),
+        'ETag': '5c985742-47f29',
+        'Referer': 'http://www.mh009.com/Mhpc/mhread.php?mhid=450&ji_no=42',
+        'Cookie': cookie//'uloginid=627865; PHPSESSID=g6grdpf1rq5a08c7n2rb60s6c0; __51cke__=; __tins__20198685=%7B%22sid%22%3A%201564767720431%2C%20%22vd%22%3A%2017%2C%20%22expires%22%3A%201564769972036%7D; __51laig__=17'
+    };
     console.log('__imageDownloader__RE__: try to save! url >>> %s', url);
     request({
         url: url,
         encoding: 'binary',
-        timeout: 6e4
+        timeout: 6e4,
+        headers: headers
     }, (error, response, body) => {
         threadLength--;
         if (!error && response.statusCode == 200) {
@@ -272,12 +296,23 @@ let downloadError = (err, url, path) => {
 
 module.exports = {
     setName: (_name) => {
+        errorList = [];
+        downloadImageLength = 0;
+        threadLength = 0;
+        imagedata;
+        urls = [];
+        paths = [];
+        chapMark = [];
+        downloadIndex = 0;
+        isLastMarkHTML = false;
+        markHTMLength = 0;
+
         name = _name;
         dataJson = name + '/data.json';
         savePath = 'e:/hanman/' + name + '/';
         savePath_html = 'e:/hanman/' + name + '/localHtml/';
     },
-    go: () =>{
+    go: () => {
         readJsonData();
     }
 }

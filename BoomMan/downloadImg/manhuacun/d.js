@@ -2,6 +2,7 @@ const request = require('request');
 const jsdom = require("jsdom");
 const fs = require("fs");
 const download = require("./download");
+const event = require("./listener");
 const { JSDOM } = jsdom;
 
 let data = {};

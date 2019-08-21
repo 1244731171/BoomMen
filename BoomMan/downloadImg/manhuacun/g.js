@@ -11,8 +11,7 @@ let rq = (id, index) => {
     let headers = {
         'Content-Type': 'application/json',
         // 'Content-Length': Buffer.byteLength(post_data),
-        'Cookie': 'uloginid=627865; PHPSESSID=60muffghmi46erdfunbjtreg77; __51cke__=; iknow1=ok; __tins__20198685=%7B%22sid%22%3A%201563474997918%2C%20%22vd%22%3A%2020%2C%20%22expires%22%3A%201563477483198%7D; __51laig__=20'
-        // 'Cookie': 'PHPSESSID=9bisg0tcng8orvodpim0e7pp94; __tins__2994155=%7B%22sid%22%3A%201563200860004%2C%20%22vd%22%3A%2017%2C%20%22expires%22%3A%201563202984277%7D; __51cke__=; __51laig__=17; uloginid=627951'
+        'Cookie': 'uloginid=627865; PHPSESSID=51fel8edv2glhl5td2vsse2g50; __51cke__=; __tins__20198685=%7B%22sid%22%3A%201564250243140%2C%20%22vd%22%3A%204%2C%20%22expires%22%3A%201564253215069%7D; __51laig__=4'
     };
     // Configure the request
     let options = {
@@ -20,6 +19,7 @@ let rq = (id, index) => {
         method: 'GET',
         headers: headers
     };
+    console.log(`request id => ${id}, index => ${index}, url => ${options.url}`);
     // console.log(options.url);
     request(options, (err, res, body) => {
         if (err) {
@@ -149,9 +149,11 @@ let doEnd = () => {
     download.go();
 }
 
+let cnName = '女演员';
+let id = '484';
 
-let cnName = '冲突';
-let id = '458';
+
+
 
 
 

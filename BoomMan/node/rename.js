@@ -1,6 +1,7 @@
 const fs = require('fs');
 
-const PATH = 'E:/迅雷下载/亲爱的热爱的/';
+const PATH = 'E:/迅雷下载/文档任务组_20190805_0047/';
+// const PATH = 'E:/soft/yundown/yundown/download/';
 // const PATH = 'Q:/好孩子看不到/国内写真/（萝莉）柚木写真/[柚木]红白调教(50P)_files/'
 // const PATH = 'L:/新建文件夹/';
 // const PATH = 'Q:/好孩子看不到/超级精品图片/bunnybunny_love/';
@@ -8,10 +9,12 @@ const PATH = 'E:/迅雷下载/亲爱的热爱的/';
 // const PATH = 'O:/temp/';
 // const PATH = 'Q:/好孩子看不到/国内写真/（萝莉）少女映画/'
 
+
 let loop = (_path) => {
     console.log('PATH ===> ', _path);
     fs.readdir(_path, (err, path)=>{
         path.forEach(ele => {
+            let nele = ele;
             // if(ele.indexOf('part') !== -1){
             //     let eles = ele.split('_');
             //     // console.log(ele);
@@ -19,10 +22,6 @@ let loop = (_path) => {
             //         rename(PATH+ele, PATH+eles[0]+'.rar')
             //     }
             // }
-
-            // let nele = ele.replace('.mp4', '');
-            rename(PATH+ele, PATH+ele+'.mp4');
-            console.log(ele);
     
             // if(ele.toString().endsWith('_large')){
             //     // console.log(ele)
@@ -41,6 +40,13 @@ let loop = (_path) => {
             //     console.log(nele);
             //     loop(nele);
             // }
+
+            ele = PATH + ele;
+            nele = PATH + nele;
+            if(ele.endsWith('.html')){
+                nele = nele.replace(".html", ".jpg");
+                rename(ele, nele);
+            }
 
             // console.log(_path+ele);
             // nele = ele.replace(/少女映画/g,'').replace(/少女映畫/g,'')
