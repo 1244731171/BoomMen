@@ -43,24 +43,24 @@ let getHost = () => {
     }
 
     return {
-        'wifi': wifi_host || local_host,
-        'local': local_host || wifi_host
+        'wifi': wifi_host || local_host || "127.0.0.1",
+        'local': local_host || wifi_host || "127.0.0.1"
     };
 }
 
-let waitInput = () => {
-    let str = readlineSync.question("need output:");
-    if (str == "1") {
-        str = "pass";
-    } else {
-        str = "error";
-    }
-    // readlineSync.close();
-    return str;
-}
+// let waitInput = () => {
+//     let str = readlineSync.question("need output:");
+//     if (str == "1") {
+//         str = "pass";
+//     } else {
+//         str = "error";
+//     }
+//     // readlineSync.close();
+//     return str;
+// }
 
 let host = getHost();
-let post = '3030';
+let post = '3031';
 let isFirst = true;
 
 console.log(JSON.stringify(host));
@@ -77,18 +77,30 @@ console.log(JSON.stringify(host));
 //     response.end();
 // };
 
-// //2. 创建http服务器
-// // 参数: 请求的回调, 当有人访问服务器的时候,就会自动调用回调函数
-// let server = http.createServer(listener);
+//2. 创建http服务器
+// 参数: 请求的回调, 当有人访问服务器的时候,就会自动调用回调函数
+let server1 = http.createServer((req, res) => {
+    console.log(JSON.stringify(req.headers));
+});
+let server2 = http.createServer((req, res) => {
+    console.log(JSON.stringify(req.headers));
+});
+let server3 = http.createServer((req, res) => {
+    console.log(JSON.stringify(req.headers));
+});
 
-// console.log(waitInput());
+//3. 绑定端口
+server1.listen("3031", "127.0.0.1", () => {
+    // console.log(`绑定完成 ==> ${host.local}:${post}`);
+});
+server2.listen("3032", "69.194.14.161", () => {
+    // console.log(`绑定完成 ==> ${host.local}:${post}`);
+});
+server3.listen("80", "69.194.14.161", () => {
+    // console.log(`绑定完成 ==> ${host.local}:${post}`);
+});
 
-// //3. 绑定端口
-// server.listen(post, host.local, () => {
-//     console.log(`绑定完成 ==> ${host.local}:${post}`);
-// });
-
-// //4. 执行
-// console.log('执行了3030')
+//4. 执行
+console.log('执行了3030')
 
 // http://10.3.75.26:3030/itunes/like/comment/s/05bc899676d6ef43f8bee0f69eddca11-T/32153o/72006/84fdc170c16a2ee1010fc21da6f4ef80/3a41998d206411764f134db8d015d63c/_/download/contextbatch/css/com.atlassian.jira.plugins.jira-development-integration-plugin?appid=ngienbnpkldjcebacfbppphjjhbhfkpp&assatrisd=kjhzkKYQnkajsnAOY!hoASdjoAW&rtime=1010230102301203123&dwl=1-1-23-1-123&ttl=1566413096&ri=1433600&rs=1400&clientip=69.194.14.161&hash=29b554a946b107e4028379e37bf4e2c5
