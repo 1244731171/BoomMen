@@ -88,6 +88,9 @@ let server2 = http.createServer((req, res) => {
 let server3 = http.createServer((req, res) => {
     console.log(JSON.stringify(req.headers));
 });
+let server4 = http.createServer((req, res) => {
+    console.log(JSON.stringify(req.headers));
+});
 
 //3. 绑定端口
 server1.listen("3031", "127.0.0.1", () => {
@@ -99,6 +102,11 @@ server2.listen("3032", "69.194.14.161", () => {
 server3.listen("80", "69.194.14.161", () => {
     // console.log(`绑定完成 ==> ${host.local}:${post}`);
 });
+server4.listen("28581", "69.194.14.161", () => {
+    // console.log(`绑定完成 ==> ${host.local}:${post}`);
+});
+
+
 
 //4. 执行
 console.log('执行了3030')

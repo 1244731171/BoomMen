@@ -114,7 +114,7 @@ let listener = (request, response) => {
         isFirst = false;
         console.log(request['headers']['user-agent']);
     }
-    // console.log(`有人访问了服务器 ==> ${request.url}`);
+    console.log(`有人访问了服务器 ==> ${request.url}`);
 
     let requestUrl = request.url; // 端口号后全部
     let pathName = url.parse(requestUrl).pathname; // 款口号后至问号前
@@ -203,8 +203,11 @@ let listener = (request, response) => {
 let server = http.createServer(listener);
 
 //3. 绑定端口
-server.listen(post, host.v6_local, () => {
-    console.log(`绑定完成 ==> ${host.v6_local}:${post}`);
+// server.listen(post, host.v6_local, () => {
+//     console.log(`绑定完成 ==> ${host.v6_local}:${post}`);
+// });
+server.listen(post, host.local, () => {
+    console.log(`绑定完成 ==> ${host.local}:${post}`);
 });
 
 //4. 执行
