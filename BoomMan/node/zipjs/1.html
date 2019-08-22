@@ -1,0 +1,69 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./jszip.js"></script>
+    <script src="./fixzip.js"></script>
+    <!-- <script src="./jszip.min.js"></script> -->
+    <!-- <script src="test.js"></script> -->
+    <script>
+        // let zip = new JSZip();
+
+        // 1111
+        // 3461
+
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('GET', './test.zip');
+
+        xhr.responseType = 'arraybuffer';
+
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState == 4 && xhr.status == 200) {
+
+                var arrayBuffer = xhr.response;
+
+                if (arrayBuffer) {
+
+                    var byteArray = new Uint8Array(arrayBuffer);
+
+                    // let zip = new Zip();
+                    // zip.prepareContent(byteArray)
+
+                    // let data = JSZip.loadAsync(arrayBuffer);
+                    JSZip.loadAsync(arrayBuffer)
+                        .then((data) => {
+                            // debugger;
+                            let files = data.files;
+                        })
+                        .then((data) => {
+                            // debugger;
+                        });
+                    // for (var i = 0; i < byteArray.byteLength; i++) {
+
+                    //     // do something
+
+                    // }
+                }
+
+            } else {
+
+                // alert(xhr.statusText);
+
+            }
+
+        };
+
+        xhr.send();
+    </script>
+</body>
+
+</html>
