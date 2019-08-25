@@ -50,6 +50,12 @@ let personCodeDes = {
                     des:`父母双方split后random组合`,
                     valueDes: `[0, 200]`,
                     type: `number`
+                },
+                maxHp:{
+                    name:`生命值`,
+                    des:`max永远100`,
+                    valueDes: `[0, 100]`,
+                    type: `number`
                 }
             },
             dynamic:{
@@ -133,6 +139,12 @@ let personCodeDes = {
                     name:`体力 能量`,
                     des:``,
                     valueDes: `[0, 100]`,
+                    type: `number`
+                },
+                hp:{
+                    name:`健康值`,
+                    des:``,
+                    valueDes: `[0, maxHp]`,
                     type: `number`
                 }
             }

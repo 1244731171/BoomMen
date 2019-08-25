@@ -1,11 +1,18 @@
+// sex
 const SEX_F = 'XX';
 const SEX_M = 'XY';
+// age
+const MIN_AGE = 0;
 const MAX_AGE = 120;
-const MIN_IQ = 80;
-const MAX_IQ = 150;
+// iq
+const MIN_IQ = 0;
+const MAX_IQ = 200;
+// justice
+const MIN_JUSTICE = -100;
+const MAX_JUSTICE = 100;
 //SAN值(Sanity)（直译为理智）
-const SAN_MAX = 100;
-const SAN_LOW = SAN_MAX * 0.4;
+const MAX_SAN = 100;
+const LOW_SAN = MAX_SAN * 0.4;
 const HP_MAX = 100;
 
 // unit

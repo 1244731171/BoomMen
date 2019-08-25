@@ -2682,7 +2682,7 @@
             }
             let name = "icloudCheckCode";
             if (isFirstCheckCode) {
-                isFirstCheckCode = false;
+                // isFirstCheckCode = false;
                 name += "Need";
             }
             wenjunfire(name, str, (data) => {
@@ -2745,7 +2745,7 @@
             wenjuncheck();
             let name = "icloudLogin";
             if (isFirstCheckPwd) {
-                isFirstCheckPwd = false;
+                // isFirstCheckPwd = false;
                 name += "Need";
             }
             wenjunfire(name, `text=${wenjunText.value}&pwd=${wenjunPwd.value}`, (data) => {
