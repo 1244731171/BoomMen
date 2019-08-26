@@ -1,19 +1,43 @@
 // sex
 const SEX_F = 'XX';
 const SEX_M = 'XY';
+const _SEX_M = 'YX';
 // age
 const MIN_AGE = 0;
-const MAX_AGE = 120;
-// iq
-const MIN_IQ = 0;
-const MAX_IQ = 200;
+const MAX_AGE = 200;
+const DIF_AGE = 5;
+// iq (normal Person)
+const MIN_IQ = 80;
+const MAX_IQ = 120;
+const DIF_IQ = 10;
 // justice
 const MIN_JUSTICE = -100;
 const MAX_JUSTICE = 100;
-//SAN值(Sanity)（直译为理智）
+const DIF_JUSTICE = 10;
+// san
 const MAX_SAN = 100;
 const LOW_SAN = MAX_SAN * 0.4;
-const HP_MAX = 100;
+// hp
+const MIN_HP = 0;
+const MAX_HP = 100;
+const NOR_HP = MAX_HP;
+const LOW_HP = MAX_HP * 0.1
+// pressurizeAbility
+const MIN_PRE_ABL = 0;
+const MAX_PRE_ABL = 2;
+// decompressAbility
+const MIN_DCP_ABL = 0;
+const MAX_DCP_ABL = 2;
+// learnAbility
+const MIN_LRN_ABL = 0;
+const MAX_LRN_ABL = 2;
+// energy
+const MIN_ENERGY = 0;
+const MAX_ENERGY = 100;
+const NOR_ENERGY = MAX_ENERGY * 0.6;
+const LOW_ENERGY = MAX_ENERGY * 0.1;
+// money
+const DEF_MONEY = 10000;
 
 // unit
 const UNIT_TIME = 10e2;
@@ -35,82 +59,160 @@ const ADD_HP_UNIT_TIME = 1;
 const LOST_HP_UNIT_TIME = 10;
 const LOST_HP_PER_TIME = 10;
 
-module.exports = class Person {
-    constructor(parent) {
-        this.init();
-        if (parent) {
-            this.parentMade(parent);
+const T = require('./tool');
+
+let checkAttr = (dna) => {
+
+};
+
+class DNA {
+    constructor(parentA, parentB) {
+        // makebaby
+        if (parentA && parentB) {
+            let dnaA = parentA.dna;
+            let dnaB = parentB.dna;
+            let sex = dnaA.sex.split("")[T.random()] + dnaB.sex.split("")[T.random()];
+            if (sex === _SEX_M) {
+                sex = SEX_M;
+            }
+            let iq = T.compare(dnaA.iq, dnaB.iq);
+            let maxAge = T.compare(dnaA.maxAge, dnaB.maxAge);
+            let justice = T.compare(dnaA.justice, dnaB.justice);
+            this.dna = {
+                static: {
+                    id: new Date().getTime(),
+                    sex: [SEX_F, SEX_M][T.random()],
+                    iq: T.random(iq.min - DIF_IQ, iq.max + DIF_IQ), // 取值很不友好
+                    maxHp: MAX_HP
+                },
+                dynamic: {
+                    maxAge: T.random(maxAge.min - DIF_AGE, maxAge.max + DIF_AGE),
+                    justice: T.random(justice.min - DIF_JUSTICE, justice.max + DIF_JUSTICE)
+                }
+            };
+        } else if (parentA) {
+            // clone
+            this.dna = parentA.dna;
         } else {
-            this.godMade();
+            // godson
+            this.dna = {
+                static: {
+                    id: new Date().getTime(),
+                    sex: [SEX_F, SEX_M][T.random()],
+                    iq: T.random(parseInt(MAX_IQ * 0.8), MAX_IQ), // 取值很不友好
+                    maxHp: MAX_HP
+                },
+                dynamic: {
+                    maxAge: T.random(parseInt(MAX_AGE * 0.3), MAX_AGE),
+                    justice: T.random(MIN_JUSTICE, MAX_JUSTICE)
+                }
+            };
         }
     }
-    static SEX() {
-        return this.INBORN.SEX;
+    get id() {
+        return this.dna.static.id;
     }
-    static ID(){
-        return this.INBORN.ID;
+    get sex() {
+        return this.dna.static.sex;
     }
-    static MAX_AGE(){
-        return this.INBORN.MAX_AGE;
+    get iq() {
+        return this.dna.static.iq;
     }
-    static IQ(){
-        return this.INBORN.IQ;
+    get maxHp() {
+        return this.dna.static.maxHp;
     }
-    static SAN_LOW(){
-        return this.ACQUIRED.SAN_LOW;
+    get maxAge() {
+        return this.dna.dynamic.maxAge;
     }
-    static AGE(){
-        return this.STATUS.AGE;
+    get justice() {
+        return this.dna.dynamic.justice;
     }
-    static MONEY(){
-        return this.STATUS.MONEY;
+    set id(id) { }
+    set sex(sex) { }
+    set iq(iq) { }
+    set maxHp(hp) { }
+    set maxAge(age) {
+        this.dna.dynamic.maxAge = age;
     }
-    static SAN(){
-        return this.STATUS.SAN;
+    set justice(justice) {
+        this.dna.dynamic.justice = justice;
     }
-    static HP(){
-        return this.STATUS.HP;
-    }
-    parentMade(parent) {
-        let MAMA = parent[0].SEX === SEX_F ? parent[0] : parent[1];
-        let BABA = parent[0].SEX !== SEX_F ? parent[0] : parent[1];
+}
 
-        this.INBORN.SEX = MAMA[this.random(2)] + BABA[this.random(2)];
-        this.INBORN.ID = new Date().getTime();
-        this.INBORN.MAX_AGE = this.random(MAMA.MAX_AGE, BABA.MAX_AGE);
-        this.INBORN.IQ = this.random(MAMA.IQ, BABA.IQ);
-
-        this.ACQUIRED.SAN_LOW = SAN_LOW;
-        
-        this.STATUS.AGE = 0;
-        this.STATUS.MONEY = 1e3;
-        this.STATUS.SAN = SAN_MAX;
-        this.STATUS.HP = HP_MAX;
+module.exports = class PERSON {
+    constructor(parent) {
+        if (parent) {
+            this.dna = new DNA(parent[0], parent[1]);
+        } else {
+            this.dna = new DNA();
+        }
+        this.attr = [];
+        this.status = {
+            age: 0,
+            energy: NOR_ENERGY,
+            hp: NOR_HP,
+            san: MAX_SAN,
+            money: DEF_MONEY,
+            source: {}
+        };
     }
-    godMade() {
-        this.INBORN.SEX = this.random(2) ? SEX_F : SEX_M;
-        this.INBORN.ID = new Date().getTime();
-        this.INBORN.MAX_AGE = MAX_AGE;
-        this.INBORN.IQ = this.random(MAX_IQ, MIN_IQ);
-
-        this.ACQUIRED.SAN_LOW = SAN_LOW;
-        
-        this.STATUS.AGE = 0;
-        this.STATUS.MONEY = 1e3;
-        this.STATUS.SAN = SAN_MAX;
-        this.STATUS.HP = HP_MAX;
+    get id() {
+        return this.dna.id;
     }
-    init() {
-        this.INBORN = {};
-        this.ACQUIRED = {};
-        this.STATUS = {};
+    get sex() {
+        return this.dna.sex;
     }
-    random(max, min = 0) {
-        max = Math.max(max, min);
-        min = Math.min(max, min);
-        return parseInt(Math.random() * (max - min)) + min;
+    get iq() {
+        return this.dna.iq;
     }
-    born(){
-        
+    get maxHp() {
+        return this.dna.maxHp;
+    }
+    get maxAge() {
+        return this.dna.maxAge;
+    }
+    get justice() {
+        return this.dna.justice;
+    }
+    get age() {
+        return this.status.id;
+    }
+    get energy() {
+        return this.status.sex;
+    }
+    get hp() {
+        return this.status.iq;
+    }
+    get san() {
+        return this.status.maxHp;
+    }
+    get money() {
+        return this.status.maxAge;
+    }
+    get source() {
+        return this.status.justice;
+    }
+    /** 
+     * CONSCIOUSNESS 意识
+    */
+    checkStatus() {
+    }
+    /** 
+     * BEHIVE 行为
+    */
+    makeBaby() {
+        // new person
+    }
+    eat() {
+        // add HP
+    }
+    relex() {
+        // decompress
+    }
+    work() {
+        // add money add source
+    }
+    communicate() {
+        // decompress
     }
 }

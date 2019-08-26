@@ -146,6 +146,24 @@ let personCodeDes = {
                     des:``,
                     valueDes: `[0, maxHp]`,
                     type: `number`
+                },
+                san:{
+                    name:`精神值`,
+                    des:``,
+                    valueDes: `[0, maxSan]`,
+                    type: `number`
+                },
+                money:{
+                    name:`钱`,
+                    des:``,
+                    valueDes: `[0, infinity]`,
+                    type: `number`
+                },
+                source:{
+                    name:`资源`,
+                    des:`暂定`,
+                    valueDes: ``,
+                    type: `object`
                 }
             }
         }
