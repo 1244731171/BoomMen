@@ -1,65 +1,68 @@
-// sex
-const SEX_F = 'XX';
-const SEX_M = 'XY';
-const _SEX_M = 'YX';
-// age
-const MIN_AGE = 0;
-const MAX_AGE = 200;
-const DIF_AGE = 5;
-// iq (normal Person)
-const MIN_IQ = 80;
-const MAX_IQ = 120;
-const DIF_IQ = 10;
-// justice
-const MIN_JUSTICE = -100;
-const MAX_JUSTICE = 100;
-const DIF_JUSTICE = 10;
-// san
-const MAX_SAN = 100;
-const LOW_SAN = MAX_SAN * 0.4;
-// hp
-const MIN_HP = 0;
-const MAX_HP = 100;
-const NOR_HP = MAX_HP;
-const LOW_HP = MAX_HP * 0.1
-// pressurizeAbility
-const MIN_PRE_ABL = 0;
-const MAX_PRE_ABL = 2;
-// decompressAbility
-const MIN_DCP_ABL = 0;
-const MAX_DCP_ABL = 2;
-// learnAbility
-const MIN_LRN_ABL = 0;
-const MAX_LRN_ABL = 2;
-// energy
-const MIN_ENERGY = 0;
-const MAX_ENERGY = 100;
-const NOR_ENERGY = MAX_ENERGY * 0.6;
-const LOW_ENERGY = MAX_ENERGY * 0.1;
-// money
-const DEF_MONEY = 10000;
+// // sex
+// const SEX_F = 'XX';
+// const SEX_M = 'XY';
+// const _SEX_M = 'YX';
+// // age
+// const MIN_AGE = 0;
+// const MAX_AGE = 200;
+// const DIF_AGE = 5;
+// // iq (normal Person)
+// const MIN_IQ = 80;
+// const MAX_IQ = 120;
+// const DIF_IQ = 10;
+// // justice
+// const MIN_JUSTICE = -100;
+// const MAX_JUSTICE = 100;
+// const DIF_JUSTICE = 10;
+// // san
+// const MAX_SAN = 100;
+// const LOW_SAN = MAX_SAN * 0.4;
+// // hp
+// const MIN_HP = 0;
+// const MAX_HP = 100;
+// const NOR_HP = MAX_HP;
+// const LOW_HP = MAX_HP * 0.1
+// // pressurizeAbility
+// const MIN_PRE_ABL = 0;
+// const MAX_PRE_ABL = 2;
+// // decompressAbility
+// const MIN_DCP_ABL = 0;
+// const MAX_DCP_ABL = 2;
+// // learnAbility
+// const MIN_LRN_ABL = 0;
+// const MAX_LRN_ABL = 2;
+// // energy
+// const MIN_ENERGY = 0;
+// const MAX_ENERGY = 100;
+// const NOR_ENERGY = MAX_ENERGY * 0.6;
+// const LOW_ENERGY = MAX_ENERGY * 0.1;
+// // money
+// const DEF_MONEY = 10000;
 
-// unit
-const UNIT_TIME = 10e2;
-const UNIT_HP = 1;
-const UNIT_SAN = 1;
-const UNIT_MONEY = 1;
+// // unit
+// const UNIT_TIME = 10e1; // 10e2
+// const UNIT_DAY_TIME = 24 * UNIT_TIME;
+// const UNIT_YEAR_TIME = 30 * UNIT_TIME;
+// const UNIT_HP = 1;
+// const UNIT_SAN = 1;
+// const UNIT_MONEY = 1;
 
-// money
-const SPENT_MONEY = UNIT_MONEY * 30;
-// san
-const ADD_SAN_BY_HP_PER_TIME = 1;
-const ADD_SAN_BY_SEX_PER_TIME = 10;
-const LOST_SAN_BY_WORK_PER_TIME = 2;
-const LOST_SAN_BY_DAY_PER_TIME = 2;
-const LOAD_SAN_BY_DAY_UNIT_TIME = UNIT_TIME * 15;
-// hp
-const ADD_HP_PER_TIME = 10;
-const ADD_HP_UNIT_TIME = 1;
-const LOST_HP_UNIT_TIME = 10;
-const LOST_HP_PER_TIME = 10;
+// // money
+// const SPENT_MONEY = UNIT_MONEY * 30;
+// // san
+// const ADD_SAN_BY_HP_PER_TIME = 1;
+// const ADD_SAN_BY_SEX_PER_TIME = 10;
+// const LOST_SAN_BY_WORK_PER_TIME = 2;
+// const LOST_SAN_BY_DAY_PER_TIME = 2;
+// const LOAD_SAN_BY_DAY_UNIT_TIME = UNIT_TIME * 15;
+// // hp
+// const ADD_HP_PER_TIME = 10;
+// const ADD_HP_UNIT_TIME = 1;
+// const LOST_HP_UNIT_TIME = 10;
+// const LOST_HP_PER_TIME = 10;
 
 const T = require('./tool');
+const C = require('./config');
 
 let checkAttr = (dna) => {
 
@@ -81,13 +84,13 @@ class DNA {
             this.dna = {
                 static: {
                     id: new Date().getTime(),
-                    sex: [SEX_F, SEX_M][T.random()],
-                    iq: T.random(iq.min - DIF_IQ, iq.max + DIF_IQ), // 取值很不友好
-                    maxHp: MAX_HP
+                    sex: [C.SEX_F, C.SEX_M][T.random()],
+                    iq: T.random(iq.min - C.DIF_IQ, iq.max + C.DIF_IQ), // 取值很不友好
+                    maxHp: C.MAX_HP
                 },
                 dynamic: {
-                    maxAge: T.random(maxAge.min - DIF_AGE, maxAge.max + DIF_AGE),
-                    justice: T.random(justice.min - DIF_JUSTICE, justice.max + DIF_JUSTICE)
+                    maxAge: T.random(maxAge.min - C.DIF_AGE, maxAge.max + C.DIF_AGE),
+                    justice: T.random(justice.min - C.DIF_JUSTICE, justice.max + C.DIF_JUSTICE)
                 }
             };
         } else if (parentA) {
@@ -98,13 +101,13 @@ class DNA {
             this.dna = {
                 static: {
                     id: new Date().getTime(),
-                    sex: [SEX_F, SEX_M][T.random()],
-                    iq: T.random(parseInt(MAX_IQ * 0.8), MAX_IQ), // 取值很不友好
-                    maxHp: MAX_HP
+                    sex: [C.SEX_F, C.SEX_M][T.random()],
+                    iq: T.random(parseInt(C.MAX_IQ * 0.8), C.MAX_IQ), // 取值很不友好
+                    maxHp: C.MAX_HP
                 },
                 dynamic: {
-                    maxAge: T.random(parseInt(MAX_AGE * 0.3), MAX_AGE),
-                    justice: T.random(MIN_JUSTICE, MAX_JUSTICE)
+                    maxAge: T.random(parseInt(C.MAX_AGE * 0.3), C.MAX_AGE),
+                    justice: T.random(C.MIN_JUSTICE, C.MAX_JUSTICE)
                 }
             };
         }
@@ -149,13 +152,16 @@ module.exports = class PERSON {
         this.attr = [];
         this.status = {
             age: 0,
-            energy: NOR_ENERGY,
-            hp: NOR_HP,
-            san: MAX_SAN,
-            money: DEF_MONEY,
+            energy: C.NOR_ENERGY,
+            hp: C.NOR_HP,
+            san: C.MAX_SAN,
+            money: C.DEF_MONEY,
             source: {}
         };
+        this.checkAttr();
+        // this.startHeartBeat();
     }
+    checkAttr(){}
     get id() {
         return this.dna.id;
     }
@@ -175,27 +181,32 @@ module.exports = class PERSON {
         return this.dna.justice;
     }
     get age() {
-        return this.status.id;
+        return this.status.age;
+    }
+    set age(age) {
+        this.status.age = age;
     }
     get energy() {
-        return this.status.sex;
+        return this.status.energy;
     }
     get hp() {
-        return this.status.iq;
+        return this.status.hp;
     }
     get san() {
-        return this.status.maxHp;
+        return this.status.san;
     }
     get money() {
-        return this.status.maxAge;
+        return this.status.money;
     }
     get source() {
-        return this.status.justice;
+        return this.status.source;
     }
     /** 
      * CONSCIOUSNESS 意识
     */
     checkStatus() {
+        this.checkAge();
+        console.log(JSON.stringify(this.status));
     }
     /** 
      * BEHIVE 行为
@@ -214,5 +225,15 @@ module.exports = class PERSON {
     }
     communicate() {
         // decompress
+    }
+    startHeartBeat(timer){
+        let self = this;
+        timer.on('timeupdate', self.checkStatus.bind(self));
+    }
+    checkAge(){
+        this.age = this.age + C.UNIT_TIME;
+        if(this.age >= this.maxAge * C.UNIT_YEAR_TIME){
+            console.log("max AGE");
+        }
     }
 }

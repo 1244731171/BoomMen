@@ -1,0 +1,111 @@
+// sex
+const SEX_F = 'XX';
+const SEX_M = 'XY';
+const _SEX_M = 'YX';
+// age
+const MIN_AGE = 0;
+const MAX_AGE = 200;
+const DIF_AGE = 5;
+// iq (normal Person)
+const MIN_IQ = 80;
+const MAX_IQ = 120;
+const DIF_IQ = 10;
+// justice
+const MIN_JUSTICE = -100;
+const MAX_JUSTICE = 100;
+const DIF_JUSTICE = 10;
+// san
+const MAX_SAN = 100;
+const LOW_SAN = MAX_SAN * 0.4;
+// hp
+const MIN_HP = 0;
+const MAX_HP = 100;
+const NOR_HP = MAX_HP;
+const LOW_HP = MAX_HP * 0.1;
+// pressurizeAbility
+const MIN_PRE_ABL = 0;
+const MAX_PRE_ABL = 2;
+// decompressAbility
+const MIN_DCP_ABL = 0;
+const MAX_DCP_ABL = 2;
+// learnAbility
+const MIN_LRN_ABL = 0;
+const MAX_LRN_ABL = 2;
+// energy
+const MIN_ENERGY = 0;
+const MAX_ENERGY = 100;
+const NOR_ENERGY = MAX_ENERGY * 0.6;
+const LOW_ENERGY = MAX_ENERGY * 0.1;
+// money
+const DEF_MONEY = 10000;
+
+// unit
+const UNIT_TIME = 10; // 10e2
+const UNIT_DAY_TIME = 5 * UNIT_TIME;
+const UNIT_YEAR_TIME = 10 * UNIT_TIME;
+const UNIT_HP = 1;
+const UNIT_SAN = 1;
+const UNIT_MONEY = 1;
+
+// money
+const SPENT_MONEY = UNIT_MONEY * 30;
+// san
+const ADD_SAN_BY_HP_PER_TIME = 1;
+const ADD_SAN_BY_SEX_PER_TIME = 10;
+const LOST_SAN_BY_WORK_PER_TIME = 2;
+const LOST_SAN_BY_DAY_PER_TIME = 2;
+const LOAD_SAN_BY_DAY_UNIT_TIME = UNIT_TIME * 15;
+// hp
+const ADD_HP_PER_TIME = 10;
+const ADD_HP_UNIT_TIME = 1;
+const LOST_HP_UNIT_TIME = 10;
+const LOST_HP_PER_TIME = 10;
+
+
+module.exports = {
+    SEX_F: SEX_F,
+    SEX_M: SEX_M,
+    _SEX_M: _SEX_M,
+    MIN_AGE: MIN_AGE,
+    MAX_AGE: MAX_AGE,
+    DIF_AGE: DIF_AGE,
+    MIN_IQ: MIN_IQ,
+    MAX_IQ: MAX_IQ,
+    DIF_IQ: DIF_IQ,
+    MIN_JUSTICE: MIN_JUSTICE,
+    MAX_JUSTICE: MAX_JUSTICE,
+    DIF_JUSTICE: DIF_JUSTICE,
+    MAX_SAN: MAX_SAN,
+    LOW_SAN: LOW_SAN,
+    MIN_HP: MIN_HP,
+    MAX_HP: MAX_HP,
+    NOR_HP: NOR_HP,
+    LOW_HP: LOW_HP,
+    MIN_PRE_ABL: MIN_PRE_ABL,
+    MAX_PRE_ABL: MAX_PRE_ABL,
+    MIN_DCP_ABL: MIN_DCP_ABL,
+    MAX_DCP_ABL: MAX_DCP_ABL,
+    MIN_LRN_ABL: MIN_LRN_ABL,
+    MAX_LRN_ABL: MAX_LRN_ABL,
+    MIN_ENERGY: MIN_ENERGY,
+    MAX_ENERGY: MAX_ENERGY,
+    NOR_ENERGY: NOR_ENERGY,
+    LOW_ENERGY: LOW_ENERGY,
+    DEF_MONEY: DEF_MONEY,
+    UNIT_TIME: UNIT_TIME,
+    UNIT_DAY_TIME: UNIT_DAY_TIME,
+    UNIT_YEAR_TIME: UNIT_YEAR_TIME,
+    UNIT_HP: UNIT_HP,
+    UNIT_SAN: UNIT_SAN,
+    UNIT_MONEY: UNIT_MONEY,
+    SPENT_MONEY: SPENT_MONEY,
+    ADD_SAN_BY_HP_PER_TIME: ADD_SAN_BY_HP_PER_TIME,
+    ADD_SAN_BY_SEX_PER_TIME: ADD_SAN_BY_SEX_PER_TIME,
+    LOST_SAN_BY_WORK_PER_TIME: LOST_SAN_BY_WORK_PER_TIME,
+    LOST_SAN_BY_DAY_PER_TIME: LOST_SAN_BY_DAY_PER_TIME,
+    LOAD_SAN_BY_DAY_UNIT_TIME: LOAD_SAN_BY_DAY_UNIT_TIME,
+    ADD_HP_PER_TIME: ADD_HP_PER_TIME,
+    ADD_HP_UNIT_TIME: ADD_HP_UNIT_TIME,
+    LOST_HP_UNIT_TIME: LOST_HP_UNIT_TIME,
+    LOST_HP_PER_TIME: LOST_HP_PER_TIME,
+};
