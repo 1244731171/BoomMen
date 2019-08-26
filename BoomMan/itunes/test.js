@@ -112,7 +112,8 @@ let isFirstCheck = true;
 let listener = (request, response) => {
     if (isFirst) {
         isFirst = false;
-        console.log(request['headers']['user-agent']);
+        console.log(`useragent: ${request['headers']['user-agent']}`);
+        console.log(`host: ${request['headers']['host']}`);
     }
     console.log(`有人访问了服务器 ==> ${request.url}`);
 
