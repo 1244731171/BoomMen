@@ -144,6 +144,16 @@ let listener = (request, response) => {
         }
         response.end(imgstr);
         return;
+    } else if (/\.css/.test(pathName)) {
+        let imgstr = '';
+        if (fs.existsSync(`.${pathName}`)) {
+            response.writeHead(200, { 'content-type': 'text/css' });
+            imgstr = fs.readFileSync(`.${pathName}`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'text/css' });
+        }
+        response.end(imgstr);
+        return;
     } else if (pathName == "/query") {
         if (query) {
             let qs = query.split("&");
