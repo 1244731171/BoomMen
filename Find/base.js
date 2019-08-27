@@ -3,6 +3,8 @@ let unit = 30;
 let width = 600;
 let height = 600;
 
+let step = 0;
+
 for (let i = 0, j = width / unit; i < j; i++) {
     list[i] = [];
     for (let x = 0, y = height / unit; x < y; x++) {
@@ -15,14 +17,15 @@ for (let i = 0, j = width / unit; i < j; i++) {
 }
 
 // a => isStone
-// x => xPoint
-// y => yPonit
-// p => isPass
-// l => leftPossible
-// r => rightPossible
-// t => topPossible
 // b => bottomPossible
 // d => deadpath
+// f => faced
+// l => leftPossible
+// p => isPass
+// r => rightPossible
+// t => topPossible
+// x => xPoint
+// y => yPonit
 
 list.forEach((x) => {
     x.forEach((y) => {
@@ -41,32 +44,19 @@ list.forEach((x) => {
 
 let cx, cy, fx, fy;
 let checkSort = [];
+let faceMap = {
+    'r': 'l',
+    'l': 'r',
+    't': 'b',
+    'b': 't'
+};
 
 let startCalculatePath = () => {
     cx = parseInt(start.id.split("_")[1]);
     cy = parseInt(start.id.split("_")[2]);
     fx = parseInt(finish.id.split("_")[1]);
     fy = parseInt(finish.id.split("_")[2]);
-    let x1, y1, x2, y2;
-    if (cx < fx) {
-        x1 = "r";
-        x2 = "l";
-    } else {
-        x1 = "l";
-        x2 = "r";
-    }
-    if (cy < fy) {
-        y1 = "t";
-        y2 = "b";
-    } else {
-        y1 = "b";
-        y2 = "t";
-    }
-    if (fy - cy > fx - cx) {
-        checkSort = [y1, x1, y2, x2];
-    } else {
-        checkSort = [x1, y1, x2, y2];
-    }
+    list[cx][cy]['d'] = true;
     window.timer = setInterval(check, 500);
 };
 
@@ -74,8 +64,87 @@ let stopCalculatePath = () => {
     clearInterval(window.timer);
     start = null;
     finish = null;
+    lastTo = null;
+    isFollowLast = false;
+    clearOldPath();
+};
+
+let isFollowLast = true;
+let sortCheckFace = (lastTo) => {
+    let x = fx - cx;
+    let y = fy - cy;
+    let x1, x2, y1, y2;
+    if (x >= 0) {
+        x1 = "r";
+        x2 = "l";
+    } else {
+        x1 = "l";
+        x2 = "r";
+        x = -1 * x;
+    }
+    if (y >= 0) {
+        y1 = "b";
+        y2 = "t";
+    } else {
+        y1 = "t";
+        y2 = "b";
+        y = -1 * y;
+    }
+    if (x < y) {
+        checkSort = [x1, y1, y2, x2];
+    } else {
+        checkSort = [y1, x1, x2, y2];
+    }
+    let index = -1;
+    if (lastTo) {
+        let from = faceMap[lastTo];
+
+        // 先把最后一次移动作为第三优先级
+        index = checkSort.indexOf(lastTo);
+        if (index === 1 && isFollowLast) {
+            // 如果最后一次是在 前两个优先级上则强制提到第一级
+            // 惯性移动思维
+            checkSort.splice(1, 1);
+            checkSort.unshift(lastTo);
+        }
+        if (index === 3) {
+            let temp = checkSort.splice(3, 1)[0];
+            checkSort.push(temp);
+        }
+        // 优先前置来源类
+        index = checkSort.indexOf(from);
+        checkSort.splice(index, 1);
+        checkSort.unshift(from);
+    }
+
+    if (x === 0) {
+        index = checkSort.indexOf(y1);
+        checkSort.splice(index, 1);
+        checkSort.unshift(y1);
+    }
+    if (y === 0) {
+        index = checkSort.indexOf(x1);
+        checkSort.splice(index, 1);
+        checkSort.unshift(x1);
+    }
+};
+
+let clearOldPath = () => {
+    // document.querySelectorAll(".path").forEach(e => {
+    //     e.classList.remove('path');
+    // });
+    // document.querySelectorAll(".deadpath").forEach(e => {
+    //     e.classList.remove('deadpath');
+    // });
+    list.forEach((x) => {
+        x.forEach((y) => {
+            delete y['f'];
+            delete y['p'];
+        });
+    });
 }
 
+let lastTo;
 let check = () => {
 
     // check finish
@@ -112,17 +181,30 @@ let check = () => {
         info['b'] = false;
     }
 
+    sortCheckFace(lastTo);
+    dom.innerHTML = (step);
+    console.log(`${step} last to ==> ${lastTo}`);
+    console.log(`${step} current ==> ${cx} - ${cy}`);
+    console.log(`${step} ==> ${JSON.stringify(checkSort)}`);
+    console.log(`${step} info ==> T:${info.t ? info.t.d : null};R:${info.r ? info.r.d : null};B:${info.b ? info.b.d : null};L:${info.l ? info.l.d : null}`);
+
     // check next
     let canMove = false;
     let preInfo, nextInfo;
+    lastTo = null;
     for (let next of checkSort) {
         if (info[next]) {
             canMove = true;
             nextInfo = info[next];
             if (nextInfo['p']) {
-                preInfo = nextInfo;
+                // 往回走 不能是同方向
+                if(!preInfo && (nextInfo['f'] || "").indexOf(next) === -1){
+                    preInfo = nextInfo;
+                }
                 nextInfo = null;
             } else {
+                // 即将移动的方向 为下一次判断方向做准备的
+                lastTo = next;
                 break;
             }
         }
@@ -132,6 +214,7 @@ let check = () => {
     if (canMove) {
         // 可以成功移动到下一格
         if (nextInfo) {
+            nextInfo['f'] = nextInfo['f'] + (lastTo || "");
             cx = nextInfo['x'];
             cy = nextInfo['y'];
         } else {
@@ -145,6 +228,7 @@ let check = () => {
         console.log("no path can move!");
         stopCalculatePath();
     }
+    step++;
 };
 
 let start = null;
