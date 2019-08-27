@@ -86,7 +86,8 @@ class DNA {
                     id: new Date().getTime(),
                     sex: [C.SEX_F, C.SEX_M][T.random()],
                     iq: T.random(iq.min - C.DIF_IQ, iq.max + C.DIF_IQ), // 取值很不友好
-                    maxHp: C.MAX_HP
+                    maxHp: C.MAX_HP,
+                    maxVit: C.MAX_VIT
                 },
                 dynamic: {
                     maxAge: T.random(maxAge.min - C.DIF_AGE, maxAge.max + C.DIF_AGE),
@@ -103,7 +104,8 @@ class DNA {
                     id: new Date().getTime(),
                     sex: [C.SEX_F, C.SEX_M][T.random()],
                     iq: T.random(parseInt(C.MAX_IQ * 0.8), C.MAX_IQ), // 取值很不友好
-                    maxHp: C.MAX_HP
+                    maxHp: C.MAX_HP,
+                    maxVit: C.MAX_VIT
                 },
                 dynamic: {
                     maxAge: T.random(parseInt(C.MAX_AGE * 0.3), C.MAX_AGE),
@@ -154,6 +156,7 @@ module.exports = class PERSON {
             age: 0,
             energy: C.NOR_ENERGY,
             hp: C.NOR_HP,
+            vit: C.MAX_VIT,
             san: C.MAX_SAN,
             money: C.DEF_MONEY,
             source: {}
@@ -161,7 +164,7 @@ module.exports = class PERSON {
         this.checkAttr();
         // this.startHeartBeat();
     }
-    checkAttr(){}
+    checkAttr() { }
     get id() {
         return this.dna.id;
     }
@@ -176,6 +179,9 @@ module.exports = class PERSON {
     }
     get maxAge() {
         return this.dna.maxAge;
+    }
+    get maxVit() {
+        return this.dna.maxVit;
     }
     get justice() {
         return this.dna.justice;
@@ -192,6 +198,12 @@ module.exports = class PERSON {
     get hp() {
         return this.status.hp;
     }
+    get vit() {
+        return this.status.vit;
+    }
+    set vit(vit) {
+        this.status.vit = vit;
+    }
     get san() {
         return this.status.san;
     }
@@ -205,8 +217,46 @@ module.exports = class PERSON {
      * CONSCIOUSNESS 意识
     */
     checkStatus() {
-        this.checkAge();
+        if(!this.checkAge()){
+            this.say(`${this.id} is dead by too old!`);
+            this.stopHeartBeat();
+            return;
+        }
+        this.vit = this.vit - C.LOST_VIT_UNIT_TIME;
+        this.checkVIT();
+        if(!this.checkHp()){
+
+        }
         console.log(JSON.stringify(this.status));
+    }
+    checkAge() {
+        this.age = this.age + C.UNIT_TIME;
+        if (this.age >= this.maxAge * C.UNIT_YEAR_TIME) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    checkHp(){
+
+    }
+    checkVIT(){
+        if(this.vit < C.LOW_VIT){
+            if(this.checkEat){
+                this.eat();
+            }
+            if(this.vit <= 0){
+                this.vit = 0;
+                this.hp = this.hp - C.LOST_HP_BY_LOW_VIT_PRE_TIME;
+                this.checkHp();
+            }
+        }
+    }
+    get checkEat() {
+        return this.checkMoney(C.ADD_VIT_COST_MONEY_PER_TIME);
+    }
+    get checkMoney(money) {
+        return this.money - money > 0;
     }
     /** 
      * BEHIVE 行为
@@ -215,7 +265,8 @@ module.exports = class PERSON {
         // new person
     }
     eat() {
-        // add HP
+        // add vit
+        
     }
     relex() {
         // decompress
@@ -226,14 +277,16 @@ module.exports = class PERSON {
     communicate() {
         // decompress
     }
-    startHeartBeat(timer){
-        let self = this;
-        timer.on('timeupdate', self.checkStatus.bind(self));
+    say(str){
+        // console
+        console.log(str);
     }
-    checkAge(){
-        this.age = this.age + C.UNIT_TIME;
-        if(this.age >= this.maxAge * C.UNIT_YEAR_TIME){
-            console.log("max AGE");
-        }
+    startHeartBeat(timer) {
+        let self = this;
+        self.timer = timer;
+        self.eventId = timer.on('timeupdate', self.checkStatus.bind(self));
+    }
+    stopHeartBeat() {
+        this.timer.off('timeupdate', this.eventId);
     }
 }

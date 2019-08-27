@@ -4,7 +4,7 @@ const SEX_M = 'XY';
 const _SEX_M = 'YX';
 // age
 const MIN_AGE = 0;
-const MAX_AGE = 200;
+const MAX_AGE = 30;
 const DIF_AGE = 5;
 // iq (normal Person)
 const MIN_IQ = 80;
@@ -17,6 +17,10 @@ const DIF_JUSTICE = 10;
 // san
 const MAX_SAN = 100;
 const LOW_SAN = MAX_SAN * 0.4;
+// vit 体力值
+const MIN_VIT = 0;
+const MAX_VIT = 100;
+const LOW_VIT = MAX_VIT * 0.4;
 // hp
 const MIN_HP = 0;
 const MAX_HP = 100;
@@ -40,9 +44,9 @@ const LOW_ENERGY = MAX_ENERGY * 0.1;
 const DEF_MONEY = 10000;
 
 // unit
-const UNIT_TIME = 10; // 10e2
-const UNIT_DAY_TIME = 5 * UNIT_TIME;
-const UNIT_YEAR_TIME = 10 * UNIT_TIME;
+const UNIT_TIME = 250; // 10e2 早中晚夜
+const UNIT_DAY_TIME = 4 * UNIT_TIME;
+const UNIT_YEAR_TIME = 1 * UNIT_DAY_TIME;
 const UNIT_HP = 1;
 const UNIT_SAN = 1;
 const UNIT_MONEY = 1;
@@ -60,7 +64,11 @@ const ADD_HP_PER_TIME = 10;
 const ADD_HP_UNIT_TIME = 1;
 const LOST_HP_UNIT_TIME = 10;
 const LOST_HP_PER_TIME = 10;
+const LOST_HP_BY_LOW_VIT_PRE_TIME = 10;
 
+const LOST_VIT_UNIT_TIME = 20;
+const ADD_VIT_BY_MONEY_PER_TIME = 20;
+const ADD_VIT_COST_MONEY_PER_TIME = 30;
 
 module.exports = {
     SEX_F: SEX_F,
@@ -91,6 +99,9 @@ module.exports = {
     MAX_ENERGY: MAX_ENERGY,
     NOR_ENERGY: NOR_ENERGY,
     LOW_ENERGY: LOW_ENERGY,
+    MIN_VIT: MIN_VIT,
+    MAX_VIT: MAX_VIT,
+    LOW_VIT: LOW_VIT,
     DEF_MONEY: DEF_MONEY,
     UNIT_TIME: UNIT_TIME,
     UNIT_DAY_TIME: UNIT_DAY_TIME,
@@ -108,4 +119,8 @@ module.exports = {
     ADD_HP_UNIT_TIME: ADD_HP_UNIT_TIME,
     LOST_HP_UNIT_TIME: LOST_HP_UNIT_TIME,
     LOST_HP_PER_TIME: LOST_HP_PER_TIME,
+    LOST_HP_BY_LOW_VIT_PRE_TIME: LOST_HP_BY_LOW_VIT_PRE_TIME,
+    LOST_VIT_UNIT_TIME: LOST_VIT_UNIT_TIME,
+    ADD_VIT_BY_MONEY_PER_TIME: ADD_VIT_BY_MONEY_PER_TIME,
+    ADD_VIT_COST_MONEY_PER_TIME: ADD_VIT_COST_MONEY_PER_TIME
 };
