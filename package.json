@@ -1,0 +1,22 @@
+{
+  "name": "boommen",
+  "version": "1.0.0",
+  "description": "——**测试范围包括 git+nodejs+es6**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CJuNing/BoomMen.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CJuNing/BoomMen/issues"
+  },
+  "homepage": "https://github.com/CJuNing/BoomMen#readme",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
+}
