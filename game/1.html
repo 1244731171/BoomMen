@@ -1,0 +1,83 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./jquery.js"></script>
+</head>
+
+<body>
+
+</body>
+<style>
+    td {
+        width: 300px;
+    }
+</style>
+<script>
+    $.ajax({
+        url: "./data.json",
+        type: "get",
+        dataType: "json",
+        success: (e) => {
+            createTable(e);
+        },
+        error: (e) => {
+            // createTable(e);
+        }
+    });
+
+    let createTable = (data) => {
+        $("body").html("");
+        let htmlstr = "<table border='1'><thead></thead><tbody>";
+        let i = 0;
+        data.forEach(e => {
+            htmlstr += `<tr id="tr${i}"><td width="300px">${e.n}</td><td width="100px">${e.s1}</td><td width="100px">${e.s2}</td><td width="300px"><input value="${e.h}"/></td></tr>`;
+            i++;
+        });
+        htmlstr += "</tbody></table>";
+        console.log(htmlstr);
+        $("body").html(htmlstr);
+
+        $("input").each((i, e) => {
+            e.addEventListener("input", () => {
+                clearTimeout(timer);
+                timer = setTimeout(saveData, 500);
+            });
+        });
+    }
+
+    let timer = -1;
+    let saveData = () => {
+        let data = [];
+        $("tr").each((e, dom) => {
+            let tds = $(dom).find('td');
+            data.push({
+                n: tds[0].innerHTML,
+                s1: tds[1].innerHTML,
+                s2: tds[2].innerHTML,
+                h: tds.eq(3).find("input").val() || 0
+            });
+        });
+        data = JSON.stringify(data);
+        console.log(data);
+        $.ajax({
+            url: `/save?data=${window.btoa(encodeURIComponent(data))}`,
+            type: 'get',
+            timeout: 10000,
+            dataType: 'text',
+            success: (data) => {
+            },
+            error: (data) => {
+            }
+        });
+    };
+    // $("input").on("input", () => {
+    //     clearTimeout(timer);
+    //     timer = setTimeout(saveData, 500);
+    // })
+</script>
+
+</html>
