@@ -6,16 +6,28 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script src="./jquery.js"></script>
+    <style>
+        input {
+            width: 50px;
+        }
+    
+        .l0 td {
+            background: palegoldenrod;
+        }
+    
+        .l1 td {
+            background: palegreen;
+        }
+    
+        .l2 td {
+            background: palevioletred;
+        }
+    </style>
 </head>
 
 <body>
 
 </body>
-<style>
-    td {
-        width: 300px;
-    }
-</style>
 <script>
     $.ajax({
         url: "./data.json",
@@ -31,13 +43,13 @@
 
     let createTable = (data) => {
         $("body").html("");
-        let htmlstr = "<table border='1'><thead></thead><tbody>";
+        let htmlstr = "<table border='1'>";
         let i = 0;
         data.forEach(e => {
-            htmlstr += `<tr id="tr${i}"><td width="300px">${e.n}</td><td width="100px">${e.s1}</td><td width="100px">${e.s2}</td><td width="300px"><input value="${e.h}"/></td></tr>`;
+            htmlstr += `<tr class='l${parseInt(i / 6)}' id="tr${i}"><td width="150px">${e.n}</td><td width="50px">${e.s1}</td><td width="50px">${e.s2}</td><td><input value="${e.h}"/>&nbsp;<button class="a">&nbsp;+&nbsp;</button>&nbsp;<button class="b">&nbsp;-&nbsp;</button></td></tr>`;
             i++;
         });
-        htmlstr += "</tbody></table>";
+        htmlstr += "</table>";
         console.log(htmlstr);
         $("body").html(htmlstr);
 
@@ -46,6 +58,19 @@
                 clearTimeout(timer);
                 timer = setTimeout(saveData, 500);
             });
+        });
+
+        $(".a").click((e)=>{
+            let target = $(e.target);
+            let i = target.prev();
+            i.val(parseInt(i.val() || "0") + 1);
+            saveData();
+        });
+        $(".b").click((e)=>{
+            let target = $(e.target);
+            let i = target.prev().prev();
+            i.val(parseInt(i.val() || "0") - 1);
+            saveData();
         });
     }
 

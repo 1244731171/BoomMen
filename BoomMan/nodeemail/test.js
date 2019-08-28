@@ -1,20 +1,24 @@
 
 
-var email   = require("emailjs");
-var server  = email.server.connect({
-    user:    "575960273@qq.com",      // 你的QQ用户
-    password:"ffxugyoquvxtbdhj",           // 注意，不是QQ密码，而是刚才生成的授权码
-    host:    "smtp.qq.com",         // 主机，不改
-    ssl:     true                   // 使用ssl
+let email = require("emailjs");
+let server = email.server.connect({
+    user: "575960273@qq.com",      // 你的QQ用户
+    password: "ffxugyoquvxtbdhj",           // 注意，不是QQ密码，而是刚才生成的授权码
+    host: "smtp.qq.com",         // 主机，不改
+    ssl: true                   // 使用ssl
 });
 
-//开始发送邮件
-server.send({
-    text:    "邮件内容",       //邮件内容
-    from:    "575960273@qq.com",        //谁发送的
-    to:      "575960273@qq.com",       //发送给谁的
-    subject: "邮件主题"          //邮件主题
-}, function(err, message) {
-    //回调函数
-    console.log(`===> ${err || JSON.stringify(message)}`);
-});
+module.exports = (title = 'test', content = "test", from = "575960273@qq.com", to = "575960273@qq.com", cal = () =>{}) => {
+    //开始发送邮件
+    server.send({
+        subject: title,          //邮件主题
+        text: content,       //邮件内容
+        from: from,        //谁发送的
+        to: to      //发送给谁的
+    }, function (err, message) {
+        //回调函数
+        let str = err || JSON.stringify(message);
+        console.log(`===> ${str}`);
+        cal(str);
+    });
+}
