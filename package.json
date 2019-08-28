@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CJuNing/BoomMen#readme",
   "dependencies": {
+    "emailjs": "^2.2.0",
     "readline-sync": "^1.4.10"
   }
 }

