@@ -2937,3 +2937,11 @@ BoomMan/itunes/1.txt
 BoomMan/qzone/手机统一登录.html.bak
 BoomMan/itunes/appleid_files
 node_modules
+package.json
+package-lock.json
+BoomMan/itunes/package.json
+BoomMan/itunes/package-lock.json
+BoomMan/qzone/package.json
+BoomMan/qzone/package-lock.json
+game/package.json
+game/package-lock.json
