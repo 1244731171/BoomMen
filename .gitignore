@@ -2945,6 +2945,5 @@ BoomMan/qzone/package.json
 BoomMan/qzone/package-lock.json
 game/package.json
 game/package-lock.json
-game/data.json
 ../package.json
 ../package-lock.json
