@@ -1,40 +1,73 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-    body{
-        background: white;
-    }
-    .stone{
-        background: #666666 !important;
-    }
-    .path{
-        background: palegreen !important;
-    }
-    .deadpath{
-        background: palevioletred !important;
-    }
-    .start{
-        background: powderblue !important;
-    }
-    .finish{
-        background: red !important;
-    }
-    .block{
-        background: antiquewhite;
-        width: 30px;
-        height: 30px;
-        position: absolute;
-    }
+        body {
+            background: white;
+        }
+
+        .stone {
+            background: #666666 !important;
+        }
+
+        .path {
+            background: palegreen !important;
+        }
+
+        .deadpath {
+            background: palevioletred !important;
+        }
+
+        .start {
+            background: powderblue !important;
+        }
+
+        .finish {
+            background: red !important;
+        }
+
+        .block {
+            background: antiquewhite;
+            width: 30px;
+            height: 30px;
+            position: absolute;
+        }
     </style>
 </head>
+
 <body>
-    
+
 </body>
 <footer>
-    <script src="./base.js"></script>
+    <script src="./world.js"></script>
+    <script src="./explorer.js"></script>
+    <script>
+        let world = new World();
+        let explorer = new Explorer(world);
+        document.querySelectorAll(".block").forEach((d) => {
+            d.addEventListener("click", (e) => {
+                let target = e.target;
+                if (!this.start) {
+                    this.start = target;
+                    this.start.classList.add("start");
+                    console.log(`this.start point => [${this.start.id}]`);
+                } else if (!this.finish) {
+                    this.finish = target;
+                    this.finish.classList.add("finish");
+                    console.log(`this.finish point => [${this.finish.id}]`);
+                    let cx = parseInt(this.start.id.split("_")[1]);
+                    let cy = parseInt(this.start.id.split("_")[2]);
+                    let fx = parseInt(this.finish.id.split("_")[1]);
+                    let fy = parseInt(this.finish.id.split("_")[2]);
+                    explorer.startCalculatePath(cx, cy, fx, fy);
+                }
+            });
+        });
+    </script>
 </footer>
+
 </html>

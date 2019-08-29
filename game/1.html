@@ -10,17 +10,21 @@
         input {
             width: 50px;
         }
-    
+
         .l0 td {
             background: palegoldenrod;
         }
-    
+
         .l1 td {
             background: palegreen;
         }
-    
+
         .l2 td {
             background: palevioletred;
+        }
+
+        .ok {
+            border: red 2px solid;
         }
     </style>
 </head>
@@ -46,7 +50,8 @@
         let htmlstr = "<table border='1'>";
         let i = 0;
         data.forEach(e => {
-            htmlstr += `<tr class='l${parseInt(i / 6)}' id="tr${i}"><td width="150px">${e.n}</td><td width="50px">${e.s1}</td><td width="50px">${e.s2}</td><td><input value="${e.h}"/>&nbsp;<button class="a">&nbsp;+&nbsp;</button>&nbsp;<button class="b">&nbsp;-&nbsp;</button></td></tr>`;
+            htmlstr += `<tr class='l${parseInt(i / 6)}' id="tr${i}"><td width="150px">${e.n}</td><td class="${e.s1>e.h?"":"ok"}" width="50px">${e.s1}</td>`
+            htmlstr += `<td class="${e.s2>e.h?"":"ok"}" width="50px">${e.s2}</td><td><input value="${e.h}"/>&nbsp;<button class="a">&nbsp;+&nbsp;</button>&nbsp;<button class="b">&nbsp;-&nbsp;</button></td></tr>`;
             i++;
         });
         htmlstr += "</table>";
@@ -60,13 +65,13 @@
             });
         });
 
-        $(".a").click((e)=>{
+        $(".a").click((e) => {
             let target = $(e.target);
             let i = target.prev();
             i.val(parseInt(i.val() || "0") + 1);
             saveData();
         });
-        $(".b").click((e)=>{
+        $(".b").click((e) => {
             let target = $(e.target);
             let i = target.prev().prev();
             i.val(parseInt(i.val() || "0") - 1);
