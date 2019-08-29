@@ -20,10 +20,11 @@
         }
 
         .l2 td {
-            background: palevioletred;
+            background: paleturquoise;
         }
 
         .ok {
+            background: palevioletred;
             border: red 2px solid;
         }
     </style>
@@ -51,7 +52,7 @@
         let i = 0;
         data.forEach(e => {
             e.s1 = parseInt(e.s1) || 0;
-            e.s2 = parseInt(e.s2) || 0;
+            e.s2 = parseInt(e.s) || 0;
             e.h = parseInt(e.h) || 0;
             htmlstr += `<tr class='l${parseInt(i / 6)}' id="tr${i}"><td width="150px">${e.n}</td><td class="${e.s1>e.h?"":"ok"}" width="50px">${e.s1}</td>`
             htmlstr += `<td class="${e.s2>e.h?"":"ok"}" width="50px">${e.s2}</td><td><input value="${e.h}"/>&nbsp;<button class="a">&nbsp;+&nbsp;</button>&nbsp;<button class="b">&nbsp;-&nbsp;</button></td></tr>`;
