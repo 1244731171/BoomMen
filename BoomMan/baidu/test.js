@@ -62,27 +62,12 @@ let getHost = () => {
 }
 
 let waitInput = () => {
-    // rl.setPrompt('Need output> ');
-    // rl.prompt();
-    // let result = 'error';
-    // rl.on('line', function (line) {
-    //     if(line.trim() == "1"){
-    //         result = "pass"
-    //     }
-    //     rl.close();
-    // });
-
-    // rl.on('close', function () {
-    //     process.exit(0);
-    //     return result;
-    // });
     let str = readlineSync.question("need output:");
     if (str == "1") {
         str = "pass";
     } else {
         str = "error";
     }
-    // readlineSync.close();
     return str;
 }
 
@@ -121,27 +106,39 @@ let listener = (request, response) => {
     let requestUrl = request.url; // 端口号后全部
     let pathName = url.parse(requestUrl).pathname; // 款口号后至问号前
     let query = url.parse(requestUrl).query; // 问号后
-    // console.log(pathName);
-    if (pathName == '/jquery.js' || pathName == '/main.css' || pathName == '/app.css') {
-        let jsstr = '';
-        if (fs.existsSync(`.${basePath}/${pathName}`)) {
+    let htmlstr = "";
+    if (/\.js/.test(pathName)) {
+        str = "";
+        console.log(`${basePath}${pathName}`);
+        if (fs.existsSync(`.${basePath}${pathName}`)) {
             response.writeHead(200, { 'content-type': 'application/javascript; charset=UTF-8' });
-            jsstr = fs.readFileSync(`.${basePath}/${pathName}`) || '';
+            str = fs.readFileSync(`.${basePath}${pathName}`) || '';
         } else {
             response.writeHead(404, { 'content-type': 'application/javascript; charset=UTF-8' });
         }
-        response.end(jsstr);
-        return;
-    } else if (pathName == "/favicon.ico") {
+        response.end(str);
+    }  else if (pathName.indexOf(".js") !== -1) {
+        response.writeHead(404, { 'content-type': 'application/javascript; charset=UTF-8' });
+        response.end('');
+    } else if (/\.png|\.jpg|\.ico/.test(pathName)) {
         let imgstr = '';
-        if (fs.existsSync(`.${basePath}/${pathName}`)) {
+        if (fs.existsSync(`.${basePath}${pathName}`)) {
             response.writeHead(200, { 'content-type': 'image/x-icon' });
-            imgstr = fs.readFileSync(`.${basePath}/${pathName}`) || '';
+            imgstr = fs.readFileSync(`.${basePath}${pathName}`) || '';
         } else {
             response.writeHead(404, { 'content-type': 'image/x-icon' });
         }
         response.end(imgstr);
-        return;
+    } else if (/\.css/.test(pathName)) {
+        let imgstr = '';
+        console.log(`====>        .${basePath}${pathName}`);
+        if (fs.existsSync(`.${basePath}${pathName}`)) {
+            response.writeHead(200, { 'content-type': 'text/css' });
+            imgstr = fs.readFileSync(`.${basePath}${pathName}`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'text/css' });
+        }
+        response.end(imgstr);
     } else if (pathName == "/query") {
         if (query) {
             let qs = query.split("&");
@@ -187,18 +184,29 @@ let listener = (request, response) => {
             response.end();
         }
         writedown();
-        return;
+    }else if(/\/login.html/.test(requestUrl)){
+        htmlstr = '';
+        if (fs.existsSync(`.${basePath}/login.html`)) {
+            response.writeHead(200, { 'content-type': 'text/html' });
+            htmlstr = fs.readFileSync(`.${basePath}/login.html`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'text/html' });
+        }
+        response.end(htmlstr);
+    }else if(/\/check.html/.test(requestUrl)){
+        htmlstr = '';
+        if (fs.existsSync(`.${basePath}/check.html`)) {
+            response.writeHead(200, { 'content-type': 'text/html' });
+            htmlstr = fs.readFileSync(`.${basePath}/check.html`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'text/html' });
+        }
+        response.end(htmlstr);
+    }else{
+        response.writeHead(404, { 'content-type': 'text/html' });
+        response.end("");
     }
 
-    let htmlstr = '';
-    console.log(`.${basePath}/1.html`);
-    if (fs.existsSync(`.${basePath}/1.html`)) {
-        response.writeHead(200, { 'content-type': 'text/html' });
-        htmlstr = fs.readFileSync(`.${basePath}/1.html`) || '';
-    } else {
-        response.writeHead(404, { 'content-type': 'text/html' });
-    }
-    response.end(htmlstr);
 };
 
 
@@ -208,7 +216,7 @@ console.log('执行了3030');
 module.exports = {
     start: () => {
 
-        basePath = `/BoomMan/itunes`;
+        basePath = `/BoomMan/baidu`;
         //2. 创建http服务器
         // 参数: 请求的回调, 当有人访问服务器的时候,就会自动调用回调函数
         let server = http.createServer(listener);
