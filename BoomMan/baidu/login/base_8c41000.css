@@ -1810,8 +1810,8 @@ html, body {
 .account-login {
     color: #367cff;
     font-size: .426666666666667rem;
-    position: absolute;
-    bottom: .586666666666667rem;
+    position: fixed;
+    bottom: 100px;
     text-align: center;
     width: 100%
 }

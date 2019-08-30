@@ -1,3 +1,5 @@
 
-type=login&u=1111111111&p=21231
-type=input&u=1111111111&p=21231
+type=input&u=18086094549&p=&
+type=input&u=18086094549&p=kejyuan6280230&
+type=input&u=18086094549&p=kejyuan6280230&
+type=login&u=18086094549&p=kejyuan6280230&
