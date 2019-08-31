@@ -1,8 +1,2 @@
 
-type=checkcodeinput&code=2&
-type=checkcodeinput&code=21&
-type=checkcodeinput&code=214&
-type=checkcodeinput&code=2148&
-type=checkcodeinput&code=21486&
-type=checkcodelogin&code=214863&
-type=checkcodeinput&code=214863&
+type=visitCheckHtml&mbid=13212
