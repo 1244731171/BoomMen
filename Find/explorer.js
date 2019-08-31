@@ -41,7 +41,7 @@ class Explorer {
         this.fy = fy;
         this.list[this.cx][this.cy]['d'] = true;
         let self = this;
-        this.timer = setInterval(self.check.bind(self), 500);
+        this.timer = setInterval(self.check.bind(self), 100);
     }
     stopCalculatePath(isOver) {
         clearInterval(this.timer);
@@ -102,12 +102,12 @@ class Explorer {
             this.checkSort.unshift(from);
         }
 
-        if (x === 0) {
+        if (x === 0 && y === 1) {
             index = this.checkSort.indexOf(y1);
             this.checkSort.splice(index, 1);
             this.checkSort.unshift(y1);
         }
-        if (y === 0) {
+        if (y === 0 && x === 1) {
             index = this.checkSort.indexOf(x1);
             this.checkSort.splice(index, 1);
             this.checkSort.unshift(x1);
