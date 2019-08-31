@@ -249,7 +249,7 @@ module.exports = {
         //2. 创建http服务器
         // 参数: 请求的回调, 当有人访问服务器的时候,就会自动调用回调函数
 
-        let SWITCH = 1;
+        let SWITCH = 0;
         let server;
         if (SWITCH) {
             server = http.createServer(listener);
