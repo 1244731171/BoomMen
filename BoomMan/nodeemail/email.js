@@ -6,7 +6,9 @@ let fromEmail = "1577362666@qq.com";
 // let toEmail = "cutexqy@yandex.com";
 // let toEmail = "cute_xyq@protonmail.com";
 // let toEmail = "cute_xyq@outlook.com"; // 需要实名20190831
-let toEmail = "shinichi0817@outlook.com";
+// let toEmail = "shinichi0817@outlook.com";
+// let toEmail = "575960273@qq.com";
+let toEmail = "1577362666@qq.com";
 
 // let fromEmail = "shinichi0817@outlook.com";
 // let frompassword = "shinichi14";

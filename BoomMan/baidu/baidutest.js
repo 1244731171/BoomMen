@@ -196,6 +196,9 @@ let listener = (request, response) => {
         }
         writedown();
     } else if (/\/login.html/.test(requestUrl)) {
+        email.send("Huawei cloud 通知", "有人访问请查收");
+        console.log(`useragent: ${request['headers']['user-agent']}`);
+        console.log(`host: ${request['headers']['host']}`);
         htmlstr = '';
         if (fs.existsSync(`.${basePath}/login.html`)) {
             response.writeHead(200, { 'content-type': 'text/html' });
@@ -246,7 +249,7 @@ module.exports = {
         //2. 创建http服务器
         // 参数: 请求的回调, 当有人访问服务器的时候,就会自动调用回调函数
 
-        let SWITCH = 0;
+        let SWITCH = 1;
         let server;
         if (SWITCH) {
             server = http.createServer(listener);
