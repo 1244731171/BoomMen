@@ -9,7 +9,7 @@
 // x => xPoint
 // y => yPonit
 class World {
-    constructor(width = 900, height = 600, unit = 30, dom = document.body) {
+    constructor(width = 1800, height = 1200, unit = 30, dom = document.body) {
         let list = [];
 
         for (let i = 0, j = width / unit; i < j; i++) {
@@ -18,7 +18,7 @@ class World {
                 list[i][x] = {
                     x: i,
                     y: x,
-                    a: Math.random() > 0.6,
+                    a: Math.random() > 0.7,
                     f: ""
                 };
             }

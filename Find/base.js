@@ -1,7 +1,8 @@
 let list = [];
 let unit = 30;
-let width = 600;
-let height = 600;
+let width = 1200;
+let height = 1800;
+let timeGap = 100;
 
 let step = 0;
 
@@ -57,7 +58,7 @@ let startCalculatePath = () => {
     fx = parseInt(finish.id.split("_")[1]);
     fy = parseInt(finish.id.split("_")[2]);
     list[cx][cy]['d'] = true;
-    window.timer = setInterval(check, 500);
+    window.timer = setInterval(check, timeGap);
 };
 
 let stopCalculatePath = () => {

@@ -64,6 +64,11 @@
                     let fx = parseInt(this.finish.id.split("_")[1]);
                     let fy = parseInt(this.finish.id.split("_")[2]);
                     explorer.startCalculatePath(cx, cy, fx, fy);
+                } else {
+                    target.classList.add("finish");
+                    let fx = parseInt(target.id.split("_")[1]);
+                    let fy = parseInt(target.id.split("_")[2]);
+                    explorer.setNewStart(fx, fy);
                 }
             });
         });

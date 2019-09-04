@@ -8,6 +8,7 @@
 // t => topPossible
 // x => xPoint
 // y => yPonit
+let timeGap = 100;
 
 class Explorer {
     constructor(world) {
@@ -32,6 +33,14 @@ class Explorer {
 
         this.list = this.world.orgData;
     }
+    setNewStart(fx, fy){
+        this.clearAllPath();
+        this.fx = fx;
+        this.fy = fy;
+        this.list[this.cx][this.cy]['d'] = true;
+        let self = this;
+        this.timer = setInterval(self.check.bind(self), timeGap);
+    }
     startCalculatePath(cx, cy, fx, fy) {
         this.start = start;
         this.finish = finish;
@@ -41,7 +50,7 @@ class Explorer {
         this.fy = fy;
         this.list[this.cx][this.cy]['d'] = true;
         let self = this;
-        this.timer = setInterval(self.check.bind(self), 500);
+        this.timer = setInterval(self.check.bind(self), timeGap);
     }
     stopCalculatePath(isOver) {
         clearInterval(this.timer);
