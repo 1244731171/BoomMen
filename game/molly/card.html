@@ -142,7 +142,8 @@
             }
             TD_D.push({
                 index: i,
-                typeId: '0-1-2-3-4-5-6-7-8-9-10-11-12',
+                tarType: '',
+                type: '0-1-2-3-4-5-6-7-8-9-10-11-12',
                 name: `td_${i}`,
                 tarLen: 0,
                 len: 12
@@ -151,7 +152,9 @@
                 index: i,
                 name: AllTypes[i],
                 tdId: '0-1-2-3-4-5-6-7-8-9-10-11-12',
-                max: AllTypes.length
+                max: AllTypes.length,
+                tarPer: 0,
+                per: 1 / AllTypes.length
             });
             AllTypesMap[i] = AllTypes[i];
             AllTypesMap[AllTypes[i]] = i;
@@ -204,7 +207,7 @@
                     names.push($(d).html());
                 }
             });
-            TD_D[tdIndex].typeId = types.join("-");
+            TD_D[tdIndex].type = types.join("-");
             target.attr("ban_types", ban_types.join(","));
             // target.html(`盒号${parseInt(target.attr("index") || '0') + 1}=>${names.join("=")}`);
             target = null;
@@ -245,25 +248,29 @@
     let updateTarget = () => {
         let tmap = {};
         $("#he td").each((i, d) => {
-            let types = TD_D[i].typeId.split("-");
+            let types = TD_D[i].type.split("-");
             let names = [];
-            let len = 0, tlen = 0;
+            let ts = [], ttype = [];
             types.forEach(e => {
                 tmap[e] = tmap[e] || [];
                 tmap[e].push(i);
                 if (targetNameIndex.indexOf(e + "") !== -1) {
-                    tlen++;
+                    ttype.push(e);
                     names.push(`<span class="t">${AllTypesMap[e + ""]}</span>`);
                 } else if (isShowNotOnlytarget) {
                     names.push(AllTypesMap[e + ""]);
                 }
-                len++;
+                ts.push(e);
             });
-            TD_D[i].tarLen = tlen;
-            TD_D[i].len = len;
-            $(d).html(`盒号${i + 1}(目标占比${(tlen / len * 100).toFixed(1)}%)=>${names.join("=")}`)
+            TD_D[i].tarLen = ttype.length;
+            TD_D[i].len = ts.length;
+            TD_D[i].tarType = ttype.join("-");
+            $(d).html(`盒号${i + 1}(目标概率-+-)=>${names.join("=")}`)
         });
 
+        $('#sel .tar').each((i, d) => {
+            $(d).removeClass("tar");
+        });
         targetNameIndex.forEach((e) => {
             $('#sel td').eq(e).addClass("tar");
         });
@@ -276,7 +283,6 @@
     };
 
     let carculate = () => {
-        let maxT, max = 0;
         TYPE_D.forEach(e => {
             let li = $("li").eq(e.index);
             let tds = [];
@@ -285,9 +291,12 @@
             }
             // 可能出现的盒中概率
             let per = (1 / tds.length * 100);
-            if (per > max && targetNameIndex.indexOf(e.index) !== -1) {
-                max = per;
-                maxT = e;
+            if (targetNameIndex.indexOf(e.index.toString()) !== -1) {
+                e.tarPer = per;
+                e.per = per;
+            } else {
+                e.tarPer = 0;
+                e.per = per;
             }
             per = per.toFixed(1) + "%";
             let he = [];
@@ -296,7 +305,22 @@
             });
             li.html(`${li.attr("name")}=><span class="p">可能出现的盒中概率:${per}</span>,盒总数:${he.length},可能盒号: ${he.join(",")}`);
         });
-        $("#re").html();
+        TD_D.forEach(e => {
+            let t = $(`#${e.name}`);
+            let tt = [];
+            if (e.tarType !== '') {
+                tt = e.tarType.split("-");
+            }
+            let h = t.html();
+            let p = 0;
+            tt.forEach(i => {
+                p += TYPE_D[i].tarPer;
+            });
+            p = p > 0 ? p.toFixed(1) : "0";
+            h = h.replace("-+-", `${p}%`);
+            t.html(h);
+        })
+        $("#re").html("");
     }
 
     fire(`/query?tid=${tid}`, createHTML);
