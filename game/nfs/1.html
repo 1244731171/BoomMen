@@ -1,0 +1,117 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./jquery.js"></script>
+    <style>
+        input {
+            width: 50px;
+        }
+
+        .l0 td {
+            background: palegoldenrod;
+        }
+
+        .l1 td {
+            background: palegreen;
+        }
+
+        .l2 td {
+            background: paleturquoise;
+        }
+
+        .ok {
+            background: palevioletred;
+            border: red 2px solid;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    $.ajax({
+        url: "./data.json",
+        type: "get",
+        dataType: "json",
+        success: (e) => {
+            createTable(e);
+        },
+        error: (e) => {
+            // createTable(e);
+        }
+    });
+
+    let createTable = (data) => {
+        $("body").html("");
+        let htmlstr = "<table border='1'>";
+        let i = 0;
+        data.forEach(e => {
+            e.s1 = parseInt(e.s1) || 0;
+            e.s2 = parseInt(e.s2) || 0;
+            e.h = parseInt(e.h) || 0;
+            htmlstr += `<tr class='l${parseInt(i / 6)}' id="tr${i}"><td width="150px">${e.n}</td><td class="${e.s1>e.h?"":"ok"}" width="50px">${e.s1}</td>`
+            htmlstr += `<td class="${e.s2>e.h?"":"ok"}" width="50px">${e.s2}</td><td><input value="${e.h}"/>&nbsp;<button class="a">&nbsp;+&nbsp;</button>&nbsp;<button class="b">&nbsp;-&nbsp;</button></td></tr>`;
+            i++;
+        });
+        htmlstr += "</table>";
+        console.log(htmlstr);
+        $("body").html(htmlstr);
+
+        $("input").each((i, e) => {
+            e.addEventListener("input", () => {
+                clearTimeout(timer);
+                timer = setTimeout(saveData, 500);
+            });
+        });
+
+        $(".a").click((e) => {
+            let target = $(e.target);
+            let i = target.prev();
+            i.val(parseInt(i.val() || "0") + 1);
+            saveData();
+        });
+        $(".b").click((e) => {
+            let target = $(e.target);
+            let i = target.prev().prev();
+            i.val(parseInt(i.val() || "0") - 1);
+            saveData();
+        });
+    }
+
+    let timer = -1;
+    let saveData = () => {
+        let data = [];
+        $("tr").each((e, dom) => {
+            let tds = $(dom).find('td');
+            data.push({
+                n: tds[0].innerHTML,
+                s1: tds[1].innerHTML,
+                s2: tds[2].innerHTML,
+                h: tds.eq(3).find("input").val() || 0
+            });
+        });
+        data = JSON.stringify(data);
+        console.log(data);
+        $.ajax({
+            url: `/save?data=${window.btoa(encodeURIComponent(data))}`,
+            type: 'get',
+            timeout: 10000,
+            dataType: 'text',
+            success: (data) => {
+            },
+            error: (data) => {
+            }
+        });
+    };
+    // $("input").on("input", () => {
+    //     clearTimeout(timer);
+    //     timer = setTimeout(saveData, 500);
+    // })
+</script>
+
+</html>

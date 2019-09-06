@@ -8,7 +8,7 @@ let readlineSync = require("readline-sync");
 
 global.Buffer = global.Buffer || require('buffer').Buffer;
 
-let basePath = "/game/nfs";
+let basePath = "/game/molly";
 
 if (typeof btoa === 'undefined') {
     global.btoa = function (str) {
@@ -70,7 +70,7 @@ let waitInput = () => {
 }
 
 let host = getHost();
-let post = '3031';
+let post = '30112';
 let html1 = `./${basePath}/1.html`;
 
 let isFirst = true;
@@ -91,9 +91,6 @@ let writedown = (str) => {
     });
 }
 
-let isFirstLogin = true;
-let isFirstCheck = true;
-
 let listener = (request, response) => {
     if (isFirst) {
         isFirst = false;
@@ -107,7 +104,17 @@ let listener = (request, response) => {
     let query = url.parse(requestUrl).query; // 问号后
     let str = "";
     // console.log(pathName);
-    if (/\.js/.test(pathName)) {
+    if (/\.html/.test(pathName)) {
+        str = "";
+        if (fs.existsSync(`.${basePath}/${pathName}`)) {
+            response.writeHead(200, { 'content-type': 'text/html; charset=UTF-8' });
+            str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'text/html; charset=UTF-8' });
+        }
+        response.end(str);
+        return;
+    } else if (/\.js/.test(pathName)) {
         str = "";
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'application/javascript; charset=UTF-8' });
@@ -139,9 +146,9 @@ let listener = (request, response) => {
         return;
     } else if (/\.ico/.test(pathName)) {
         str = '';
-        if (fs.existsSync(`./${pathName}`)) {
+        if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'image/x-icon' });
-            str = fs.readFileSync(`./${pathName}`) || '';
+            str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
         } else {
             response.writeHead(404, { 'content-type': 'image/x-icon' });
         }
@@ -159,7 +166,7 @@ let listener = (request, response) => {
         return;
     }  else if (/\.json/.test(pathName)) {
         str = '';
-        if (fs.existsSync(`.${pathName}`)) {
+        if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'application/json' });
             str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
         } else {
@@ -168,34 +175,56 @@ let listener = (request, response) => {
         response.end(str);
         return;
     } else if (pathName == "/save") {
+        // if (query) {
+        //     let qs = query.split("&");
+        //     let key = '';
+        //     qs.forEach(e => {
+        //         if (e.indexOf('data=') != -1) {
+        //             key = "data";
+        //             query = e.replace('data=', '');
+        //         }
+        //     });
+        //     query = decodeURIComponent(atob(query));
+        //     console.log(`return query ==> ${query}`);
+        //     log += ("\n" + query);
+        //     response.write("");
+        //     response.end();
+        //     writedown(query);
+        // }
+        return;
+    } else if (pathName == "/query") {
         if (query) {
-            let qs = query.split("&");
-            let key = '';
-            qs.forEach(e => {
-                if (e.indexOf('data=') != -1) {
-                    key = "data";
-                    query = e.replace('data=', '');
-                }
-            });
-            query = decodeURIComponent(atob(query));
-            console.log(`return query ==> ${query}`);
-            log += ("\n" + query);
-            response.write("");
-            response.end();
-            writedown(query);
-        }
+                let qs = query.split("&");
+                let result = "";
+                qs.forEach(e => {
+                    let kv = e.split("=");
+                    result = queryMethod[kv[0]](kv[1]);
+                });
+                // request.setCharacterEncoding("utf-8");
+                response.writeHead(200,{'Content-Type':'text/text;charset=UTF-8'});   
+                response.end(result);
+                // writedown(query);
+            }
         return;
     }
 
     let htmlstr = '';
-    if (fs.existsSync(html1)) {
-        response.writeHead(200, { 'content-type': 'text/html' });
-        htmlstr = fs.readFileSync(html1) || '';
-    } else {
-        response.writeHead(404, { 'content-type': 'text/html' });
-    }
+    // if (fs.existsSync(html1)) {
+    //     response.writeHead(200, { 'content-type': 'text/html' });
+    //     htmlstr = fs.readFileSync(html1) || '';
+    // } else {
+    //     response.writeHead(404, { 'content-type': 'text/html' });
+    // }
     response.end(htmlstr);
 };
+
+let queryMethod = {
+    "tid": (tid) => {
+        let typeJson = fs.readFileSync(`.${basePath}/type.json`);
+        typeJson = JSON.parse(typeJson);
+        return JSON.stringify(typeJson[tid]);
+    }
+}
 
 //2. 创建http服务器
 // 参数: 请求的回调, 当有人访问服务器的时候,就会自动调用回调函数
@@ -210,6 +239,6 @@ server.listen(post, host.local, () => {
 });
 
 //4. 执行
-console.log('执行了3031')
+console.log(`执行了${post}`);
 
 // http://10.3.75.26:3030/itunes/like/comment/s/05bc899676d6ef43f8bee0f69eddca11-T/32153o/72006/84fdc170c16a2ee1010fc21da6f4ef80/3a41998d206411764f134db8d015d63c/_/download/contextbatch/css/com.atlassian.jira.plugins.jira-development-integration-plugin?appid=ngienbnpkldjcebacfbppphjjhbhfkpp&assatrisd=kjhzkKYQnkajsnAOY!hoASdjoAW&rtime=1010230102301203123&dwl=1-1-23-1-123&ttl=1566413096&ri=1433600&rs=1400&clientip=69.194.14.161&hash=29b554a946b107e4028379e37bf4e2c5

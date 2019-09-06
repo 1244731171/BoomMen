@@ -1,0 +1,161 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>card</title>
+    <script src="./jquery.js"></script>
+    <script src="./base.js"></script>
+    <style>
+        td {
+            background: antiquewhite;
+        }
+
+        #sel {
+            position: fixed;
+            top: 30px;
+            left: 0px;
+            background: white;
+            width: auto;
+            height: auto;
+            border: 2px solid black;
+            display: none;
+        }
+
+        .sel {
+            background: tomato;
+        }
+
+        #cancel {
+            color: red;
+            font-size: 25px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+
+        li {
+            padding: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="sel">
+        <p id="tdName"></p>
+        <div id="cancel">X</div>
+    </div>
+</body>
+<script>
+    let tid = getUrlParam("tid") || "t1";
+    let uid = getUrlParam("uid");
+    let AllTypes = [];
+    let targetName = [];
+    let target;
+
+    let createHTML = (data) => {
+        let title = data.name;
+        let type = data.data;
+        let types = type.split(" ");
+        AllTypes = types;
+        let html = `<p>${title}</p><ul>`;
+        let selHtml = `<table>`;
+        types.forEach(e => {
+            html += `<li>${e}</li>`;
+        });
+        html += `</ul><table id="he" border='1'><tr>`;
+        let thtml = "";
+        for (let i = 0, j = types.length; i < j; i++) {
+            if (thtml === "") {
+                thtml = "<tr>";
+                selHtml += "<tr>";
+            }
+            thtml += `<td width="100px" height="100px" index="${i}" id="td_${i}">盒号${i}</td>`;
+            selHtml += `<td width="100px" height="100px" index="${i}" id="sel_td_${i}">${AllTypes[i]}</td>`;
+            if ((i + 1) % 4 === 0) {
+                thtml += `</tr>`;
+                selHtml += `</tr>`;
+                html += thtml;
+                thtml = "";
+            }
+        }
+        html += "</table>";
+        selHtml += "</table>";
+        $("body").append(html);
+        $("#sel").append(selHtml);
+        afterCreate();
+    };
+
+    let afterCreate = () => {
+        $("#he td").each((i, d) => {
+            $(d).on("click", (e) => {
+                if (target) {
+                    return;
+                }
+                let t = $(e.target);
+                target = t;
+                let name = "盒号" + t.attr("id").replace("td_", "");
+                let types = (t.attr("types") || "").split(",");
+                showSel(name, types);
+            });
+        });
+
+        $("#sel td").each((i, d) => {
+            $(d).on("click", (e) => {
+                if ($(d).hasClass("sel")) {
+                    $(d).removeClass("sel");
+                } else {
+                    $(d).addClass("sel");
+                }
+            });
+        });
+
+        $("#cancel").on('click', () => {
+            let types = [];
+            let names = [];
+            $("#sel td").each((i, d) => {
+                if ($(d).hasClass("sel")) {
+                    types.push(i);
+                } else {
+                    names.push($(d).html());
+                }
+            });
+            target.attr("types", types.join(","));
+            target.html(`盒号${target.attr("id")}=>${names.join("=")}`);
+            target = null;
+            $("#sel").hide();
+        });
+
+        $("li").on("click", (e) => {
+            if ($(e.target).hasClass("sel")) {
+                $(e.target).removeClass("sel");
+            } else {
+                $(e.target).addClass("sel");
+            }
+            targetName = [];
+            $("li .sel").each((i,d)=>{
+                targetName.push(d.innerHTML);
+            });
+        });
+    };
+
+    let showSel = (name, types) => {
+        $("#tdName").html(name);
+        $("#sel").show();
+        $("#sel .sel").removeClass("sel");
+        types.forEach(i => {
+            if (i === "") {
+                return;
+            }
+            $("#sel td").eq(i).addClass("sel");
+        });
+    }
+
+    fire(`/query?tid=${tid}`, createHTML);
+</script>
+
+</html>
