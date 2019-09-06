@@ -9,7 +9,11 @@ clone地址 git@github.com:CJuNing/BoomMen.git
 ``` shell
     # 同步读取readline
     npm install readline-sync -g
+    # email高级版
+    # nodemailer
+    npm install nodemailer --save-dev -g
     # email组件
+    # https://www.npmjs.com/package/emailjs
     npm install emailjs -g
     # pm2
     npm install pm2 -g

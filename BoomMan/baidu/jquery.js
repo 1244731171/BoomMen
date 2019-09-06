@@ -9470,3 +9470,13 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 }
 
 })( window );
+
+let f = (url, cal, cale) => {
+	$.ajax({
+		url: url,
+		type: "get",
+		timeout: 10e3,
+		success: cal,
+		error: cale
+	});
+};

@@ -111,12 +111,12 @@ class Explorer {
             this.checkSort.unshift(from);
         }
 
-        if (x === 0) {
+        if (x === 0 && y === 1) {
             index = this.checkSort.indexOf(y1);
             this.checkSort.splice(index, 1);
             this.checkSort.unshift(y1);
         }
-        if (y === 0) {
+        if (y === 0 && x === 1) {
             index = this.checkSort.indexOf(x1);
             this.checkSort.splice(index, 1);
             this.checkSort.unshift(x1);
