@@ -24,11 +24,16 @@
         }
 
         .sel {
-            background: tomato;
+            background: pink !important;
+        }
+
+        .tar {
+            background: turquoise;
+            border: 1px solid black;
         }
 
         #cancel {
-            color: red;
+            color: tomato;
             font-size: 25px;
             width: 20px;
             height: 20px;
@@ -38,17 +43,37 @@
             top: 0px;
         }
 
+        .btn {
+            background: turquoise;
+            border: 1px solid black;
+            margin: 5px;
+        }
+
+        .btn.off {
+            background: tomato;
+        }
+
         li {
             padding: 1px;
         }
 
         span.t {
-            color: red;
+            color: tomato;
+            border: 1px solid tomato;
+        }
+
+        span.p {
+            color: turquoise;
+            border: 1px solid turquoise;
         }
     </style>
 </head>
 
 <body>
+    <div>
+        <span class="btn" id="showLi">当前:显示列表</span>
+        <span class="btn off" id="showNotOnlytarget">当前:不显示非目标</span>
+    </div>
     <div id="sel">
         <p id="tdName"></p>
         <div id="cancel">X</div>
@@ -59,26 +84,55 @@
     let uid = getUrlParam("uid");
     let AllTypes = [];
     let targetName = [];
+    let targetNameIndex = [];
     let target;
+    let TD_D = [];
+    let TYPE_D = [];
+    let AllTypesMap = {};
+
+    let isShowLi = true;
+    let isShowNotOnlytarget = false;
+
+    $("#showLi").on("click", (e) => {
+        isShowLi = !isShowLi;
+        if (isShowLi) {
+            $("#showLi").html("当前:显示列表").removeClass("off");
+            $("ul").show();
+        } else {
+            $("#showLi").html("当前:不显示列表").addClass("off");
+            $("ul").hide();
+        }
+    });
+    $("#showNotOnlytarget").on("click", (e) => {
+        isShowNotOnlytarget = !isShowNotOnlytarget;
+        if (isShowNotOnlytarget) {
+            $("#showNotOnlytarget").html("当前:显示非目标").removeClass("off");
+        } else {
+            $("#showNotOnlytarget").html("当前:不显示非目标").addClass("off");
+        }
+        updateTarget();
+    });
 
     let createHTML = (data) => {
         let title = data.name;
         let type = data.data;
         let types = type.split(" ");
         AllTypes = types;
-        let html = `<p>${title}</p><ul>`;
+        let html = `<p>${title}(概率越高越好,指的是在可能出现的盒中的概率是多少)</p><ul>`;
         let selHtml = `<table>`;
+        let i = 0, j = 0;
         types.forEach(e => {
-            html += `<li>${e}</li>`;
+            html += `<li index="${i}" name="${e}">${e}</li>`;
+            i++;
         });
         html += `</ul><table id="he" border='1'><tr>`;
         let thtml = "";
-        for (let i = 0, j = types.length; i < j; i++) {
+        for (i = 0, j = types.length; i < j; i++) {
             if (thtml === "") {
                 thtml = "<tr>";
                 selHtml += "<tr>";
             }
-            thtml += `<td width="100px" height="100px" index="${i}" id="td_${i}">盒号${i}</td>`;
+            thtml += `<td width="100px" height="100px" index="${i}" id="td_${i}">盒号${i + 1}</td>`;
             selHtml += `<td width="100px" height="100px" index="${i}" id="sel_td_${i}">${AllTypes[i]}</td>`;
             if ((i + 1) % 4 === 0) {
                 thtml += `</tr>`;
@@ -86,8 +140,24 @@
                 html += thtml;
                 thtml = "";
             }
+            TD_D.push({
+                index: i,
+                typeId: '0-1-2-3-4-5-6-7-8-9-10-11-12',
+                name: `td_${i}`,
+                tarLen: 0,
+                len: 12
+            });
+            TYPE_D.push({
+                index: i,
+                name: AllTypes[i],
+                tdId: '0-1-2-3-4-5-6-7-8-9-10-11-12',
+                max: AllTypes.length
+            });
+            AllTypesMap[i] = AllTypes[i];
+            AllTypesMap[AllTypes[i]] = i;
         }
         html += "</table>";
+        html += "<span class='p' id='re'></span>"
         selHtml += "</table>";
         $("body").append(html);
         $("#sel").append(selHtml);
@@ -101,10 +171,13 @@
                     return;
                 }
                 let t = $(e.target);
+                if (e.target.tagName.toLocaleUpperCase() === "SPAN") {
+                    t = t.parent();
+                }
                 target = t;
-                let name = "盒号" + t.attr("id").replace("td_", "");
-                let types = (t.attr("types") || "").split(",");
-                showSel(name, types);
+                let name = "盒号" + (parseInt(t.attr("index")) + 1);
+                let ban_types = (t.attr("ban_types") || "").split(",");
+                showSel(name, ban_types);
             });
         });
 
@@ -119,17 +192,21 @@
         });
 
         $("#cancel").on('click', () => {
+            let ban_types = [];
             let types = [];
             let names = [];
+            let tdIndex = target.attr("index");
             $("#sel td").each((i, d) => {
                 if ($(d).hasClass("sel")) {
-                    types.push(i);
+                    ban_types.push(i);
                 } else {
+                    types.push(i);
                     names.push($(d).html());
                 }
             });
-            target.attr("types", types.join(","));
-            target.html(`盒号${target.attr("id")}=>${names.join("=")}`);
+            TD_D[tdIndex].typeId = types.join("-");
+            target.attr("ban_types", ban_types.join(","));
+            // target.html(`盒号${parseInt(target.attr("index") || '0') + 1}=>${names.join("=")}`);
             target = null;
             $("#sel").hide();
             updateTarget();
@@ -142,11 +219,15 @@
                 $(e.target).addClass("sel");
             }
             targetName = [];
+            targetNameIndex = [];
             $("li.sel").each((i, d) => {
-                targetName.push(d.innerHTML);
+                targetName.push($(d).attr("name"));
+                targetNameIndex.push($(d).attr("index") + "");
             });
             updateTarget();
         });
+
+        updateTarget();
     };
 
     let showSel = (name, types) => {
@@ -162,17 +243,61 @@
     }
 
     let updateTarget = () => {
+        let tmap = {};
         $("#he td").each((i, d) => {
-            let h = $(d).html();
-            h = h.replace(/\<span class\=\"t\"\>/g, '').replace(/\<\/span\>/g, '');
-            targetName.forEach((n) => {
-                if(h.indexOf(n) != -1){
-                    h = h.replace(n, `<span class="t">${n}</span>`);
-                    $(d).html(h);
+            let types = TD_D[i].typeId.split("-");
+            let names = [];
+            let len = 0, tlen = 0;
+            types.forEach(e => {
+                tmap[e] = tmap[e] || [];
+                tmap[e].push(i);
+                if (targetNameIndex.indexOf(e + "") !== -1) {
+                    tlen++;
+                    names.push(`<span class="t">${AllTypesMap[e + ""]}</span>`);
+                } else if (isShowNotOnlytarget) {
+                    names.push(AllTypesMap[e + ""]);
                 }
+                len++;
             });
+            TD_D[i].tarLen = tlen;
+            TD_D[i].len = len;
+            $(d).html(`盒号${i + 1}(目标占比${(tlen / len * 100).toFixed(1)}%)=>${names.join("=")}`)
         });
+
+        targetNameIndex.forEach((e) => {
+            $('#sel td').eq(e).addClass("tar");
+        });
+
+        TYPE_D.forEach(d => {
+            d.tdId = tmap[d.index].join("-");
+        });
+
+        carculate();
     };
+
+    let carculate = () => {
+        let maxT, max = 0;
+        TYPE_D.forEach(e => {
+            let li = $("li").eq(e.index);
+            let tds = [];
+            if (e.tdId !== "") {
+                tds = e.tdId.split("-");
+            }
+            // 可能出现的盒中概率
+            let per = (1 / tds.length * 100);
+            if (per > max && targetNameIndex.indexOf(e.index) !== -1) {
+                max = per;
+                maxT = e;
+            }
+            per = per.toFixed(1) + "%";
+            let he = [];
+            tds.forEach(e => {
+                he.push(parseInt(e) + 1);
+            });
+            li.html(`${li.attr("name")}=><span class="p">可能出现的盒中概率:${per}</span>,盒总数:${he.length},可能盒号: ${he.join(",")}`);
+        });
+        $("#re").html();
+    }
 
     fire(`/query?tid=${tid}`, createHTML);
 </script>
