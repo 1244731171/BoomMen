@@ -41,6 +41,10 @@
         li {
             padding: 1px;
         }
+
+        span.t {
+            color: red;
+        }
     </style>
 </head>
 
@@ -128,6 +132,7 @@
             target.html(`盒号${target.attr("id")}=>${names.join("=")}`);
             target = null;
             $("#sel").hide();
+            updateTarget();
         });
 
         $("li").on("click", (e) => {
@@ -137,9 +142,10 @@
                 $(e.target).addClass("sel");
             }
             targetName = [];
-            $("li .sel").each((i,d)=>{
+            $("li.sel").each((i, d) => {
                 targetName.push(d.innerHTML);
             });
+            updateTarget();
         });
     };
 
@@ -154,6 +160,19 @@
             $("#sel td").eq(i).addClass("sel");
         });
     }
+
+    let updateTarget = () => {
+        $("#he td").each((i, d) => {
+            let h = $(d).html();
+            h = h.replace(/\<span class\=\"t\"\>/g, '').replace(/\<\/span\>/g, '');
+            targetName.forEach((n) => {
+                if(h.indexOf(n) != -1){
+                    h = h.replace(n, `<span class="t">${n}</span>`);
+                    $(d).html(h);
+                }
+            });
+        });
+    };
 
     fire(`/query?tid=${tid}`, createHTML);
 </script>
