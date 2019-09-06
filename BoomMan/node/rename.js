@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const PATH = 'E:/迅雷下载/文档任务组_20190805_0047/';
+const PATH = 'E:/迅雷下载/a001/';
 // const PATH = 'E:/soft/yundown/yundown/download/';
 // const PATH = 'Q:/好孩子看不到/国内写真/（萝莉）柚木写真/[柚木]红白调教(50P)_files/'
 // const PATH = 'L:/新建文件夹/';
@@ -40,11 +40,26 @@ let loop = (_path) => {
             //     console.log(nele);
             //     loop(nele);
             // }
-
+            orgele = ele;
             ele = PATH + ele;
             nele = PATH + nele;
-            if(ele.endsWith('.html')){
-                nele = nele.replace(".html", ".jpg");
+            if(ele.endsWith('.jpg')){
+                nele = ele.split("p")[1];
+                // 0000.j length = 8
+                while(nele.length < 6){
+                    nele = "0" + nele;
+                }
+                nele = PATH + nele.replace(".j", ".ts");
+                rename(ele, nele);
+            }
+            
+            if(ele.endsWith('.ts')){
+                nele = ele.split("p")[1] || orgele;
+                // 0000.ts length = 8
+                while(nele.length < 7){
+                    nele = "0" + nele;
+                }
+                nele = PATH + nele;
                 rename(ele, nele);
             }
 
