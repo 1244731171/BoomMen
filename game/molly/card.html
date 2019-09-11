@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>card</title>
+    <title>Flagrate!</title>
     <script src="./jquery.js"></script>
     <script src="./base.js"></script>
     <style>
@@ -24,10 +24,15 @@
         }
 
         .sel {
-            background: pink !important;
+            background: turquoise !important;
+        }
+
+        .ban {
+            background: tomato !important;
         }
 
         .tar {
+            border: 1px solid white !important;
             background: turquoise;
             border: 1px solid black;
         }
@@ -44,13 +49,22 @@
         }
 
         .btn {
-            background: turquoise;
+            /* background: turquoise; */
             border: 1px solid black;
+            padding: 5px;
             margin: 5px;
+            /* display: block; */
+        }
+
+        .tip {
+            /* background: turquoise; */
+            padding: 5px;
+            margin: 5px;
+            /* display: block; */
         }
 
         .btn.off {
-            background: tomato;
+            background: yellow;
         }
 
         li {
@@ -58,21 +72,31 @@
         }
 
         span.t {
-            color: tomato;
-            border: 1px solid tomato;
+            color: turquoise;
+            border: 1px solid turquoise;
         }
 
         span.p {
-            color: turquoise;
-            border: 1px solid turquoise;
+            color: tomato;
+            border: 1px solid tomato;
         }
     </style>
 </head>
 
 <body>
     <div>
+        <span>SWITCH:</span>
         <span class="btn" id="showLi">当前:显示列表</span>
         <span class="btn off" id="showNotOnlytarget">当前:不显示非目标</span>
+        <span class="btn" id="save">保存当前数据</span>
+        <hr>
+        <span>INFO:</span>
+        <span class="tip tar">当前盒号</span>
+        <input type="text" name="" id="id"/>
+        <hr>
+        <span>TIPS:</span>
+        <span class="tip tar">这个颜色是你的目标</span>
+        <span class="tip ban">这个颜色是被排除的</span>
     </div>
     <div id="sel">
         <p id="tdName"></p>
@@ -186,10 +210,10 @@
 
         $("#sel td").each((i, d) => {
             $(d).on("click", (e) => {
-                if ($(d).hasClass("sel")) {
-                    $(d).removeClass("sel");
+                if ($(d).hasClass("ban")) {
+                    $(d).removeClass("ban");
                 } else {
-                    $(d).addClass("sel");
+                    $(d).addClass("ban");
                 }
             });
         });
@@ -200,7 +224,7 @@
             let names = [];
             let tdIndex = target.attr("index");
             $("#sel td").each((i, d) => {
-                if ($(d).hasClass("sel")) {
+                if ($(d).hasClass("ban")) {
                     ban_types.push(i);
                 } else {
                     types.push(i);
@@ -236,12 +260,12 @@
     let showSel = (name, types) => {
         $("#tdName").html(name);
         $("#sel").show();
-        $("#sel .sel").removeClass("sel");
+        $("#sel .ban").removeClass("ban");
         types.forEach(i => {
             if (i === "") {
                 return;
             }
-            $("#sel td").eq(i).addClass("sel");
+            $("#sel td").eq(i).addClass("ban");
         });
     }
 
