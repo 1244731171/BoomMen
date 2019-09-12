@@ -1,0 +1,71 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./jquery.js"></script>
+    <style>
+        input {
+            width: 50px;
+        }
+
+        .l0 td {
+            background: palegoldenrod;
+        }
+
+        .l1 td {
+            background: palegreen;
+        }
+
+        .l2 td {
+            background: paleturquoise;
+        }
+
+        .ok {
+            background: palevioletred;
+            border: red 2px solid;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" name="image" id="uploadFile" style="display:none;">
+    <input type="hidden" name="img">
+    <button type="button" class="beatiful" id="uploadBtn">上传图片</button>
+    <div><img src="" class="img-show"></div>
+
+</body>
+<script>
+    //因为html自带的图片上传贼丑，所以这里用按钮来代替。
+    $('#uploadBtn').click(function () {
+        $('#uploadFile').click()
+        //当图片选中后，会触发name=file文本的change事件
+        $('#uploadFile').change(function () {
+            var formData = new FormData()
+            formData.append('image', this.files[0])
+            if (formData) {
+                $.ajax({
+                    url: '/save',
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        if (res.status == 0) {
+                            alert(res.msg)
+                            return false
+                        }
+                        $('input[name="img"]').val(res.msg)
+                        $('.img-show').attr('src', res.msg)
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+</html>
