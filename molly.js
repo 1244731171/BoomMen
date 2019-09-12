@@ -76,21 +76,6 @@ let html1 = `./${basePath}/1.html`;
 let isFirst = true;
 let log = "";
 
-let writedown = (str) => {
-    fs.open(`.${basePath}/data.json`, 'w', (err, fd) => {
-        if (err) {
-        }
-        str = str || log;//JSON.stringify(log);
-        fs.writeFile(fd, str, (err) => {
-            if (err) {
-            }
-            fs.close(fd, (err) => {
-                // console.log('saved');
-            });
-        });
-    });
-}
-
 let listener = (request, response) => {
     if (isFirst) {
         isFirst = false;
@@ -175,22 +160,18 @@ let listener = (request, response) => {
         response.end(str);
         return;
     } else if (pathName == "/save") {
-        // if (query) {
-        //     let qs = query.split("&");
-        //     let key = '';
-        //     qs.forEach(e => {
-        //         if (e.indexOf('data=') != -1) {
-        //             key = "data";
-        //             query = e.replace('data=', '');
-        //         }
-        //     });
-        //     query = decodeURIComponent(atob(query));
-        //     console.log(`return query ==> ${query}`);
-        //     log += ("\n" + query);
-        //     response.write("");
-        //     response.end();
-        //     writedown(query);
-        // }
+        if (query) {
+            let qs = query.split("&");
+            let result = "";
+            qs.forEach(e => {
+                let kv = e.split("=");
+                result = queryMethod[kv[0]](kv[1]);
+            });
+            // request.setCharacterEncoding("utf-8");
+            response.writeHead(200,{'Content-Type':'text/text;charset=UTF-8'});   
+            response.end(result);
+            // writedown(query);
+        }
         return;
     } else if (pathName == "/query") {
         if (query) {
@@ -218,11 +199,42 @@ let listener = (request, response) => {
     response.end(htmlstr);
 };
 
+let writedown = (name, str) => {
+    fs.open(`.${basePath}/hid/${name}.json`, 'w', (err, fd) => {
+        if (err) {
+        }
+        str = str || log;//JSON.stringify(log);
+        fs.writeFile(fd, str, (err) => {
+            if (err) {
+            }
+            fs.close(fd, (err) => {
+                // console.log('saved');
+            });
+        });
+    });
+}
+
 let queryMethod = {
     "tid": (tid) => {
         let typeJson = fs.readFileSync(`.${basePath}/type.json`);
         typeJson = JSON.parse(typeJson);
         return JSON.stringify(typeJson[tid]);
+    },
+    "savedata": (data) => {
+        data = decodeURIComponent(atob(data));
+        let j = JSON.parse(data);
+        writedown(j.hid, data);
+        return "success";
+    },
+    "hid": (hid) => {
+        try{
+            let typeJson = fs.readFileSync(`.${basePath}/hid/${hid}.json`);
+            typeJson = btoa(encodeURIComponent(typeJson));
+            return JSON.stringify(typeJson);
+        }catch(e){
+            console.log(e)
+            return "";
+        }
     }
 }
 
