@@ -216,7 +216,7 @@ let listener = (request, response) => {
         form.encoding = 'utf-8'; // 编码
         form.keepExtensions = true; // 保留扩展名
         form.maxFieldsSize = 2 * 1024 * 1024; // 文件大小
-        form.uploadDir = `.${basePath}/img2`  // 存储路径
+        form.uploadDir = `.${basePath}/img`  // 存储路径
         form.parse(request, function (err, fileds, files) { // 解析 formData数据
             if (err) { return console.log(err) }
 
