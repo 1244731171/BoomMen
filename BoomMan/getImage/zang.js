@@ -70,7 +70,7 @@ let waitInput = () => {
 }
 
 let writedown = (str) => {
-    fs.open(`.${basePath}/info.txt`, 'w', (err, fd) => {
+    fs.open(`.${basePath}/info.json`, 'w', (err, fd) => {
         if (err) {
         }
         str = str || log;//JSON.stringify(log);
@@ -82,6 +82,10 @@ let writedown = (str) => {
             });
         });
     });
+}
+
+let rename = (name) => {
+    return name.replace(/\.jpg|\.jpeg|\.JPG|\.JPEG|\.png|\.PNG|\.gif|\.GIF|\.mov|\.MOV/g, ".txt");
 }
 
 let listener = (request, response) => {
@@ -119,6 +123,8 @@ let listener = (request, response) => {
         return;
     } else if (/\.png/.test(pathName) || /\.PNG/.test(pathName)) {
         str = '';
+        pathName = rename(pathName);
+        console.log(`====> real local name ${pathName}`);
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'image/png' });
             str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
@@ -132,6 +138,8 @@ let listener = (request, response) => {
         return;
     } else if (/\.jpg/.test(pathName) || /\.jpeg/.test(pathName) || /\.JPG/.test(pathName) || /\.JPEG/.test(pathName)) {
         str = '';
+        pathName = rename(pathName);
+        console.log(`====> real local name ${pathName}`);
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'image/jpeg' });
             str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
@@ -145,6 +153,8 @@ let listener = (request, response) => {
         return;
     } else if (/\.gif/.test(pathName) || /\.GIF/.test(pathName)) {
         str = '';
+        pathName = rename(pathName);
+        console.log(`====> real local name ${pathName}`);
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'image/gif' });
             str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
@@ -158,6 +168,8 @@ let listener = (request, response) => {
         return;
     } else if (/\.mov/.test(pathName) || /\.MOV/.test(pathName)) {
         str = '';
+        pathName = rename(pathName);
+        console.log(`====> real local name ${pathName}`);
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'video/quicktime' });
             str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
@@ -220,20 +232,25 @@ let listener = (request, response) => {
         form.parse(request, function (err, fileds, files) { // 解析 formData数据
             if (err) { return console.log(err) }
 
-            let name = new Date().getTime() + "" + files.img.name;
+            let orgName = files.img.name;
+            let orgType = orgName.split(".")[1];
+            let name = new Date().getTime() + "" + orgName;
             let imgPath = files.img.path // 获取文件路径
-            let imgName = `.${basePath}/img/${name}`; // 修改之后的名字
             let data = fs.readFileSync(imgPath) // 同步读取文件
 
-            let info = fs.readFileSync(`.${basePath}/info.txt`);
+            let info = fs.readFileSync(`.${basePath}/info.json`);
             info = JSON.parse(info);
             info[id] = {
                 pwd: pwd,
                 file: name,
-                type: files.img.type
+                type: files.img.type,
+                orgName: orgName,
+                orgType: orgType
             };
             writedown(JSON.stringify(info));
 
+            let imgName = `.${basePath}/img/${rename(name)}`; // 修改之后的名字
+            
             try {
                 fs.writeFile(imgName, data, function (err) { // 存储文件
                     if (err) {
@@ -281,7 +298,7 @@ let listener = (request, response) => {
                     id = kv[1];
                 }
             });
-            let info = fs.readFileSync(`.${basePath}/info.txt`);
+            let info = fs.readFileSync(`.${basePath}/info.json`);
             info = JSON.parse(info);
             let i = info[id];
             let r = "";
