@@ -117,7 +117,7 @@ let listener = (request, response) => {
         }
         response.end(str);
         return;
-    } else if (/\.png/.test(pathName)) {
+    } else if (/\.png/.test(pathName) || /\.PNG/.test(pathName)) {
         str = '';
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'image/png' });
@@ -130,7 +130,7 @@ let listener = (request, response) => {
         }
         response.end(str);
         return;
-    } else if (/\.jpg/.test(pathName) || /\.jpeg/.test(pathName)) {
+    } else if (/\.jpg/.test(pathName) || /\.jpeg/.test(pathName) || /\.JPG/.test(pathName) || /\.JPEG/.test(pathName)) {
         str = '';
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'image/jpeg' });
@@ -143,7 +143,7 @@ let listener = (request, response) => {
         }
         response.end(str);
         return;
-    } else if (/\.gif/.test(pathName) || /\.gif/.test(pathName)) {
+    } else if (/\.gif/.test(pathName) || /\.GIF/.test(pathName)) {
         str = '';
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'image/gif' });
@@ -156,7 +156,7 @@ let listener = (request, response) => {
         }
         response.end(str);
         return;
-    } else if (/\.MOV/.test(pathName) || /\.mov/.test(pathName)) {
+    } else if (/\.mov/.test(pathName) || /\.MOV/.test(pathName)) {
         str = '';
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'video/quicktime' });
@@ -169,7 +169,7 @@ let listener = (request, response) => {
         }
         response.end(str);
         return;
-    } else if (/\.ico/.test(pathName)) {
+    } else if (/\.ico/.test(pathName) || /\.ICO/.test(pathName)) {
         str = '';
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'image/x-icon' });
