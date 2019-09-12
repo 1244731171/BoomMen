@@ -81,7 +81,12 @@
                         i.classList.add("clr");
                         $("body").append(i);
                     } else if (type.indexOf("video") != -1) {
-                        $("body").append(`<video class="clr" src="./${file}" controls=controls>/<video>`);
+                        // $("body").append(`<video class="clr" controls="controls" src="./${file}"/>不支持播放啊不支持播放啊</video>`);
+                        $("body").append(`<video class="clr" src="./${file}" controls=controls download>/<video>`);
+                        let r = confirm("视频不一定能播,要不要试试下载");
+                        if(r){
+                            window.open(`${location.protocol}//${location.host}/${file}`);
+                        }
                     }
                 } else {
                     alert("密码与提取码不匹配")
