@@ -1,0 +1,102 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./jquery.js"></script>
+    <style>
+        .btn {
+            background: turquoise;
+            border: 1px solid black;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <span class="tip tar">上传</span>
+    <input class="btn" name="img" type="file">
+    <br>
+    <span class="tip tar">唯一提取码(别用中文)</span>
+    <input type="text" name="" id="id" />
+    <br>
+    <span class="tip tar">密码(别用中文)</span>
+    <input type="text" name="" id="pwd" />
+    <br>
+    <button id="save" class="btn">保存</button>
+    <button id="get" class="btn">提取</button>
+    <button id="clear" class="btn">清空提取文件</button>
+    <br>
+</body>
+<script>
+    $("#save").on("click", function (e) {
+        if ($("#pwd").val() === "" || $("#id").val() === "") {
+            alert("输入提取码和密码啊!");
+            return;
+        }
+        if (!$("input").get(0).files[0]) {
+            alert("先上传照片或者视频啊!");
+            return;
+        }
+        e.preventDefault()
+        var obj = new FormData();
+        obj.append("img", $("input").get(0).files[0]);
+        $.ajax({
+            url: `/save?pwd=${$("#pwd").val()}&id=${$("#id").val()}`,
+            type: "post",
+            data: obj,
+            processData: false, // 不处理数据
+            contentType: false, // 不设置请求头
+            cache: false,
+            success: function (data) {
+                if (data === "1") {
+                    $("#id").val("");
+                    alert("保存成功,记好了提取码和密码");
+                } else {
+                    alert("保存失败")
+                }
+            }
+        })
+    })
+    $("#get").on("click", function (e) {
+        if ($("#pwd").val() === "" || $("#id").val() === "") {
+            alert("请输入提取码和密码!");
+            return;
+        }
+        e.preventDefault();
+
+        $.ajax({
+            url: `/query?pwd=${$("#pwd").val()}&id=${$("#id").val()}`,
+            type: "post",
+            success: function (data) {
+                if (data) {
+                    data = JSON.parse(data);
+                    let type = data.type;
+                    let file = data.file;
+                    if (type.indexOf("image") != -1) {
+                        let i = new Image();
+                        i.src = `./${file}`;
+                        i.classList.add("clr");
+                        $("body").append(i);
+                    } else if (type.indexOf("video") != -1) {
+                        // $("body").append(`<video class="clr" controls="controls" src="./${file}"/>不支持播放啊不支持播放啊</video>`);
+                        $("body").append(`<video class="clr" src="./${file}" controls=controls download>/<video>`);
+                        let r = confirm("视频不一定能播,要不要试试下载");
+                        if(r){
+                            window.open(`${location.protocol}//${location.host}/${file}`);
+                        }
+                    }
+                } else {
+                    alert("密码与提取码不匹配")
+                }
+            }
+        })
+    })
+    $("#clear").on("click", (e) => {
+        $(".clr").remove();
+    });
+</script>
+
+</html>

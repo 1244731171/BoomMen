@@ -1,1 +1,113 @@
+<html lang="en">
 
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>load or create Data</title>
+    <script src="./jquery.js"></script>
+    <script src="./base.js"></script>
+    <style>
+        td {
+            background: antiquewhite;
+        }
+
+        #sel {
+            position: fixed;
+            top: 30px;
+            left: 0px;
+            background: white;
+            width: auto;
+            height: auto;
+            border: 2px solid black;
+            display: none;
+        }
+
+        .sel {
+            background: pink !important;
+        }
+
+        .tar {
+            background: turquoise;
+            border: 1px solid black;
+        }
+
+        #cancel {
+            color: tomato;
+            font-size: 25px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+
+        .btn {
+            background: turquoise;
+            border: 1px solid black;
+            margin: 5px;
+        }
+
+        .btn.off {
+            background: tomato;
+        }
+
+        li {
+            padding: 1px;
+        }
+
+        span.t {
+            color: tomato;
+            border: 1px solid tomato;
+        }
+
+        span.p {
+            color: turquoise;
+            border: 1px solid turquoise;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <span>盒号：</span>
+        <input type="text"/>
+        <span class="btn" id="showLi">确定</span>    
+    </div>
+    <span id="inclu">包含：</span>
+</body>
+<script>
+    let type = "";
+    let createHTML = (j) => {
+        let html = `<ul>`;
+        for (let k in j) {
+            let i = j[k];
+            html += `<li class="t" types="${i.data}" id="${k}">${k}_${i.name}</li>`
+        }
+        html += `</ul>`;
+        $("body").append(html);
+        bindEvent();
+    }
+
+    let bindEvent = () => {
+        $(".t").on('click', (e) => {
+            $(".t.tar").removeClass("tar");
+            let d = $(e.target);
+            d.addClass("tar");
+            type = d.attr("id");
+            $("#inclu").html(`包含: ${d.attr("types")}`);
+        });
+
+        $("#showLi").on("click", () => {
+            if (type) {
+                window.location.href = `/card.html?tid=${type}`;
+            } else {
+                alert(`先选要抽哪个行不!`)
+            }
+        });
+    }
+    fire(`/type.json`, createHTML);
+</script>
+
+</html>
