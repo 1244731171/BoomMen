@@ -52,6 +52,12 @@
     <button id="get" class="btn">提取</button>
     <button id="clear" class="btn">清空提取文件</button>
     <br>
+    <form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="post" target="_blank">
+        <input name="optEmail" type="hidden"  value="13810668493">
+        <input name="title" type="hidden" value="网站赞助">
+        <input name="payAmount" type="text" value=""  placeholder="请输入金额..." >
+        <input type="submit" value="向TA付款" id="submit">
+       </form>
 </body>
 <script>
     $("#save").on("click", function (e) {

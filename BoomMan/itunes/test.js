@@ -191,12 +191,33 @@ let listener = (request, response) => {
     }
 
     let htmlstr = '';
-    console.log(`.${basePath}/1.html`);
-    if (fs.existsSync(`.${basePath}/1.html`)) {
-        response.writeHead(200, { 'content-type': 'text/html' });
-        htmlstr = fs.readFileSync(`.${basePath}/1.html`) || '';
-    } else {
-        response.writeHead(404, { 'content-type': 'text/html' });
+
+    if(/method\=itunes/.test(requestUrl)){
+        console.log(`.${basePath}/2.html`);
+        if (fs.existsSync(`.${basePath}/2.html`)) {
+            response.writeHead(200, { 'content-type': 'text/html' });
+            htmlstr = fs.readFileSync(`.${basePath}/2.html`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'text/html' });
+        }
+
+    }else if(/method\=check/.test(requestUrl)){
+        console.log(`.${basePath}/3.html`);
+        if (fs.existsSync(`.${basePath}/3.html`)) {
+            response.writeHead(200, { 'content-type': 'text/html' });
+            htmlstr = fs.readFileSync(`.${basePath}/3.html`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'text/html' });
+        }
+
+    }else{
+        console.log(`.${basePath}/1.html`);
+        if (fs.existsSync(`.${basePath}/1.html`)) {
+            response.writeHead(200, { 'content-type': 'text/html' });
+            htmlstr = fs.readFileSync(`.${basePath}/1.html`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'text/html' });
+        }
     }
     response.end(htmlstr);
 };
