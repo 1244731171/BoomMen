@@ -233,6 +233,7 @@ let listener = (request, response) => {
             if (err) { return console.log(err) }
 
             let orgName = files.img.name;
+            let size = files.img.size;
             let orgType = orgName.split(".")[1];
             let name = new Date().getTime() + "" + orgName;
             let imgPath = files.img.path // 获取文件路径
@@ -245,7 +246,8 @@ let listener = (request, response) => {
                 file: name,
                 type: files.img.type,
                 orgName: orgName,
-                orgType: orgType
+                orgType: orgType,
+                size: size
             };
             writedown(JSON.stringify(info));
 
@@ -310,6 +312,25 @@ let listener = (request, response) => {
             response.end(r);
             // writedown(query);
         }
+        return;
+    } else if (pathName == "/info") {
+        let info = fs.readFileSync(`.${basePath}/info.json`);
+        info = JSON.parse(info);
+        // 字节数 100000 = 100kb = 0.1mb
+        let max = 5000 * 1000; // mb * 1000 = kb
+        let cur = 1;
+        for(let key in info){
+            cur += (parseInt(info[key].size || "1000000"));
+        }
+        cur = cur / 1000; //b => kb;
+        let re = {
+            max: max,
+            cur: parseInt(cur),
+            per: (cur / max).toFixed(1)
+        };
+        // request.setCharacterEncoding("utf-8");
+        response.writeHead(200, { 'Content-Type': 'text/text;charset=UTF-8' });
+        response.end(JSON.stringify(re));
         return;
     }
 

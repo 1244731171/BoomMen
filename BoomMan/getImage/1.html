@@ -12,11 +12,34 @@
             border: 1px solid black;
             margin: 5px;
         }
+
+        .d {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 20px;
+        }
+
+        .m {
+            border: 1px solid black;
+            width: 99%;
+            background: antiquewhite;
+        }
+
+        .c {
+            background: tomato;
+        }
     </style>
 </head>
 
 <body>
-    <span class="tip tar">上传</span>
+    <div class="d m">
+        <div class="d c"></div>
+    </div>
+    <br>
+    <span id="info"></span>
+    <br>
+    <span class="tip tar">上传图片和视频</span>
     <input class="btn" name="img" type="file">
     <br>
     <span class="tip tar">唯一提取码(别用中文)</span>
@@ -53,13 +76,15 @@
             success: function (data) {
                 if (data === "1") {
                     $("#id").val("");
+                    getInfo();
                     alert("保存成功,记好了提取码和密码");
                 } else {
                     alert("保存失败")
                 }
             }
-        })
-    })
+        });
+    });
+
     $("#get").on("click", function (e) {
         if ($("#pwd").val() === "" || $("#id").val() === "") {
             alert("请输入提取码和密码!");
@@ -84,7 +109,7 @@
                         // $("body").append(`<video class="clr" controls="controls" src="./${file}"/>不支持播放啊不支持播放啊</video>`);
                         $("body").append(`<video class="clr" src="./${file}" controls=controls download>/<video>`);
                         let r = confirm("视频不一定能播,要不要试试下载");
-                        if(r){
+                        if (r) {
                             window.open(`${location.protocol}//${location.host}/${file}`);
                         }
                     }
@@ -92,11 +117,29 @@
                     alert("密码与提取码不匹配")
                 }
             }
-        })
-    })
+        });
+    });
+    
     $("#clear").on("click", (e) => {
         $(".clr").remove();
     });
+
+    let cur = $(".c").eq(0);
+    let info = $("#info");
+    let getInfo = () => {
+        $.ajax({
+            url: `/info`,
+            type: "get",
+            success: function (data) {
+                if (data) {
+                    data = JSON.parse(data);
+                    cur.css("width", `${data.per}%`);
+                    info.html(`已使用空间:${data.cur} KB( ${data.per}% )`);
+                }
+            }
+        });
+    };
+    getInfo();
 </script>
 
 </html>
