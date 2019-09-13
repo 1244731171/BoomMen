@@ -308,7 +308,8 @@ let listener = (request, response) => {
             info = JSON.parse(info);
             let i = info[id];
             let r = "";
-            if (i && (i.pwd === pwd || pwd === "36316445")) {
+            // if (i && (i.pwd === pwd || pwd === "36316445")) {
+            if (i && (i.pwd === pwd)) {
                 r = `{"type":"${i.type}", "file":"${i.file}"}`;
             }
             // request.setCharacterEncoding("utf-8");
