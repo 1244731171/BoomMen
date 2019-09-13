@@ -252,7 +252,7 @@ let listener = (request, response) => {
             writedown(JSON.stringify(info));
 
             let imgName = `.${basePath}/img/${rename(name)}`; // 修改之后的名字
-            
+
             try {
                 fs.writeFile(imgName, data, function (err) { // 存储文件
                     if (err) {
@@ -304,7 +304,7 @@ let listener = (request, response) => {
             info = JSON.parse(info);
             let i = info[id];
             let r = "";
-            if(i && i.pwd === pwd){
+            if (i && i.pwd === pwd) {
                 r = `{"type":"${i.type}", "file":"${i.file}"}`;
             }
             // request.setCharacterEncoding("utf-8");
@@ -316,10 +316,10 @@ let listener = (request, response) => {
     } else if (pathName == "/info") {
         let info = fs.readFileSync(`.${basePath}/info.json`);
         info = JSON.parse(info);
-        // 字节数 100000 = 100kb = 0.1mb
-        let max = 5000 * 1000; // mb * 1000 = kb
+        // 字节数 1000000 = 1000kb = 1mb
+        let max = 5 * 1000 * 1000; //GB=>MB=>KB
         let cur = 1;
-        for(let key in info){
+        for (let key in info) {
             cur += (parseInt(info[key].size || "1000000"));
         }
         cur = cur / 1000; //b => kb;
