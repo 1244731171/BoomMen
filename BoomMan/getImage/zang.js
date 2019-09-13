@@ -85,6 +85,7 @@ let writedown = (str) => {
 }
 
 let rename = (name) => {
+    name = name.replace(/ /g, "");
     return name.replace(/\.jpg|\.jpeg|\.JPG|\.JPEG|\.png|\.PNG|\.gif|\.GIF|\.mov|\.MOV/g, ".txt");
 }
 
@@ -234,8 +235,11 @@ let listener = (request, response) => {
 
             let orgName = files.img.name;
             let size = files.img.size;
-            let orgType = orgName.split(".")[1];
-            let name = new Date().getTime() + "" + orgName;
+            let orgNames = orgName.split(".");
+            let orgType = orgNames.splice(orgNames.length - 1, 1);
+            orgName = orgNames.join("-");
+            orgName = btoa(orgName);
+            let name = (new Date().getTime()-baseTime) + "_" + orgName + "." + orgType;
             let imgPath = files.img.path // 获取文件路径
             let data = fs.readFileSync(imgPath) // 同步读取文件
 
@@ -354,6 +358,8 @@ let html1 = `./${basePath}/1.html`;
 
 let isFirst = true;
 let log = "";
+
+let baseTime = new Date().getTime();
 
 // let server = http.createServer(listener);
 // server.listen(post, host.local, () => {
