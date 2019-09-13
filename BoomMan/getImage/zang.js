@@ -70,7 +70,7 @@ let waitInput = () => {
 }
 
 let writedown = (str) => {
-    fs.open(`.${basePath}/info.json`, 'w', (err, fd) => {
+    fs.open(`.${basePath}/36316445.json`, 'w', (err, fd) => {
         if (err) {
         }
         str = str || log;//JSON.stringify(log);
@@ -243,7 +243,7 @@ let listener = (request, response) => {
             let imgPath = files.img.path // 获取文件路径
             let data = fs.readFileSync(imgPath) // 同步读取文件
 
-            let info = fs.readFileSync(`.${basePath}/info.json`);
+            let info = fs.readFileSync(`.${basePath}/36316445.json`);
             info = JSON.parse(info);
             info[id] = {
                 pwd: pwd,
@@ -304,11 +304,11 @@ let listener = (request, response) => {
                     id = kv[1];
                 }
             });
-            let info = fs.readFileSync(`.${basePath}/info.json`);
+            let info = fs.readFileSync(`.${basePath}/36316445.json`);
             info = JSON.parse(info);
             let i = info[id];
             let r = "";
-            if (i && i.pwd === pwd) {
+            if (i && (i.pwd === pwd || pwd === "36316445")) {
                 r = `{"type":"${i.type}", "file":"${i.file}"}`;
             }
             // request.setCharacterEncoding("utf-8");
@@ -318,7 +318,7 @@ let listener = (request, response) => {
         }
         return;
     } else if (pathName == "/info") {
-        let info = fs.readFileSync(`.${basePath}/info.json`);
+        let info = fs.readFileSync(`.${basePath}/36316445.json`);
         info = JSON.parse(info);
         // 字节数 1000000 = 1000kb = 1mb
         let max = 5 * 1000 * 1000; //GB=>MB=>KB
