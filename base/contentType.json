@@ -1,4 +1,5 @@
 {
+    ".*": "application/octet-stream",
     ".tif": "application/x-tif",
     ".001": "application/x-001",
     ".301": "application/x-301",
@@ -107,6 +108,7 @@
     ".jpeg": "image/jpeg",
     ".jpg": "application/x-jpg",
     ".js": "application/javascript; charset=UTF-8",
+    ".json": "application/json",
     ".jsp": "text/html",
     ".la1": "audio/x-liquid-file",
     ".lar": "application/x-laplayer-reg",
@@ -136,6 +138,7 @@
     ".mns": "audio/x-musicnet-stream",
     ".mocha": "application/x-javascript",
     ".movie": "video/x-sgi-movie",
+    ".mov": "video/quicktime",
     ".mp1": "audio/mp1",
     ".mp2": "audio/mp2",
     ".mp2v": "video/mpeg",
