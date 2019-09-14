@@ -58,6 +58,10 @@ let getHost = () => {
     };
 }
 
+let getContentType = () => {
+    return JSON.parse(fs.readFileSync("./base/contentType.json"));
+}
+
 let waitInput = () => {
     let str = readlineSync.question("need output:");
     if (str == "1") {
@@ -86,7 +90,7 @@ let writedown = (str) => {
 
 let rename = (name) => {
     name = name.replace(/ /g, "");
-    return name.replace(/\.jpg|\.jpeg|\.JPG|\.JPEG|\.png|\.PNG|\.gif|\.GIF|\.mov|\.MOV/g, ".txt");
+    return name.replace(/\.jpg|\.jpeg|\.JPG|\.JPEG|\.png|\.PNG|\.gif|\.GIF|\.mov|\.MOV|\.mp4|\.MP4/g, ".txt");
 }
 
 let listener = (request, response) => {
@@ -117,6 +121,9 @@ let listener = (request, response) => {
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'application/javascript; charset=UTF-8' });
             str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
+        } else if (fs.existsSync(`./base/${pathName}`)) {
+            response.writeHead(200, { 'content-type': 'application/javascript; charset=UTF-8' });
+            str = fs.readFileSync(`./base/${pathName}`) || '';
         } else {
             response.writeHead(404, { 'content-type': 'application/javascript; charset=UTF-8' });
         }
@@ -182,6 +189,21 @@ let listener = (request, response) => {
         }
         response.end(str);
         return;
+    } else if (/\.mp4/.test(pathName) || /\.MP4/.test(pathName)) {
+        str = '';
+        pathName = rename(pathName);
+        console.log(`====> real local name ${pathName}`);
+        if (fs.existsSync(`.${basePath}/${pathName}`)) {
+            response.writeHead(200, { 'content-type': 'video/mpeg4' });
+            str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
+        } else if (fs.existsSync(`.${basePath}/img/${pathName}`)) {
+            response.writeHead(200, { 'content-type': 'video/mpeg4' });
+            str = fs.readFileSync(`.${basePath}/img/${pathName}`) || '';
+        } else {
+            response.writeHead(404, { 'content-type': 'video/mpeg4' });
+        }
+        response.end(str);
+        return;
     } else if (/\.ico/.test(pathName) || /\.ICO/.test(pathName)) {
         str = '';
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
@@ -207,6 +229,9 @@ let listener = (request, response) => {
         if (fs.existsSync(`.${basePath}/${pathName}`)) {
             response.writeHead(200, { 'content-type': 'application/json' });
             str = fs.readFileSync(`.${basePath}/${pathName}`) || '';
+        } else if (fs.existsSync(`./base/${pathName}`)) {
+            response.writeHead(200, { 'content-type': 'application/json' });
+            str = fs.readFileSync(`./base/${pathName}`) || '';
         } else {
             response.writeHead(404, { 'content-type': 'application/json' });
         }
@@ -342,7 +367,6 @@ let listener = (request, response) => {
     let htmlstr = '';
     response.end(htmlstr);
 };
-
 let queryMethod = {
     "tid": (tid) => {
         let typeJson = fs.readFileSync(`.${basePath}/type.json`);
@@ -353,9 +377,11 @@ let queryMethod = {
 
 // let basePath = "/BoomMan/getImage";
 let basePath = "";
+let contentType = getContentType();
 let host = getHost();
 let post = '5169';
 let html1 = `./${basePath}/1.html`;
+
 
 let isFirst = true;
 let log = "";
