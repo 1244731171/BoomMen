@@ -1,5 +1,5 @@
 let list = [];
-let unit = 30;
+let unit = 15;
 let width = 1200;
 let height = 1800;
 let timeGap = 100;
