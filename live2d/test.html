@@ -1,0 +1,39 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test</title>
+    <script src="../baseJs/jquery.js"></script>
+    <script src="../baseJs/event.js"></script>
+    <script src="./timer.js"></script>
+    <script src="./world.js"></script>
+    <script src="./object.js"></script>
+</head>
+
+<body>
+
+</body>
+<script>
+    let eventer = new EVENT();
+    let timer = new TIME(eventer);
+    timer.start(20);
+    let world = new WORLD(eventer, timer);
+    
+    let obj = new OBJECT({
+        width: 10,
+        height: 30,
+        top: 600,
+        left: 0,
+        m: 10,
+        ax: 0,
+        ay: 0,
+        vx: 0,
+        vy: 0,
+    });
+
+    world.add(obj);
+</script>
+
+</html>

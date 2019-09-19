@@ -29,6 +29,9 @@ class Explorer {
         this.start = null;
         this.finish = null;
 
+        this.patrolPoints = [];
+        this.patrolIndex = 0;
+
         this.world = world;
 
         this.list = this.world.orgData;
@@ -122,6 +125,10 @@ class Explorer {
             this.checkSort.unshift(x1);
         }
     }
+    setPatrol(points){
+        this.patrolPoints = points;
+        this.patrolIndex = 0;
+    }
     clearOldPath() {
         this.list.forEach((x) => {
             x.forEach((y) => {
@@ -172,10 +179,10 @@ class Explorer {
 
         this.sortCheckFace(this.lastTo);
         dom.innerHTML = (this.step);
-        console.log(`${this.step} last to ==> ${this.lastTo}`);
-        console.log(`${this.step} current ==> ${this.cx} - ${this.cy}`);
-        console.log(`${this.step} ==> ${JSON.stringify(this.checkSort)}`);
-        console.log(`${this.step} info ==> T:${info.t ? info.t.d : null};R:${info.r ? info.r.d : null};B:${info.b ? info.b.d : null};L:${info.l ? info.l.d : null}`);
+        // console.log(`${this.step} last to ==> ${this.lastTo}`);
+        // console.log(`${this.step} current ==> ${this.cx} - ${this.cy}`);
+        // console.log(`${this.step} ==> ${JSON.stringify(this.checkSort)}`);
+        // console.log(`${this.step} info ==> T:${info.t ? info.t.d : null};R:${info.r ? info.r.d : null};B:${info.b ? info.b.d : null};L:${info.l ? info.l.d : null}`);
 
         // check next
         let canMove = false;

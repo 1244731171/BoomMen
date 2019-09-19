@@ -1,0 +1,110 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../baseJs/jquery.js"></script>
+    <title>图片旋转</title>
+</head>
+
+<body>
+    <canvas id="c" style="border:1px solid black;">
+    </canvas>
+</body>
+<script>
+    // https://aotu.io/notes/2017/05/25/canvas-img-rotate-and-flip/index.html
+
+    let atan = (n) => {
+        return Math.atan(n) / (Math.PI / 180);
+    }
+    let tan = (a) => {
+        return Math.tan((Math.PI / 180) * n);
+    }
+    let sin = (a) => {
+        return Math.sin((Math.PI / 180) * n);
+    }
+    let cos = (a) => {
+        return Math.cos((Math.PI / 180) * n);
+    }
+
+    let i = 225;
+    let canvas = document.getElementById("c");
+    canvas.width = 900;
+    canvas.height = 600;
+    // 获取 canvas 2D 上下文对象
+    let ctx = canvas.getContext('2d');
+    let img = new Image();
+    img.src = "./img.png";
+    let cx = 0, cy = 0, ca = 0;
+    let change = (x = 0, y = 0, angle = 0) => {
+        cx = x;
+        cy = y;
+        ca = angle;
+        if (cx != 0 || cy != 0) {
+            ctx.translate(cx, cy);
+        }
+        if (ca != 0) {
+            ctx.rotate(ca * Math.PI / 180);
+        }
+    }
+
+    let reset = () => {
+        if (ca != 0) {
+            ctx.rotate(-ca * Math.PI / 180);
+        }
+        if (cx != 0 || cy != 0) {
+            ctx.translate(-cx, -cy);
+        }
+        x = 0;
+        y = 0;
+        angle = 0;
+    }
+
+    let draw = (img, x, y, w, h, cx, cy, ca) => {
+        ctx.save();
+        change(cx, cy, ca);
+        ctx.drawImage(img, x, y, w, h);
+        ctx.restore();
+        // reset();
+    }
+
+    let clear = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    img.onload = function () {
+
+        // =================  
+        // 平移 + 旋转
+        // =================
+        let ty = (i / 2);
+        let tx = (i / 2);
+        // 绘制图像
+        // ctx.drawImage(img, 0, 0, i, i);
+        // change(tx, ty, 45);
+        // ctx.drawImage(img, -tx, -ty, i, i);
+        // reset();
+        // ctx.drawImage(img, 0, 225, i, i);
+        // draw(img, -tx, -ty, i, i, tx, ty, 45);
+        // draw(img, 0, 0, i, i);
+
+        // ==================
+        // requestAnimationFrame
+        // ==================
+        let aniAngle = 0;
+        let ani = () => {
+            // 清屏(不清屏就画满了)
+            clear();
+            // 1# 中心旋转
+            draw(img, -tx, -ty, i, i, tx, ty, aniAngle++);
+            // 2# 默认顶角旋转
+            draw(img, -tx, -ty, i, i, tx, ty, aniAngle++);
+            requestAnimationFrame(ani);
+        }
+        ani();
+    }
+
+</script>
+
+</html>
