@@ -96,10 +96,20 @@
         let ani = () => {
             // 清屏(不清屏就画满了)
             clear();
-            // 1# 中心旋转
-            draw(img, -tx, -ty, i, i, tx, ty, aniAngle++);
-            // 2# 默认顶角旋转
-            draw(img, -tx, -ty, i, i, tx, ty, aniAngle++);
+            // 1# 中心旋转 （x,y各有100px位移，使用了坐标系位移了就不要在在画东西的时候增加位移）
+            // draw(img, -tx, -ty, i, i, 100 + tx, 100 + ty, aniAngle++);
+            // 2# 默认顶角旋转(平移225)
+            draw(img, i, i, i, i);
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(i, i);
+            ctx.lineTo(i, i + i);
+            ctx.lineTo(i + i, i + i);
+            ctx.lineTo(i + i, i);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.re
+            draw(img, 0, 0, i, i, i + tx, i + ty, aniAngle++);
             requestAnimationFrame(ani);
         }
         ani();
