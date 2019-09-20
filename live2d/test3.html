@@ -1,0 +1,140 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../baseJs/jquery.js"></script>
+    <title>图片旋转</title>
+</head>
+
+<body>
+    <canvas id="c" style="border:1px solid black;">
+    </canvas>
+</body>
+<script>
+    // https://aotu.io/notes/2017/05/25/canvas-img-rotate-and-flip/index.html
+
+    let atan = (n) => {
+        return Math.atan(n) / (Math.PI / 180);
+    }
+    let tan = (a) => {
+        return Math.tan((Math.PI / 180) * a);
+    }
+    let sin = (a) => {
+        return Math.sin((Math.PI / 180) * a);
+    }
+    let cos = (a) => {
+        return Math.cos((Math.PI / 180) * a);
+    }
+
+    let i = 225;
+    let canvas = document.getElementById("c");
+    canvas.width = 900;
+    canvas.height = 600;
+    // 获取 canvas 2D 上下文对象
+    let ctx = canvas.getContext('2d');
+    let img = new Image();
+    img.src = "./1.jpg";
+    let cx = 0, cy = 0, ca = 0;
+    let change = (x = 0, y = 0, angle = 0) => {
+        cx = x;
+        cy = y;
+        ca = angle;
+        if (cx != 0 || cy != 0) {
+            ctx.translate(cx, cy);
+        }
+        if (ca != 0) {
+            ctx.rotate(ca * Math.PI / 180);
+        }
+    }
+
+    let reset = () => {
+        if (ca != 0) {
+            ctx.rotate(-ca * Math.PI / 180);
+        }
+        if (cx != 0 || cy != 0) {
+            ctx.translate(-cx, -cy);
+        }
+        x = 0;
+        y = 0;
+        angle = 0;
+    }
+
+    let draw = (img, x, y, w, h, px = 0, py = 0, ca = 0) => {
+        ctx.save();
+        let c = cos(ca);
+        let s = sin(ca);
+        ctx.transform(c, s, -s, c, x, y);
+        ctx.drawImage(img, -px, -py, w, h);
+        ctx.restore();
+        // reset();
+    }
+
+    let draw2 = (img, x, y, w, h, px = 0, py = 0, ca = 0) => {
+        let c = cos(ca);
+        let s = sin(ca);
+        ctx.transform(c, s, -s, c, x, y);
+        ctx.drawImage(img, -px, -py, w, h);
+        // reset();
+    }
+
+    let clear = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    let info = {};
+    img.onload = function () {
+        let w = img.width;
+        let h = img.height;
+        info = {
+            img: img,
+            w: w,
+            h: h,
+            o: [20, h / 2],
+            k: [95, h / 2]
+        };
+        let aniAngle = 90;
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 1;
+        let ox = info.o[0];
+        let oy = info.o[1];
+        let kx = info.k[0];
+        let ky = info.k[1];
+        let ani = () => {
+            // 清屏(不清屏就画满了)
+            clear();
+            draw(img, i, i, info.w, info.h, info.o[0], info.o[1], aniAngle);
+            // 计算k点
+            // x' = x*cosθ-y*sinθ+0 = x*cosθ-y*sinθ
+            // y' = x*sinθ+y*cosθ+0 = x*sinθ+y*cosθ
+            let c = cos(aniAngle);
+            let s = sin(aniAngle);
+            let cox = c * ox - s * oy;
+            let coy = s * ox + c * oy;
+            let ckx = c * kx - s * ky;
+            let cky = s * kx + c * ky;
+            let cx = i - cox;
+            let cy = i - coy;
+            draw(img, ckx + cx, cky + cy, info.w, info.h, info.o[0], info.o[1], -aniAngle);
+
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(i, i);
+            ctx.lineTo(ckx + cx, cky + cy);
+            ctx.stroke();
+            aniAngle++;
+            requestAnimationFrame(ani);
+        }
+        ani();
+
+        // ctx.translate(200, 200);
+        // ctx.drawImage(img, 0, 0, w, h);
+        // ctx.transform(0, 1, -1, 0, 0, 0);
+        // ctx.drawImage(img, 0, 0, w, h);
+    }
+
+</script>
+
+</html>
