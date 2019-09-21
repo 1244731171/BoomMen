@@ -59,7 +59,7 @@ let getHost = () => {
 }
 
 let getContentType = () => {
-    return JSON.parse(fs.readFileSync("./base/contentType.json"));
+    return JSON.parse(fs.readFileSync("./baseJs/contentType.json"));
 }
 
 let waitInput = () => {
