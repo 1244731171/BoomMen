@@ -19,13 +19,13 @@
         return Math.atan(n) / (Math.PI / 180);
     }
     let tan = (a) => {
-        return Math.tan((Math.PI / 180) * n);
+        return Math.tan((Math.PI / 180) * a);
     }
     let sin = (a) => {
-        return Math.sin((Math.PI / 180) * n);
+        return Math.sin((Math.PI / 180) * a);
     }
     let cos = (a) => {
-        return Math.cos((Math.PI / 180) * n);
+        return Math.cos((Math.PI / 180) * a);
     }
 
     let i = 225;
@@ -38,6 +38,17 @@
     img.src = "./img.png";
     let cx = 0, cy = 0, ca = 0;
     let change = (x = 0, y = 0, angle = 0) => {
+        cx = x;
+        cy = y;
+        ca = angle;
+        if (cx != 0 || cy != 0) {
+            ctx.translate(cx, cy);
+        }
+        if (ca != 0) {
+            ctx.rotate(ca * Math.PI / 180);
+        }
+    }
+    let change2 = (x = 0, y = 0, angle = 0) => {
         cx = x;
         cy = y;
         ca = angle;
@@ -61,9 +72,9 @@
         angle = 0;
     }
 
-    let draw = (img, x, y, w, h, cx, cy, ca) => {
+    let draw = (img, x, y, w, h, cx = 0, cy = 0, ca = 0) => {
         ctx.save();
-        change(cx, cy, ca);
+        ctx.transform(cos(ca), sin(ca), -sin(ca), cos(ca), cx, cy);
         ctx.drawImage(img, x, y, w, h);
         ctx.restore();
         // reset();
@@ -75,11 +86,16 @@
 
     img.onload = function () {
 
+        let ty = (i / 2);
+        let tx = (i / 2);
+
+        /**
+        * 基础篇
+        */
+
         // =================  
         // 平移 + 旋转
         // =================
-        let ty = (i / 2);
-        let tx = (i / 2);
         // 绘制图像
         // ctx.drawImage(img, 0, 0, i, i);
         // change(tx, ty, 45);
@@ -92,28 +108,150 @@
         // ==================
         // requestAnimationFrame
         // ==================
-        let aniAngle = 0;
-        let ani = () => {
-            // 清屏(不清屏就画满了)
-            clear();
-            // 1# 中心旋转 （x,y各有100px位移，使用了坐标系位移了就不要在在画东西的时候增加位移）
-            // draw(img, -tx, -ty, i, i, 100 + tx, 100 + ty, aniAngle++);
-            // 2# 默认顶角旋转(平移225)
-            draw(img, i, i, i, i);
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(i, i);
-            ctx.lineTo(i, i + i);
-            ctx.lineTo(i + i, i + i);
-            ctx.lineTo(i + i, i);
-            ctx.closePath();
-            ctx.stroke();
-            ctx.re
-            draw(img, 0, 0, i, i, i + tx, i + ty, aniAngle++);
-            requestAnimationFrame(ani);
-        }
-        ani();
+        // let aniAngle = 0;
+        // let ani = () => {
+        //     // 清屏(不清屏就画满了)
+        //     clear();
+        //     ctx.lineWidth = 1;
+        //     ctx.beginPath();
+        //     ctx.moveTo(i, i);
+        //     ctx.lineTo(i, i + i);
+        //     ctx.lineTo(i + i, i + i);
+        //     ctx.lineTo(i + i, i);
+        //     ctx.closePath();
+        //     ctx.stroke();
+        //     // 1# 中心旋转 （x,y各有100px位移，使用了坐标系位移了就不要在在画东西的时候增加位移）
+        //     draw(img, -tx, -ty, i, i, 50 + tx, 50 + ty, aniAngle++);
+        //     // // 2# 默认顶角(左上)旋转(平移225)
+        //     // draw(img, 0, 0, i, i, i, i, aniAngle++);
+        //     // 2# 默认顶角(右下)旋转(平移225)
+        //     draw(img, 0, 0, i, i, 2*i, 2*i, aniAngle++);
+        //     requestAnimationFrame(ani);
+        // }
+        // ani();
+
+        // ==================
+        // 对折坐标系(缩放) scale
+        // ==================
+        // 原始坐标系 定点平移至(i,i)
+        // change(i, i);
+        // // 翻转x轴
+        // ctx.scale(-1, 1);
+        // draw(img, 0, 0, i, i);
+        // // 继续翻转y轴(x,y轴都被翻转)
+        // ctx.scale(1, -1);
+        // draw(img, 0, 0, i, i);
+        // // 继续翻转x轴(y轴都被翻转)
+        // ctx.scale(-1, 1);
+        // draw(img, 0, 0, i, i);
+        // // 继续翻转y轴(x,y轴重置)
+        // ctx.scale(1, -1);
+        // draw(img, 0, 0, i, i);
+
+        /**
+        * 进阶篇 矩阵
+        */
+
+        // // 平移 translate 
+        // // x' = 1x+0y+tx = x+tx
+        // // y' = 0x+1y+ty = y+ty
+        // // 坐标系,x轴位移x y轴位移y
+        // ctx.transform(1, 0, 0, 1, i, i);
+        // draw(img, 0, 0, i, i);
+
+        // // 旋转 rotate 
+        // // x' = x*cosθ-y*sinθ+0 = x*cosθ-y*sinθ
+        // // y' = x*sinθ+y*cosθ+0 = x*sinθ+y*cosθ
+        // // 坐标系,中心顺时针旋转30度
+        // ctx.save();
+        // ctx.transform(cos(30), sin(30), -sin(30), cos(30), 0, 0);
+        // draw(img, 0, 0, i, i);
+        // ctx.restore();
+
+        // // 缩放 scale 
+        // // x' = Sx*x+0y+0 = Sx*x
+        // // y' = 0x+Sy*y+0 = Sy*y
+        // // 0.5倍大小
+        // ctx.save();
+        // ctx.transform(0.5, 0, 0, 0.5, 0, 0);
+        // draw(img, 0, 0, i, i);
+        // ctx.restore();
+        // // y轴翻转
+        // ctx.save();
+        // ctx.transform(-1, 0, 0, 1, 0, 0);
+        // draw(img, 0, 0, i, i);
+        // ctx.restore();
+        // // X轴翻转
+        // ctx.save();
+        // ctx.transform(1, 0, 0, -1, 0, 0);
+        // draw(img, 0, 0, i, i);
+        // ctx.restore();
+
+        // // 定义(ux,uy)为直线(y=kx)方向的单位向量
+        // // ux=1/sqrt(1+k^2)
+        // // uy=k/sqrt(1+k^2)
+        // // x' = (2*ux^2-1)*x+2*ux*uy*y
+        // // y' = 2*ux*uy*x+(2*uy^2-1)*y
+        // // x轴旋转 直线 y=0
+        // ctx.save();
+        // // 45度
+        // let k = 1 / tan(45);
+        // let ux = 1 / Math.sqrt(1 + k * k);
+        // let uy = k / Math.sqrt(1 + k * k);
+        // ctx.transform((2 * ux * ux - 1), (2 * ux * uy), (2 * ux * uy), (2 * uy * uy - 1), 0, 0);
+        // draw(img, 0, 0, i, i);
+        // // 标出 y=kx
+        // ctx.lineWidth = 1;
+        // ctx.beginPath();
+        // ctx.moveTo(0, 0);
+        // ctx.lineTo(i, i);
+        // ctx.stroke();
+        // ctx.restore();
     }
+
+    // 根据图像中某点旋转
+    // x,y 真正想沿着哪个点转
+    // px,py 图中某点
+    // a角度
+    let translate = (img, x, y, px, py, w, h, a) => {
+        draw(img, -px, -py, w, h, x, y, a);
+    }
+
+    let img2 = new Image();
+    img2.src = "./arrow.jpg";
+    img2.onload = () => {
+        let w = img2.width;
+        let h = img2.height;
+        let aniAngle = 0;
+        ctx.strokeStyle = "#ff0000";
+        // 这个主要是为了验证图片中的A点如何绕在画布中B点旋转
+        let ani = () => {
+            clear();
+            // 根据图中右下角(w,h)旋转
+            let px = w, py = h;
+            translate(img2, 200, 200, px, py, w, h, aniAngle++);
+            ctx.lineWidth = 1;
+            ctx.lineClor
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(200, 200);
+            ctx.stroke();
+            // 根据图中左边框中点旋转
+            px = 0, py = h / 2;
+            translate(img2, 150, 200, px, py, w, h, aniAngle++);
+            ctx.lineWidth = 1;
+            ctx.lineClor
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(150, 200);
+            ctx.stroke();
+            translate(img2, 0, 0, 0, 0, w, h, 0);
+            requestAnimationFrame(ani);
+        };
+        ani();
+
+        // 第二个需要验证 两个图片如果联动 （A图A1点绕画布O点旋转，B图B1点绕A图K点旋转）
+    };
 
 </script>
 

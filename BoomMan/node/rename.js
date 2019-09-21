@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const PATH = 'E:/迅雷下载/a001/';
+const PATH = 'E:/迅雷下载/图片任务组_20190917_2315/';
 // const PATH = 'E:/soft/yundown/yundown/download/';
 // const PATH = 'Q:/好孩子看不到/国内写真/（萝莉）柚木写真/[柚木]红白调教(50P)_files/'
 // const PATH = 'L:/新建文件夹/';
