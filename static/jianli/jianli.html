@@ -1,0 +1,55 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>赵永生-个人简历</title>
+    <script src="../base/jquery.js"></script>
+    <script src="./tool.js"></script>
+    <link rel="stylesheet" type="text/css" href="../base/base.css">
+    <style>
+        body {
+            background: rgb(250, 246, 242);
+            font-size: 14px;
+            font-family: PingFangSC-Regular, Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr {
+            height: 30px;
+        }
+
+        .title td {
+            color: rgb(60, 87, 168);
+            margin: 5px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        window.onload = () => {
+            $.ajax({
+                url: "./info.json",
+                type: "get",
+                dataType: "JSON",
+                success: (e) => {
+                    $("body").append(`<br>`);
+                    $("body").append(new table(e.bi));
+                    $("body").append(`<br>`);
+                    $("body").append(new table(e.wi));
+                }
+            });
+        }
+    </script>
+</head>
+
+<body align="center">
+
+
+</body>
+
+</html>
