@@ -41,9 +41,13 @@
                     $("body").append(`<br>`);
                     $("body").append(new table(e.bi));
                     $("body").append(`<br>`);
+                    $("body").append(new table(e.gi));
+                    $("body").append(`<br>`);
                     $("body").append(new table(e.wi));
-                    $("body").append(`<br><span class="hh3">项目经历<span><hr>`);
+                    $("body").append(`<br><span class="hh3">工作期间项目经历</span><hr align="left" style="width:73%">`);
+                    e.pi.reverse();
                     e.pi.forEach(pii => {
+                        $("body").append(`<br>`);
                         $("body").append(new table(pii));
                     });
                 }
@@ -52,7 +56,7 @@
     </script>
 </head>
 
-<body align="center">
+<body>
 
 
 </body>
