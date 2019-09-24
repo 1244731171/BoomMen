@@ -1,0 +1,156 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test</title>
+    <script src="../baseJs/jquery.js"></script>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    const width = 800;
+    const height = 600;
+    const max_x = width / 2;
+    const max_y = height / 2;
+    // 圆形公式
+    // (x-a)^2 + (y-b)^2 = r^2 
+    let canvas = document.querySelector("#canvas");
+    canvas.width = width;
+    canvas.height = height;
+    // 获取 canvas 2D 上下文对象
+    let ctx = canvas.getContext('2d');
+
+    let clear = () => {
+        canvas.width = width;
+        canvas.height = height;
+    }
+
+    let createStar = () => {
+        let x = (Math.random() > 0.5 ? 1 : -1) * (parseInt(Math.random() * max_x));
+        let y = (Math.random() > 0.5 ? 1 : -1) * (parseInt(Math.random() * max_y));
+        let info = {
+            o: {
+                x: x,
+                y: y
+            },
+            r: Math.sqrt(x * x + y * y),
+            d: 500
+        }
+        // 目前来说
+        // o点坐标距离圆心r的最大值为 Math.sqrt(x * x + y * y) => 500
+        // z轴即垂直于平面
+        // d为视点到o点所在垂直z轴平面的垂直距离
+    }
+
+    // 人家的
+    // function Stage(elm) {
+    //     this.cas = document.getElementById(elm);
+    //     this.ctx = this.cas.getContext("2d");
+    //     this.counts = 500; //最大粒子数
+    //     this.particlesArr = [];
+
+    //     this.init();
+    // }
+
+    // Stage.prototype = {
+    //     resize: function (booleam) {
+    //         this.width = this.cas.width = booleam ? this.cas.parentNode.clientWidth * 2 : window.innerWidth * 2;
+    //         this.height = this.cas.height = booleam ? this.cas.parentNode.clientHeight * 2 : window.innerHeight * 2;
+    //     },
+    //     clear: function () {
+    //         this.ctx.clearRect(0, 0, this.width, this.height);
+    //     },
+    //     createParticles: function () {
+    //         var halfWidth = this.width / 2,
+    //             halfHeight = this.height / 2;
+
+    //         for (var i = 0; i < this.counts; i++) {
+    //             var circle = new Circle({
+    //                 ctx: this.ctx,
+    //                 fl: 100,
+    //                 posx: Math.random() * this.width - halfWidth,
+    //                 posy: Math.random() * this.height - halfHeight,
+    //                 posz: Math.random() * 250,
+    //                 size: 10,
+    //                 speed: Math.random() * 2,
+    //                 origin: {
+    //                     x: this.width / 2,
+    //                     y: this.height / 2
+    //                 }
+    //             });
+    //             this.particlesArr.push(circle);
+    //         }
+    //     },
+    //     render: function () {
+    //         this.clear();
+
+    //         this.particlesArr.forEach(function (elm) {
+    //             elm.draw();
+    //         })
+    //     },
+    //     animate: function () {
+    //         var _this = this;
+
+    //         this.render();
+
+    //         window.requestAnimationFrame(function () {
+    //             _this.animate();
+    //         });
+    //     },
+    //     init: function () {
+    //         this.resize(true);
+    //         this.createParticles();
+    //         this.animate();
+    //     }
+    // }
+    // function Circle() {
+    //     this.ctx = arguments[0]['ctx'];
+    //     this.fl = arguments[0]['fl'];
+    //     this.posx = arguments[0]['posx'];
+    //     this.posy = arguments[0]['posy'];
+    //     this.posz = arguments[0]['posz'];
+    //     this.origenZ = arguments[0]['posz'];
+    //     this.size = arguments[0]['size'];
+    //     this.r = arguments[0]['size'] / 2
+
+    //     this.x = this.posx;
+    //     this.y = this.posy;
+    //     this.origin = arguments[0]['origin'];
+    //     this.speed = arguments[0]['speed'];
+    //     this.color = arguments[0]['color'] ? arguments[0]['color'] : "#000";
+    //     this.died = false;
+    // }
+    // Circle.prototype = {
+    //     //3D坐标投影
+    //     projection: function () {
+    //         if (this.posz > -this.fl) {
+    //             var scale = this.fl / (this.fl + this.posz);
+    //             this.x = this.origin.x + this.posx * scale;
+    //             this.y = this.origin.y + this.posy * scale;
+    //             this.size = this.r * scale;
+    //             this.posz -= this.speed;
+    //         } else {
+    //             this.posz = this.origenZ;
+    //         }
+    //     },
+    //     draw: function () {
+    //         this.projection();
+    //         this.ctx.save();
+    //         this.ctx.fillStyle = this.color;
+    //         this.ctx.translate(this.x, this.y);
+    //         this.ctx.beginPath();
+    //         this.ctx.arc(-this.r, -this.r, this.size, 0, Math.PI * 2, false);
+    //         this.ctx.closePath();
+    //         this.ctx.fill();
+    //         this.ctx.restore();
+    //     }
+    // }
+
+    // new Stage("canvas");
+</script>
+
+</html>
