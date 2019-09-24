@@ -1,4 +1,4 @@
-let e = {
+{
     "bi": {
         "title": "基本信息<hr>",
         "width": "73%",
@@ -113,7 +113,7 @@ let e = {
         ],
         "data": [
             [
-                '1.熟练掌握的HTML5，CSS3，原生JavaScript等前端开发技术基础，可处理多个浏览器兼容问题，擅长使用模块化思想书写JavaScript代码，在项目中经常使用；<br>2.熟练掌握ActionScript脚本语言，熟悉Flash项目开发;<br>3.熟悉移动端浏览器特性，项目中实践过移动端web浏览器的功能开发；<br>4.熟练掌握Ajax通信技术，了解相关跨域问题；<br>5.熟练掌握jQuery，jQueryUI等前端框架；<br>6.熟练掌握SVN，git等版本控制工具；<br>7.熟练使用Nodejs，在自己的工程中经常使用；<br>8.在项目开发中，了解和使用过react框架；'
+                "1.熟练掌握的HTML5，CSS3，原生JavaScript等前端开发技术基础，可处理多个浏览器兼容问题，擅长使用模块化思想书写JavaScript代码，在项目中经常使用；<br>2.熟练掌握ActionScript脚本语言，熟悉Flash项目开发;<br>3.熟悉移动端浏览器特性，项目中实践过移动端web浏览器的功能开发；<br>4.熟练掌握Ajax通信技术，了解相关跨域问题；<br>5.熟练掌握jQuery，jQueryUI等前端框架；<br>6.熟练掌握SVN，git等版本控制工具；<br>7.熟练使用Nodejs，在自己的工程中经常使用；<br>8.在项目开发中，了解和使用过react框架；"
             ]
         ]
     },
