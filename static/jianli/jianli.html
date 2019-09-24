@@ -23,7 +23,8 @@
             height: 30px;
         }
 
-        .title td {
+        .title td,
+        .hh3 {
             color: rgb(60, 87, 168);
             margin: 5px;
             font-weight: bold;
@@ -41,6 +42,10 @@
                     $("body").append(new table(e.bi));
                     $("body").append(`<br>`);
                     $("body").append(new table(e.wi));
+                    $("body").append(`<br><span class="hh3">项目经历<span><hr>`);
+                    e.pi.forEach(pii => {
+                        $("body").append(new table(pii));
+                    });
                 }
             });
         }
