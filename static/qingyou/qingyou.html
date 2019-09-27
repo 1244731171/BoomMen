@@ -1,0 +1,76 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./jquery.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="txt" type="text" /><button id="btn">确定</button><button id="clr">清空</button>
+    <div id="show"></div>
+    <script>
+        // http://www.lanmeishe.com/?/video/rwd/id/6759.html
+        let uv = `http://lms.tokyowins.com/appjsonv2/videoMain?app_type=ios&token=ectMedVSKWBheXmBuoYzGygOqBIWJTOH&urlencode=false&user_id=82035&version=1&video_id=6740`;
+        let ua = `http://lms.tokyowins.com/appjsonv2/albumMain?album_id=2486&app_type=ios&token=ectMedVSKWBheXmBuoYzGygOqBIWJTOH&urlencode=false&user_id=82035&version=1`;
+        let step = 0;
+        $("#clr").on('click',()=>{
+            $("#show").html("");
+        });
+        $("#btn").on('click', () => {
+            let id = $("#txt").val();
+            $("#txt").val("");
+            let type = "";
+            if (/video/.test(id)) {
+                type = "1"
+            } else if (/album/.test(id)) {
+                type = "2"
+            }
+            id = id.match(/\d{4,5}/)[0];
+            uv = `http://lms.tokyowins.com/appjsonv2/videoMain?app_type=ios&token=iKjFHCJGSXTHCUeoEyBibufJiRULsluN&urlencode=false&user_id=82035&version=1&video_id=${id}`;
+            ua = `http://lms.tokyowins.com/appjsonv2/albumMain?album_id=${id}&app_type=ios&token=iKjFHCJGSXTHCUeoEyBibufJiRULsluN&urlencode=false&user_id=82035&version=1`;
+            $.ajax({
+                url:`./query?${type}=${id}`,
+                type:"get",
+                success:(e)=>{
+                    $("#show").append(e);
+                }
+            })
+            // switch (type) {
+            //     case "1":
+            //         $.ajax({
+            //             url: uv,
+            //             dataType: "jsonp",
+            //             type: "get",
+            //             success: (e) => {
+            //                 if (e.code == 1 && e.data && e.data.video_url) {
+            //                     $("#show").append(`<video src="${e.data.video_url}" controls="controls" autoplay/>`);
+            //                 }
+            //             }
+            //         });
+            //         break;
+            //     case "2":
+            //         $.ajax({
+            //             url: ua,
+            //             dataType: "jsonp",
+            //             type: "get",
+            //             success: (e) => {
+            //                 if (e.code == 1 && e.data && e.data.picture) {
+            //                     let ps = e.data.picture.photo;
+            //                     ps.forEach(p => {
+            //                         $("#show").append(`<a href="${p.photo.split("?")[0]}" download="img_${id}_${step++}"><img src="girl.jpg" alt=""></a>`);
+            //                     });
+            //                 }
+            //             }
+            //         });
+            //         break;
+            // }
+
+        });
+
+    </script>
+</body>
+
+</html>
