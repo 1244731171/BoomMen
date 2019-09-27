@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue学习</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+
+        new Vue({
+            el: document.getElementById('app'),
+            template: `
+        <div>
+          <input type="text" v-model="number1" />
+          +
+          <input type="text" v-model="number2" />
+          *
+          <input type="text" v-model="number3" />
+          =
+          {{result}} ( {{watchResult}} ) = ({{number1,number2 | add}})
+        </div>
+      `,
+            data: {
+                number1: 1,
+                number2: 2,
+                number3: 3,
+                watchResult: ''
+            },
+            method: {
+                add: (nv, ov) => {
+                    return nv + ov;
+                }
+            },
+            filters: {
+                add: (nv, ov) => {
+                    return parseInt(nv) + parseInt(ov);
+                }
+            },
+            watch: {
+                number1: (nv, ov) => {
+                    this.watchResult = `${ov} => ${nv}`;
+                }
+            },
+            computed: {
+                // 如果原值不变，缓存不调函数的优化机制
+                result: function () {
+                    // 监视对象，写在了函数内部，
+                    // 凡是函数内部有 this. 相关属性，改变都会触发当前函数
+                    let addSum = parseInt(this.number1) + parseInt(this.number2);
+                    let allSum = addSum * this.number3;
+                    return allSum;
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>

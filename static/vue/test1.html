@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Vue 学习</title>
+
+</head>
+
+<body>
+    <div>
+        关于 vue.data => compoments => template 的关系 <br>
+        关于 vue.data 和 compoments.props 的多参数映射 <br>
+        关于 template中方法和传参 {{ 参数1, 参数2 | 方法名}} <br>
+    </div>
+
+    <!-- 2. Vue 挂载点 - Vue 的虚拟 DOM 在这里操作到实际渲染 -->
+    <!-- 简单理解为 jQuery 的拼接字符串（并不全是） -->
+    <div id="app"></div>
+    <!-- 1. 引用 Vue -->
+    <!-- Vue CDN - 提供 Vue 服务 -->
+    <script src="https://cdn.bootcss.com/vue/2.5.21/vue.js"></script>
+    <!-- Vue Router CDN - 管理路由 -->
+    <script src="https://cdn.bootcss.com/vue-router/3.0.2/vue-router.js"></script>
+    <!-- Axios CDN - 调用接口 -->
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+
+    <script>
+
+        // 子组件
+        var Son = {
+            template: `
+        <div>我的名字：{{name2}} ===> {{ name3,name2 | add}}</div>
+      `,
+            props: ['name2', 'name3']
+        }
+
+        Vue.filter('add', function (a, b) {
+            return `${a}_${b}`;
+        })
+        new Vue({
+            // 3. el - 挂载目标，即渲染在哪个挂载点
+            el: document.getElementById('app'),
+            // 4. template - 模板，即渲染到挂载点的内容
+            // 最外层必须有一层包裹，例如 <div>
+            template: `
+        <son :name2="name1" :name3="name4"></son>
+      `,
+            // 5. data - 数据，即在操作中需要用到的数据
+            // 可以理解为在 jQuery 中 var text = "Hello World!"
+            // {{ text }} 为数据渲染到 DOM 的方式之一
+            data() {
+                return {
+                    // template 中要使用的数据
+                    name1: '皮皮虾',
+                    name4: '大闸蟹'
+                }
+            },
+            // 6. methods - 方法，即我们的页面事件
+            // 可以理解为在 jQuery 中定义 Function
+            methods: {
+                add: (a, b) => {
+                    return `${a}_${b}`;
+                }
+            },
+            // 7. components - 组件名称
+            components: {
+                // key 是组件名，value 是组件对象
+                son: Son
+            },
+            filters: {
+                add: (a, b) => {
+                    return `${a}_${b}`;
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
