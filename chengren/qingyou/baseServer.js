@@ -263,14 +263,29 @@ let listener = (request, response) => {
             let uv = `http://lms.tokyowins.com/appjsonv2/videoMain?app_type=ios&token=${token}&urlencode=false&user_id=95476&version=1&video_id=${id}`;
             let ua = `http://lms.tokyowins.com/appjsonv2/albumMain?album_id=${id}&app_type=ios&token=${token}&urlencode=false&user_id=95476&version=1`;
 
+            let d = [];
+            let d1 = [];
             let url = "";
             if (type == "1") {
                 url = uv;
-            } else {
+            } else if (type == "2") {
                 url = ua;
+            } else if (type == "youmi") {
+                id = decodeURIComponent(id);
+                url = `https://hhap.lfjda.top/ym/nc/getVideoDetailH5?${id}`;
+                console.log(url);
+                Request(url, { json: true }, (err, res, body) => {
+                    if (err) { return console.log(err); }
+                    // console.log(body);
+                    j = body;
+                    if (j.dataObj && j.dataObj.video_url) {
+                        d.push(`<video src="${j.dataObj.urlPrefix}${j.dataObj.video_url}" controls></video>`);
+                    }
+                    response.writeHead(200, { 'Content-Type': 'text/text;charset=UTF-8' });
+                    response.end(d.join(""));
+                });
+                return;
             }
-            let d = [];
-            let d1 = [];
             // console.log(url);
             Request(url, { json: true }, (err, res, body) => {
                 if (err) { return console.log(err); }

@@ -82,3 +82,89 @@ data中key=value
     });
 ```
 
+7. 事件点  
+  7.1. beforeCreate 和 created
+  顺序为 beforeCreate => 创建data中参数 => created 
+  7.2. beforeMount 和 mounted
+  顺序为 beforeMount => 将template的dom节点挂在body上 => mounted
+  7.3. 
+
+8. this内参数
+    this.$refs
+``` javascript
+    let App = {
+      template: `
+        <div>
+          <button ref="btn">按钮</button>
+        </div>
+      `,
+      beforeCreate: function() {
+        // 这里不能操作数据，只是初始化了事件等……
+        console.log(this.$refs.btn); // [Console] undefined
+      },
+      created: function() {
+        // 可以操作数据了
+        console.log(this.$refs.btn); // [Console] undefined
+      },
+      beforeMount: function() {
+        // new Vue 发生装载，替换 <div id="app"></div> 之前
+        console.log(this.$refs.btn); // [Console] undefined
+      },
+      mounted: function() {
+        // 装载数据之后
+        console.log(this.$refs.btn.innerHTML); // [Console] 按钮
+      }
+    }
+```
+$children - 当前组件的子组件 包含自己的$el $children等
+$el - 当前组件的元素节点
+$parent - 当前组件的父组件
+$root - 获取 new Vue 实例
+```javascript
+    var App = {
+      template: `
+        <div>
+          <temp ref="temp" />
+        </div>
+      `,
+      mounted: function() {
+        // 装载数据之后
+        console.log(this.$children);
+        // console.log(this.$refs.temp);
+      }
+    }
+
+    new Vue({
+      el: document.getElementById('app'),
+      components: {
+        app: App
+      },
+      template: `<app/>`
+    })
+```
+nextTick: 类似promise.then
+``` javascript
+    var App = {
+      template: `
+        <div>
+          <input v-if="isShow" ref="input" />
+        </div>
+      `,  
+      data: function() {
+        return {
+          isShow: true
+        }
+      },
+      mounted: function() {
+        // 希望在 Vue 真正渲染 DOM 到页面之后进行下面操作
+        this.$nextTick(()=>{
+          //回调事件
+        })
+      }
+    }
+
+    // 或者部署个全局的
+    Vue.nextTick(()=>{
+      //回调事件
+    });
+```

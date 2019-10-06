@@ -1,0 +1,4 @@
+query albume info 
+http://app.pdlone.xyz/index.php/api/index/index_show?&time=1570354141&userId=&new_device=1104a89792cdcc812f0&id=602
+
+`http://app.pdlone.xyz/index.php/api/index/index_show?&time=${parseInt(Date.now().toString().substr(0,10))}&userId=&new_device=1104a89792cdcc812f0&id=602`

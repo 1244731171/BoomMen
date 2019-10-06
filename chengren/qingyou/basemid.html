@@ -1,0 +1,24 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../../base/jquery.js"></script>
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <video id="v" src="" controls="controls"></video>
+    <br />
+    {{body}}
+    <script>
+        let v = $("#v");
+        v.attr("src", $("img").eq(0).attr("vu"));
+        $("img").on("click", e => {
+            v.attr("src", $(e.target).attr("vu"));
+        });
+    </script>
+</body>
+
+</html>
