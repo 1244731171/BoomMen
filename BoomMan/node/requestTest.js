@@ -48,23 +48,29 @@ const { JSDOM } = jsdom;
 
 
 // Set the headers for the request
-var headers = {
-    'Content-Type': 'application/json',
-    'User-Agent': ' Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
-    // 'Content-Length': Buffer.byteLength(post_data),
-    'Cookie': 'PHPSESSID=p3nr1fprr7hfk4r0l4ahg8u2b2; UM_distinctid=16b6a463d9444a-0b46708abc4994-3e385a0a-1fa400-16b6a463d952e6; CNZZDATA1277644898=1671604651-1560855448-%7C1560859256; uloginid=7961519809'
-};
-// Configure the request
-var options = {
-    url: 'http://wxsteelball.com/#/mh_read?bookid=1189&zjid=432111',
-    method: 'GET',
-    headers: headers
-};
-request(options, (err, res, body) => {
+// var headers = {
+//     'Content-Type': 'application/json',
+//     'User-Agent': ' Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+//     // 'Content-Length': Buffer.byteLength(post_data),
+//     'Cookie': 'PHPSESSID=p3nr1fprr7hfk4r0l4ahg8u2b2; UM_distinctid=16b6a463d9444a-0b46708abc4994-3e385a0a-1fa400-16b6a463d952e6; CNZZDATA1277644898=1671604651-1560855448-%7C1560859256; uloginid=7961519809'
+// };
+// // Configure the request
+// var options = {
+//     url: 'http://www.aj566.com/wp-content/uploads/2019/09/果哥出品-黑色-女神nina-14分钟白金版.mp4',
+//     method: 'GET',
+//     headers: headers
+// };
+// request(options, (err, res, body) => {
+//     if (err) { return console.log(err); }
+//     console.log(body);
+//     // let imgsrc = body.match(/http\:\/\/([a-z]|\.|\_|[0-9]|\/)*.jpg/g);
+//     // console.log(JSON.stringify(imgsrc));
+//     // var matchUrl = body.match(/\/index([a-z.0-9]|\/|\.)*html/g);
+//     // console.log(JSON.stringify(matchUrl));
+// });
+
+
+request(`http://www.aj566.com/wp-content/uploads/2019/09/%E5%A5%B6%E7%BE%8A.mp4`, { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }
     console.log(body);
-    let imgsrc = body.match(/http\:\/\/([a-z]|\.|\_|[0-9]|\/)*.jpg/g);
-    // console.log(JSON.stringify(imgsrc));
-    // var matchUrl = body.match(/\/index([a-z.0-9]|\/|\.)*html/g);
-    // console.log(JSON.stringify(matchUrl));
 });
