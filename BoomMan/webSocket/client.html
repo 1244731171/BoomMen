@@ -8,14 +8,14 @@
 </head>
 
 <body>
-        <button onclick="sendString()">sendString</button>
-        <br>
-        <button onclick="sendJson()">sendJson</button>
-        <br>
-        <input type="file" name="sendImg" id=""><button onclick="sendFile()">sendFile</button>
-        <br>
-        <button onclick="sendJson()">sendJson</button>
-        <br>
+    <button onclick="sendString()">sendString</button>
+    <br>
+    <button onclick="sendJson()">sendJson</button>
+    <br>
+    <input type="file" name="sendImg" id="file"><button onclick="sendFile()">sendFile</button>
+    <br>
+    <button onclick="sendJson()">sendJson</button>
+    <br>
 </body>
 <script>
     var ws = new WebSocket('ws://localhost:8080');
@@ -29,12 +29,16 @@
     };
     var sendString = () => {
         ws.send("yahaha");
-    }
+    };
     var sendJson = () => {
-        let json = {"isJson": true};
+        let json = { "isJson": true };
         // 只能发送json的字符串
         ws.send(JSON.stringify(json));
-    }
+    };
+    var sendFile = () => {
+        var file = document.querySelector('#file').files[0];
+        WS.send(file);
+    };
 </script>
 
 </html>
