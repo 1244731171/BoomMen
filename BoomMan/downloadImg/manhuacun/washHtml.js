@@ -41,7 +41,8 @@ let isDir = (_path) => {
 
 let replaceHtml = (_path, name) => {
     let html = fs.readFileSync(_path+name, 'utf8');
-    html = html.replace('</title></head>','</title><script type="text/javascript" src="../../1.js"></script></head>');
+    // html = html.replace('</title></head>','</title><script type="text/javascript" src="../../1.js"></script></head>');
+    html = html.replace('</script></head>','</script><style>img{margin:0 auto;display: flex;} br{display:none;}</style></head>');
     fs.writeFileSync(_path+name, html, 'utf8');
 }
 

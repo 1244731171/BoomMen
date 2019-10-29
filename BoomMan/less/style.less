@@ -1,0 +1,94 @@
+ /* Less */
+    /* 变量定义 选择器*/
+    @myIdSelector: #wrap;
+    @myClassSelector: .wrap;
+    /* 变量定义 选择器名称 */
+    @mySelectorName: sel;
+    /* 变量定义 属性名 */
+    @bgc: background-color;
+    /* 变量定义 值 */
+    @hong: red;
+    
+    /* 变量引用 选择器 变量名字必须用大括号包裹 */
+    @{myIdSelector}, @{myClassSelector} { // 等同于 #wrap, .wrap
+        color: red;
+    }
+    .@{mySelectorName} { // 等同于 .sel 
+        // 等同于 background-color: red;
+        @{bgc}: @hong;
+    }
+
+    /* URL变量 */
+    @imageBase: "../img";
+    body {
+        // 等同于 url("../img/bg.png");
+        background: url("@{imageBase}/bg.png"); 
+    }
+    
+    /* 声明变量 注:这个rules是变量名*/
+    @rules:{
+        width: 200px;
+        height: 200px;
+        border: 1px solid red;
+        @{bgc}: @hong;
+    }
+    #con {
+        // 声明变量的引用和其他不一样
+        @rules();
+    }
+    
+    /* 变量运算 */
+    @width: 200px;
+    #con1 {
+        // 等同于 width: 80px
+        width: @width / 2 - 20;
+    }
+    
+    /* 变量定义变量 定义部分可以在解析前也可以在解析后 但解析过程是右→左*/
+    @val: "fnord";
+    @fnord: "I am fnord";
+    #con2 {
+        content: @@val; // @@val → @fnord; @val被替换成fnord
+    }
+    /* 对应的css为 */
+    #con2 {
+        content: "I am fnord";
+    }
+
+    /* 嵌套使用 &符号表示的是上一级选择器的名字 */
+    #header{
+        &:after{ //注意：不能省略&，如果省略会给每一个子元素添加一个after。
+            content:"Less is more!";
+        }
+        .title{
+            font-weight:bold;
+        }
+        &_content{//理解方式：直接把 & 替换成 #header
+            margin:20px;
+        }
+    }
+    /* 生成的 CSS */
+    #header::after{
+        content:"Less is more!";
+    }
+    #header .title{ //嵌套了
+        font-weight:bold;
+    }
+    #header_content{//没有嵌套！
+        margin:20px;
+    }
+
+    /* 嵌套使用 会覆盖原有样式 */
+    div{
+        width:200px;
+        height:200px;
+        background:red;
+        .show{
+            // 等同于 div .show 权重上去了
+            display: none;
+        }
+    }
+    .show{
+        //被覆盖 权重低 只有div+.show时候被覆盖
+        display: block; 
+    }

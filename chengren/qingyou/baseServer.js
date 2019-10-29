@@ -59,7 +59,7 @@ let getHost = () => {
 }
 
 let getContentType = () => {
-    return JSON.parse(fs.readFileSync("../base/contentType.json"));
+    return JSON.parse(fs.readFileSync("../../baseJs/contentType.json"));
 }
 
 let waitInput = () => {
@@ -168,7 +168,7 @@ let listener = (request, response) => {
             }
             console.log(`====> real local name: ${pathName}`);
             let contentType = CONTENT_TYPE[fileType];
-            let _basePath = [`.${basePath}/${pathName}`, `./base/${pathName}`, `../base/${pathName}`];
+            let _basePath = [`.${basePath}/${pathName}`, `../../baseJs/${pathName}`, `./base/${pathName}`, `../base/${pathName}`];
             let i = 0, p, isMatched;
             while (p = _basePath[i]) {
                 if (fs.existsSync(p)) {
@@ -286,7 +286,7 @@ let listener = (request, response) => {
                 });
                 return;
             }
-            // console.log(url);
+            console.log(url);
             Request(url, { json: true }, (err, res, body) => {
                 if (err) { return console.log(err); }
                 // console.log(body);

@@ -12,8 +12,10 @@ if(str){
     return;
 }
 
+// https://dan1.yyhdyl.com/20191009/e2ef299ee1e8c6f8a9edcfb611a10aa8/hls/hls.m3u8?t=1571811425&sign=da2775e023846a075310dd297f05c8d6
+
 // let data = fs.readFileSync("./m3u8.txt", "utf-8");
-let url = `https://1.yasek5.com/index/req/getPlayerDomain?id=${id}`;
+let url = `https://1.yaseww3.com/api/video/player_domain?id=${id}`;
 
 let m3u8Host = [
     "dan1.yyhdyl.com",
@@ -89,7 +91,7 @@ let getBaseM3U8 = (m3u8Url, index = -1) => {
 
 let getHTML = () => {
     // https://1.yasek5.com/video-1053719
-    url = `https://1.yasek5.com/video-${id}`;
+    url = `https://1.yaseww3.com/video/view/${id}`;
     request(url, { json: true }, (err, res, body) => {
         console.log(url);
         if (err || res.statusCode != 200) {

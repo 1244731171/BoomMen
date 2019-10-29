@@ -70,7 +70,37 @@ const { JSDOM } = jsdom;
 // });
 
 
-request(`http://www.aj566.com/wp-content/uploads/2019/09/%E5%A5%B6%E7%BE%8A.mp4`, { json: true }, (err, res, body) => {
+
+
+// request(`http://www.aj566.com/wp-content/uploads/2019/09/%E5%A5%B6%E7%BE%8A.mp4`, { json: true }, (err, res, body) => {
+//     if (err) { return console.log(err); }
+//     console.log(body);
+// });
+var headers = {
+    'Content-Type': 'text/html; charset=UTF-8',
+    'User-Agent': ' Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+    // 'Content-Length': Buffer.byteLength(post_data),
+    'Cookie': '__cfduid=dd1d6dd59f16a37884eafc656bcd79ed41571903525; _ga=GA1.2.800181362.1571904038; _gid=GA1.2.832983402.1571904038',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+    'Accept-Encoding': 'gzip, deflate',
+    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    'Cache-Control': 'no-cache',
+    'Host': 'www.177pic.info',
+    'Pragma': 'no-cache',
+    'Proxy-Connection': 'keep-alive',
+    'Upgrade-Insecure-Requests': '1'
+};
+// Configure the request
+var options = {
+    url: 'http://www.177pic.info/html/2019/10/3152912.html',
+    method: 'GET',
+    headers: headers
+};
+request(options, (err, res, body) => {
     if (err) { return console.log(err); }
     console.log(body);
 });
+// request('http://www.177pic.info/html/2019/10/3152912.html', { json: false }, (err, res, body) => {
+//     if (err) { return console.log(err); }
+//     console.log(body);
+// });

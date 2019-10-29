@@ -10,6 +10,9 @@ let id = '';
 
 let data = {};
 let cookie = fs.readFileSync("./cookie.txt");
+
+let lastImageSrc = '';
+
 let rq = (id, index) => {
     console.log(`request id => ${id}, index => ${index}`);
     // Set the headers for the request
@@ -20,7 +23,7 @@ let rq = (id, index) => {
     };
     // Configure the request
     let options = {
-        url: `http://www.mh009.com/Mh/mhredit.php?mhid=${id}&ji_no=${index}`,
+        url: `http://a.wymh.cc/Mhpc/mhread.php?mhid=${id}&ji_no=${index}`,
         method: 'GET',
         headers: headers
     };
@@ -39,6 +42,14 @@ let rq = (id, index) => {
             imgsrc = body.match(/http\:\/\/([a-z]|\.|\_|[0-9]|\/)*.gif/g) || [];
         }
         checkArray(imgsrc);
+
+        if(lastImageSrc === imgsrc[0]){
+            console.log("sameSrc!");
+            return output();
+        }else{
+            lastImageSrc = imgsrc[0];
+        }
+
         // console.log(JSON.stringify(imgsrc));
         console.log(`${index} back, image length => ${imgsrc.length}`);
         if (imgsrc.length > 0) {

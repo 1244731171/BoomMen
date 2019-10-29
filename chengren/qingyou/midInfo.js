@@ -2,7 +2,7 @@ let fs = require('fs'); // 文件系统模块
 let Request = require('request')
 
 let data = [];
-let id = 11;
+let id = 321460;
 let mname = "";
 
 let writedown = () => {

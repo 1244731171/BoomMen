@@ -28,7 +28,7 @@
             } else if (/album/.test(id)) {
                 type = "2"
             }
-            id = id.match(/\d{4,5}/)[0];
+            id = id.match(/\d{3,5}/)[0];
             uv = `http://lms.tokyowins.com/appjsonv2/videoMain?app_type=ios&token=iKjFHCJGSXTHCUeoEyBibufJiRULsluN&urlencode=false&user_id=82035&version=1&video_id=${id}`;
             ua = `http://lms.tokyowins.com/appjsonv2/albumMain?album_id=${id}&app_type=ios&token=iKjFHCJGSXTHCUeoEyBibufJiRULsluN&urlencode=false&user_id=82035&version=1`;
             $.ajax({

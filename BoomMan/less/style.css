@@ -1,0 +1,68 @@
+/* Less */
+/* 变量定义 选择器*/
+/* 变量定义 选择器名称 */
+/* 变量定义 属性名 */
+/* 变量定义 值 */
+/* 变量引用 选择器 变量名字必须用大括号包裹 */
+#wrap,
+.wrap {
+  color: red;
+}
+.sel {
+  background-color: red;
+}
+/* URL变量 */
+body {
+  background: url("../img/bg.png");
+}
+/* 声明变量 注:这个rules是变量名*/
+#con {
+  width: 200px;
+  height: 200px;
+  border: 1px solid red;
+  background-color: red;
+}
+/* 变量运算 */
+#con1 {
+  width: 80px;
+}
+/* 变量定义变量 定义部分可以在解析前也可以在解析后 但解析过程是右→左*/
+#con2 {
+  content: "I am fnord";
+}
+/* 对应的css为 */
+#con2 {
+  content: "I am fnord";
+}
+/* 嵌套使用 &符号表示的是上一级选择器的名字 */
+#header:after {
+  content: "Less is more!";
+}
+#header .title {
+  font-weight: bold;
+}
+#header_content {
+  margin: 20px;
+}
+/* 生成的 CSS */
+#header::after {
+  content: "Less is more!";
+}
+#header .title {
+  font-weight: bold;
+}
+#header_content {
+  margin: 20px;
+}
+/* 嵌套使用 会覆盖原有样式 */
+div {
+  width: 200px;
+  height: 200px;
+  background: red;
+}
+div .show {
+  display: none;
+}
+.show {
+  display: block;
+}

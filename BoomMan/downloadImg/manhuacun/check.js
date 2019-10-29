@@ -34,7 +34,7 @@ let checkNetCharpter = (id, name) => {
     };
     // Configure the request
     let options = {
-        url: `http://www.mh009.com/Mhpc/mhinfo.php?mhid=${id}`,
+        url: `http://a.wymh.cc/Mhpc/mhinfo.php?mhid=${id}`,
         method: 'GET',
         headers: headers
     };
