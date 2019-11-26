@@ -1,0 +1,35 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../../baseJs/jquery.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="txt" type="text" /><button id="btn">确定</button><button id="clr">清空</button>
+    <div id="show"></div>
+    <script>
+        // http://www.lanmeishe.com/?/video/rwd/id/6759.html
+        let uv = `http://lms.tokyowins.com/appjsonv2/videoMain?app_type=ios&token=ectMedVSKWBheXmBuoYzGygOqBIWJTOH&urlencode=false&user_id=82035&version=1&video_id=6740`;
+        let ua = `http://lms.tokyowins.com/appjsonv2/albumMain?album_id=2486&app_type=ios&token=ectMedVSKWBheXmBuoYzGygOqBIWJTOH&urlencode=false&user_id=82035&version=1`;
+        let step = 0;
+        $("#clr").on('click',()=>{
+            $("#show").html("");
+        });
+        $("#btn").on('click', () => {
+            var base = $("#txt").val();
+            var i = 0;
+            var r = "";
+            while(++i < 100){
+                r += (`<img src="${base + i}.jpg">`);
+            }
+            $("#show").html(r);
+        });
+
+    </script>
+</body>
+
+</html>
