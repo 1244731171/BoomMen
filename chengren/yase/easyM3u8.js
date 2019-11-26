@@ -4,7 +4,7 @@ let Url = require("url");
 let readlineSync = require("readline-sync");
 
 let url = readlineSync.question("need output:");
-if(!url){
+if (!url) {
     console.log("null ID!");
     return;
 }
@@ -16,16 +16,31 @@ request(url, { json: true }, (err, res, body) => {
     } else {
         console.log("output DONE!");
         console.log(body);
-        url = Url.parse(url);
-        let baseUrl = `${url.protocol}//${url.host}`;
+        url = url.split("/"); //https://riven.rocks/file/ts/ver2/5000/4343/d/index.m3u8
+        let baseUrl = url.splice(0, url.length - 1).join("/");
         body = body.split("\n");
         body.forEach(e => {
-            if(e.charAt(0) !== "#"){
+            if (e.charAt(0) !== "#" && e !== "") {
+                if (e.charAt(0) !== "/") {
+                    e = "/" + e;
+                }
                 output.push(baseUrl + e);
             }
         });
 
-        console.log(output.join("\n"))
+        // console.log(output.join("\n"))
+
+        fs.open(`./nts.txt`, 'w', (err, fd) => {
+            if (err) {
+            }
+            let str = output.join("\n");
+            fs.writeFile(fd, str, (err) => {
+                if (err) {
+                }
+                fs.close(fd, (err) => {
+                });
+            });
+        });
     }
 });
 

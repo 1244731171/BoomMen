@@ -5,7 +5,7 @@ https://lms.tokyowins.com/appjsonv1/userOpus?app_type=ios&layout=free&pageindex=
 https://lms.tokyowins.com/appjsonv1/authUserOpus?app_type=ios&auth_userid=22511&pageindex=1&token=iKjFHCJGSXTHCUeoEyBibufJiRULsluN&urlencode=false&user_id=95476&version=1
 
 其他信息
-https://lms.tokyowins.com/appjson/getOthersBasicInfo?app_type=ios&other_userid=22511&token=iKjFHCJGSXTHCUeoEyBibufJiRULsluN&urlencode=false&user_id=95476&version=1
+https://lms.tokyowins.com/appjson/getOthersBasicInfo?app_type=ios&other_userid=3450&token=iKjFHCJGSXTHCUeoEyBibufJiRULsluN&urlencode=false&user_id=95476&version=1
 
 +微信
 https://lms.tokyowins.com/appjsonv2/wxReward?app_type=ios&other_userid=22511&token=iKjFHCJGSXTHCUeoEyBibufJiRULsluN&urlencode=false&user_id=95476&version=1

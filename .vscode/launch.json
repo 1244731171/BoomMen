@@ -8,7 +8,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}\\static\\qingyou\\baseServer.js"
+            // "program": "${workspaceFolder}\\static\\qingyou\\baseServer.js"
+            "program": "${workspaceFolder}\\chengren\\mfkhm\\chapter.js"
         }
     ]
 }
