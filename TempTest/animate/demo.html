@@ -1,0 +1,73 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>animate</title>
+    <style>
+/*  #1
+        .a,
+        .b {
+            display: inline-block;
+            width: 300px;
+            border: 1px solid aqua;
+            line-height: 44px;
+            font-size: 24px;
+            padding: 10px;
+            position: relative;
+            left: 0px;
+        }
+
+        .a {
+            left: -300px;
+        }
+        .flex_row:hover .a{
+            transition: all 1s ease-out;
+            left:0px;
+        } */
+
+        
+        .a,
+        .b {
+            display: inline-block;
+            width: 200px;
+            height: 30px;
+            border: 1px solid #9C27B0;
+            line-height: 44px;
+            font-size: 24px;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .a {
+            width: 0px;
+        }
+        .flex_row:hover .a{
+            transition: all 1s ease-out;
+            width: 300px;
+        }
+
+        .c {
+            width: 100px;
+            height: 20px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='flex_row'>
+        <div class="a"><span>我就是个可爱的小栗子</span></div>
+        <div class="b">我是触发点</div>
+    </div>
+    <div class="c">我特别长长长长长长长长长长长长长长长长长长长长长长</div>
+    <script>
+        var a = document.querySelector('.a');
+        var b = document.querySelector('.b');
+        var W = a.offsetWidth;
+
+    </script>
+</body>
+
+</html>

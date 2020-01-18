@@ -1,0 +1,96 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>无标题文档</title>
+ 
+<style type="text/css">
+<!--
+ul {
+ font-size: 12px;
+}
+ul {
+ margin: 0;
+ padding: 0;
+ list-style: none;
+ width: 150px;
+ border-bottom: 1px solid #ccc;
+}
+ul li {
+ position: relative;
+}
+li ul {
+ position: absolute;
+ left: 149px;
+ top: 0;
+ display: none;
+}
+ul li a {
+ display: block;
+ text-decoration: none;
+ color: #777;
+ background: #fff;
+ padding: 5px;
+ border: 1px solid #ccc;
+ border-bottom: 0;
+}
+/* Fix IE. Hide from IE Mac \*/
+ * html ul li { float: left; }
+ * html ul li a { height: 1%; }
+/* End */
+li:hover ul { display: block; }
+li:hover ul, li.over ul {   display: block; }
+-->
+</style>
+<script language="javascript">
+startList = function() {
+ if (document.all&&document.getElementById) {
+  navRoot = document.getElementById("nav");
+  for (i=0; i<navRoot.childNodes.length; i++) {
+   node = navRoot.childNodes[i];
+   if (node.nodeName=="LI") {
+    node.οnmοuseοver=function() {
+     this.className+=" over";
+    }
+    node.οnmοuseοut=function() {
+     this.className=this.className.replace (" over", "");
+    }
+   }
+  }
+ }
+}
+window.οnlοad=startList;
+</script>
+</head>
+ 
+<body>
+<ul id="nav">
+ <li><a href="#">Home</a></li>
+ <li><a href="#">About</a>
+  <ul>
+   <li><a href="#">History</a></li>
+   <li><a href="#">Team</a></li>
+   <li><a href="#">Offices</a></li>
+  </ul>
+ </li>
+ <li><a href="#">Services</a>
+  <ul>
+   <li><a href="#">Web Design</a></li>
+   <li><a href="#">Internet Marketing</a></li>
+   <li><a href="#">Hosting</a></li>
+   <li><a href="#">Domain Names</a></li>
+   <li><a href="#">Broadband</a></li>
+  </ul>
+ </li>
+ <li><a href="#">Contact Us</a>
+  <ul>
+   <li><a href="#">United Kingdom</a></li>
+   <li><a href="#">France</a></li>
+   <li><a href="#">USA</a></li>
+   <li><a href="#">Australia</a></li>
+  </ul>
+ </li>
+</ul>
+</body>
+</html>

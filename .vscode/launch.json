@@ -9,7 +9,8 @@
             "request": "launch",
             "name": "Launch Program",
             // "program": "${workspaceFolder}\\static\\qingyou\\baseServer.js"
-            "program": "${workspaceFolder}\\chengren\\mfkhm\\chapter.js"
+            // "program": "${workspaceFolder}\\app\\TripDocument.js"
+            "program": "${workspaceFolder}\\app\\stealDiaImg.js"
         }
     ]
 }

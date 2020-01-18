@@ -2834,9 +2834,12 @@
         }
 
         if (/step\=2/.test(window.location.href)) {
-            stepEl.style.display = "none";
-            stepE2.style.display = "";
-            wenjunerror.style.display = "none";
+            wenjunshow('l');
+            setTimeout(() => {
+                stepEl.style.display = "none";
+                stepE2.style.display = "";
+                wenjunerror.style.display = "none";
+            }, 1500);
         }
     </script>
 </body>

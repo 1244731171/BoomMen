@@ -19,17 +19,31 @@ let out = () => {
     log(`${_bookInfo.name}.json is created successful!`);
 }
 let isDownload = false;
-let isReq = 0;
+let hasError = false;
 let isLast = false;
 
 let afterDownloadAll = () => {
-    if(isDownload && isLast){
-        // doNext();
+    if (isDownload && isLast) {
+        if (!hasError) {
+            console.log(id+" hasError");
+        }
+        out();
+        doNext();
     }
 }
 
-let doNext = (id) => {
-    id = id || bookList.shift();
+let startWith = (id) => {
+    if(id){
+        let index = bookList.indexOf(id);
+        bookList = bookList.slice(index);
+    }
+}
+
+let doNext = (_id) => {
+    id = _id || bookList.shift();
+    if(!id){
+        return console.log("ALL is Done!");
+    }
     _bookInfo = {};
 
     isDownload = false;
@@ -38,16 +52,18 @@ let doNext = (id) => {
 
     chapter.get(id, (chapter_data) => {
         let { name, chapters } = chapter_data;
+        let localBookInfo = {};
+        let charpterIndexStart = 0;
         log(`book => charpter: ${name}; ${'\n'}${chapters.join('\n')}`);
 
         try {
-            let localBookInfo = fs.readFileSync(`./output/${name}.json`, "utf-8");
+            localBookInfo = fs.readFileSync(`./output/${name}.json`, "utf-8");
             if (localBookInfo) {
                 localBookInfo = JSON.parse(localBookInfo || "");
                 if (localBookInfo.chaptersUrl.length == chapters.length) {
                     log('exist BOOK JSON');
-                    return;
-                    // return doNext();
+                    // return;
+                    return doNext();
                 } else {
                     log('length not = ');
                 }
@@ -57,10 +73,13 @@ let doNext = (id) => {
         } catch (e) {
         }
 
+        _bookInfo = localBookInfo || {};
+
         _bookInfo.name = name;
         _bookInfo.id = id;
         _bookInfo.chaptersUrl = chapters;
-        _bookInfo.chapters = [];
+        _bookInfo.chapters = _bookInfo.chapters || [];
+        charpterIndexStart = _bookInfo.chapters.length;
         try {
             fs.mkdirSync(`e:/hanman2/${_bookInfo.name}/`);
         } catch (error) { }
@@ -96,7 +115,7 @@ let doNext = (id) => {
                     fs.writeFileSync(`e:/hanman2/${_bookInfo.name}/${index}.html`, html);
 
                     index++;
-                    if(index === chapters.length) {
+                    if (index === chapters.length) {
                         isLast = true;
                         log(" ==========> Last Chapters");
                     }
@@ -104,16 +123,19 @@ let doNext = (id) => {
                     checkNextChapter(chapters, index);
                 });
             } else {
-                out();
-                download.addAll(() => {
+                download.addAll((_hasError) => {
                     log(" ==========> Download All");
                     isDownload = true;
+                    hasError = _hasError;
                     afterDownloadAll();
                 });
             }
         }
-        checkNextChapter(chapters, 0);
+        setTimeout(() => {
+            checkNextChapter(chapters, charpterIndexStart);
+        }, 0);
     });
 }
 
-doNext(64);
+startWith(293);
+doNext();

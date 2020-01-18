@@ -1,0 +1,44 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(255, 187, 0);
+        }
+
+        .parent {
+            display: flex;
+            flex-direction: column;
+            height: 900px;
+            flex-wrap: wrap;
+            justify-content:flex-start
+        }
+
+        .card {
+            font-size: 20px;
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            background-color: whitesmoke;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="parent">
+        <div class="card" v-for="i in 20"><span>{{i}}</span></div>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {}
+        });
+    </script>
+</body>
+
+</html>

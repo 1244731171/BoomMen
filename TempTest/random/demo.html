@@ -1,0 +1,43 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .a {
+            background-color: antiquewhite;
+        }
+
+        .b {
+            background-color: skyblue;
+        }
+        * {
+            font-size: 10px;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            let i = 0;
+            let arr = [];
+            while (i++ < 10000) {
+                let x = parseInt(Math.random() * 100);
+                arr[x] = (arr[x] || 0) + 1;
+            }
+
+            let str = "";
+            arr.forEach((e, i) => {
+                e = e || 0;
+                str += `<div style='height:10px;width:${e*10}px' class='${e % 2 ? "a" : " b "}'>${i}=${e}</div>`
+            });
+            document.body.innerHTML = str;
+        }
+    </script>
+</head>
+
+<body>
+</body>
+
+
+</html>

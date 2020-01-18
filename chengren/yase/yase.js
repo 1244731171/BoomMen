@@ -8,7 +8,7 @@ let rename = (op, np) => {
         if (err) throw err;
     });
 }
-let url = `E:/迅雷下载/图片任务组_20191026_2249`;
+let url = `E:/迅雷下载/视频任务组_20191112_1433`;
 
 if (!url.endsWith("/")) {
     url = url + "/";

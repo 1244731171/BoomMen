@@ -12,8 +12,8 @@ let isAddAll = false;
 
 let headers = {
     'Content-Type': 'application/json',
-    'user-agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36',
-    'Cookie': 'UM_distinctid=16e447ddad771f-02ef3744453095-54s123110-1fa400-16e447ddad8947; _ga=GA1.2.1616809352.1573107139; _gid=GA1.2.92382535.1573107139; PHPSESSID=kr2ubfp2ppr2cdeil05ai2tnpj; CNZZDATA1278024109=1836593598-1573103611-https%253A%252F%252Fwww.google.com%252F%7C1573130723; Hm_lvt_b758f643969ba87ea94388bba92a2673=1573107129,1573107134,1573133455; __51cke__=; nav_switch=booklist; Hm_lpvt_b758f643969ba87ea94388bba92a2673=1573134927; __tins__20389389=%7B%22sid%22%3A%201573133454667%2C%20%22vd%22%3A%207%2C%20%22expires%22%3A%201573136726923%7D; __51laig__=7; _gat_gtag_UA_83227386_4=1'
+    'user-agent': 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Mobile Safari/537.36',
+    'Cookie': 'UM_distinctid=16e447ddad771f-02ef3744453095-54123110-1fa400-16e447ddad8947; _ga=GA1.2.1616809352.1573107139; __cfduid=dea7a4463264f5d1d68c309b1884f182d1573917067; _gid=GA1.2.1954388734.1575341458; PHPSESSID=qib4bp4ucbf0ib0btpua7ptk96; CNZZDATA1278024109=1836593598-1573103611-https%253A%252F%252Fwww.google.com%252F%7C1575356811; __51cke__=; Hm_lvt_b758f643969ba87ea94388bba92a2673=1574997754,1575168182,1575341458,1575361675; nav_switch=booklist; Hm_lpvt_b758f643969ba87ea94388bba92a2673=1575361877; __tins__20389389=%7B%22sid%22%3A%201575361675140%2C%20%22vd%22%3A%2010%2C%20%22expires%22%3A%201575363677069%7D; __51laig__=10'
 };
 
 let download = (url, path, isTry) => {
@@ -28,7 +28,7 @@ let download = (url, path, isTry) => {
         timeout: 6e4,
         headers: headers
     }, (error, response, body) => {
-        checkNext();
+        setTimeout(checkNext, 0);
         if (!error && response.statusCode == 200) {
             fs.writeFile(path, body, 'binary', err => {
                 threadLength--;
@@ -67,13 +67,16 @@ let checkNext = () => {
         checkNext();
     }
 
-    if (isAddAll === true && data.length === 0) {
+    if (isAddAll === true && data.length === 0 && threadLength === 1) {
         // console.log(`error list: ${JSON.stringify(errorList)}`);
-        if(errorList.length > 0){
+        if (errorList.length > 0) {
             log(`error list: ${JSON.stringify(errorList)}`);
-            return;
+            // return;
+            errorList = [];
+            cb(true);
+        }else{
+            cb(false);
         }
-        cb();
     }
 }
 
@@ -92,10 +95,10 @@ module.exports = {
         // cb();
         if (data.length === 0) {
             cb();
-        }else{
+        } else {
             // isAddAll = false;
-            data.forEach(e=>{
-                if(e.err !== 404 && !e.isTry){
+            data.forEach(e => {
+                if (e.err !== 404 && !e.isTry) {
                     data.push({
                         url: e.url,
                         path: e.path,

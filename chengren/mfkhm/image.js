@@ -7,11 +7,12 @@ module.exports = {
     get: (url, callback) => {
         req.get({
             url: url,
+            type: 'mobile',
             callback: (str, status) => {
                 if(status !== "ERROR") {
                     let body = new JSDOM(str);
                     let images = body.window.document.querySelectorAll("img[data-original]");
-                    let name = body.window.document.querySelector("h1").innerHTML;
+                    let name = body.window.document.querySelector(".view-fix-top-bar-title").innerHTML;
                     name = name.replace(/\/|\||\\|\"|\<|\>|\*|\?|\:/g,"");
                     let output = [];
                     images.forEach((dom) => {

@@ -1,0 +1,87 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./exif.js"></script>
+    <title>Document</title>
+    <style>
+        input {
+            /* display: block; */
+        }
+
+        html,
+        body {
+            font-size: 14px;
+        }
+
+        img {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 600px;
+            height: 800px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" name="" id="file">
+    <img src="" alt="preview" id="img">
+    <label for="">纬度-经度</label><input type="radio" name="d" value="wjd" checked>
+    <label for="">经度-纬度</label><input type="radio" name="d" value="jwd">
+ 
+    <div id="show"></div>
+    <iframe id="iframe" src="" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+    <script>
+        let ta = document.querySelector("#show");
+        let files = document.querySelector('#file');
+        let img = document.querySelector('#img');
+        files.addEventListener('change', e => {
+            if (files.files.length === 0) return;
+            img.src = URL.createObjectURL(files.files[0]);
+            EXIF.getData(files.files[0], function () {
+                let info = EXIF.getAllTags(this);
+                if (!info.GPSLongitude) return;
+                let str = '';
+                let str2 = '';
+                // for (var key in info) {
+                //     str += `${key} => ${info[key]} <br>`;
+                // }
+                let sum = (pre, now, index) => {
+                    console.log(pre+"-"+now+"-"+index);
+                    if (index === 1) {
+                        pre += (now.valueOf() / 60);
+                    } else if (index === 2) {
+                        pre += (now.valueOf() / 3600);
+                    } else {
+                        pre += now.valueOf();
+                    }
+                    console.log(pre);
+                    return pre;
+                }
+                if (document.querySelectorAll("[name=d]:checked")[0].value === "wjd") {
+                    str = `${info.GPSLatitudeRef || ""}${info.GPSLatitude || ""} ${info.GPSLongitudeRef || ""}${info.GPSLongitude || ""}`;
+                    str2 = info.GPSLatitude.reduce(sum, 0) + ",";
+                    str2 += info.GPSLongitude.reduce(sum, 0);
+                } else {
+                    str = `${info.GPSLongitudeRef || ""}${info.GPSLongitude || ""} ${info.GPSLatitudeRef || ""}${info.GPSLatitude || ""}`;
+                    str2 = info.GPSLongitude.reduce(sum, 0) + ",";
+                    str2 += info.GPSLatitude.reduce(sum, 0);
+                }
+                let sfm = ["°", "\'", "\""];
+                let cunt = 0;
+                str = str.replace(/,/g, (e) => {
+                    //  e是匹配对象
+                    return sfm[cunt++ % 3];
+                })
+                ta.innerHTML = str + "</br>" + str2;
+                window.open(`https://www.google.com/maps/place/${info.GPSLatitude.reduce(sum, 0)},${info.GPSLongitude.reduce(sum, 0)}`, '_black');
+                // EXIF.getTag(this, 'Orientation');
+            });
+        })
+    </script>
+</body>
+
+</html>
