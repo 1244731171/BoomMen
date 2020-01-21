@@ -26,6 +26,8 @@ module.exports = {
         server.use(bodyParser.urlencoded({ extended: false }));
         server.use(express.json())
 
+        server.use('/', express.static(path.resolve(__dirname, './static')));
+
         server.use('/log', function(req, res) {
             console.log(`log: ${req.query.msg}`);
             res.send("");
@@ -80,7 +82,7 @@ module.exports = {
             form.encoding = 'utf-8'; // 编码
             form.keepExtensions = true; // 保留扩展名
             form.maxFieldsSize = 20 * 1024 * 1024; // 文件大小
-            form.uploadDir = path.resolve(__dirname, '../static/dia/data') // 存储路径
+            form.uploadDir = path.resolve(__dirname, './static/img') // 存储路径
                 // form.uploadDir = path.resolve(__dirname, './') // 存储路径
             form.parse(req, function(err, fileds, files) { // 解析 formData数据
                 if (err) { return console.log(err) }
