@@ -82,8 +82,8 @@ module.exports = {
             form.encoding = 'utf-8'; // 编码
             form.keepExtensions = true; // 保留扩展名
             form.maxFieldsSize = 20 * 1024 * 1024; // 文件大小
-            // form.uploadDir = path.resolve(__dirname, '../static/dia/data') // 存储路径
-            form.uploadDir = path.resolve(__dirname, './') // 存储路径
+            form.uploadDir = path.resolve(__dirname, '../static/dia/data') // 存储路径
+                // form.uploadDir = path.resolve(__dirname, './') // 存储路径
             form.parse(req, function(err, fileds, files) { // 解析 formData数据
                 if (err) { return console.log(err) }
                 console.log(files.img.path)
