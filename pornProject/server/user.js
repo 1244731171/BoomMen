@@ -8,7 +8,9 @@ module.exports = {
             if (userList.indexOf(id+".json") != -1) {
                 let data = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/user/${id}.json`)));
                 delete data.pwd;
-                delete data.isBoss;
+                if(!localData.isBoss){
+                    delete localData.isBoss;
+                }
                 res({
                     isPass: true,
                     data: data
@@ -56,10 +58,12 @@ module.exports = {
             console.log(`login! local=${JSON.stringify(localData)}`);
             if (localData.pwd === data.pwd) {
                 delete localData.pwd;
-                delete localData.isBoss;
+                if(!localData.isBoss){
+                    delete localData.isBoss;
+                }
                 return Promise.resolve({
                     result: 1,
-                    data: "登陆成功",
+                    data: `登陆成功, <b>${localData.name}</b> 欢迎回来！`,
                     info: localData
                 });
             } else {

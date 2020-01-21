@@ -6,343 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <link rel="stylesheet" href="../css/pornSchool.css">
     <title>PornSchool</title>
-    <style>
-        /* rgb(255,153,0) */
-        * {
-            font-family: PingFangSC-Regular, Helvetica, Arial, "Microsoft Yahei", sans-serif;
-        }
-
-        html,
-        body {
-            background-color: #000000;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            margin: 0;
-            padding: 0;
-            color: #fff;
-        }
-
-        i {
-            display: block;
-        }
-
-        #app {
-            width: 100%;
-            height: 100%;
-            background-color: #141414;
-            line-height: 100%;
-        }
-
-        .header {
-            background-color: #1e1e1e;
-            height: 48px;
-            width: 100%;
-            position: relative;
-            z-index: 100;
-            position: sticky;
-        }
-
-        .btn {
-            cursor: pointer;
-            border: 0;
-            padding: 0;
-        }
-
-        .asideBtn {
-            width: 55px;
-            height: 47px;
-            background-color: #1e1e1e;
-            border-right: 1px solid #111;
-            top: 0;
-            left: 0;
-            position: absolute;
-            text-align: center
-        }
-
-        .asideBtn .icon {
-            margin: 0 auto;
-            background-image: url(../img/sprite-common.png);
-            background-repeat: no-repeat;
-            background-size: 303px 287px;
-            width: 32px;
-            height: 21px;
-            background-position: -160px -24px;
-        }
-
-        .logoDiv {
-            height: 48px;
-            width: 1200px;
-            /*超出宽度也无所谓，自动居中*/
-            display: table-cell;
-            vertical-align: middle;
-        }
-
-        .logo {
-            margin: 0 auto;
-            width: 128px;
-            height: 37px;
-            display: block;
-        }
-
-        .nav {
-            color: #ccc;
-            font-size: .6em;
-            font-weight: 700;
-            text-align: center;
-            display: flex;
-        }
-
-        .navBtn {
-            padding: 11px 5px;
-            font-size: .6em;
-            font-weight: 700;
-            text-align: center;
-            /* height: 38px; */
-            background-color: #000;
-            border-left: 1px solid #262626;
-            border-bottom: 1px solid #262626;
-            color: #ccc;
-            display: block;
-            flex: auto;
-        }
-
-        .mainHeader {
-            width: 100%;
-            margin: 5px auto 0;
-            position: relative;
-            background: #1e1e1e;
-            padding: 10 0 10 10px;
-        }
-
-        .mainHeader h1 {
-            text-transform: uppercase;
-            font-size: .8em;
-        }
-
-        i.flagIcon {
-            background: url(../img/flag-cn.png) no-repeat;
-            background-size: 25px 16px;
-            width: 25px;
-            height: 16px;
-            display: inline-block;
-            position: relative;
-            top: 3px;
-            left: 5px;
-        }
-
-        .shadow {
-            background-color: rgba(0, 0, 0, .7);
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 50;
-            width: 100%;
-            height: 100%;
-        }
-
-        .dn {
-            display: none !important;
-        }
-
-        .leftMenu {
-            width: 270px;
-            min-height: 100%;
-            z-index: 90;
-            flex-direction: column;
-            background-color: #111;
-            border-top: 2px solid #000;
-            position: absolute;
-            top: 48px;
-            left: -270px;
-            transition: all .5s ease;
-            overflow: hidden;
-        }
-
-        .leftMenuShow {
-            left: 0px;
-            transition: all .5s ease;
-        }
-
-        .menuBtn {
-            width: 100%;
-            height: 38px;
-            line-height: 38px;
-            border-bottom: 1px solid #111;
-            color: #f90;
-            display: inline-block;
-            padding: 9px 0 9px 17px;
-            font-size: .9em;
-            border-bottom: 2px solid #000;
-        }
-
-        .userAction {
-            display: flex;
-            padding: 9 0px;
-            height: auto;
-        }
-
-        .userBtn {
-            font-size: 10px;
-            border: 0;
-            flex: auto;
-            text-align: center;
-            position: relative;
-            padding-top: 7px;
-        }
-
-        .userBtn span {
-            font-size: 10px;
-            text-align: center;
-            color: #999;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-
-        .userBtn i {
-            background-image: url(../img/sprite-common@2x.png);
-            background-repeat: no-repeat;
-            background-size: 303px 287px;
-            width: 40px;
-            height: 40px;
-            display: block;
-            margin: 0 auto 5px;
-            cursor: pointer;
-        }
-
-        .userBtn .login {
-            background-position: -1px -49px;
-        }
-
-        .userBtn .signin {
-            background-position: -91px -1px;
-        }
-
-        .userBtn .upload {
-            background-position: -43px -49px;
-        }
-
-        .userBtn .logout {
-            background-position: -1px -91px;
-            background-color: #f90;
-            border-radius: 50%;
-        }
-
-        .userBtn .message {
-            background-position: -91px -43px;
-        }
-
-        .userBtn .news {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #f00;
-            position: absolute;
-            top: 7px;
-            right: 7px;
-        }
-
-        .userInfo span {
-            font-size: 16px;
-            vertical-align: middle;
-            font-weight: 800;
-        }
-
-        .userInfo img {
-            width: 40px;
-            height: 40px;
-            margin-right: 12px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .userInfoAction {
-            border-left: 4px #f90 solid;
-            color: #ddd;
-        }
-
-
-        .menuBtn:nth-of-type(5) {
-            border-left: 4px solid #1471d9
-        }
-
-        .alertDiv {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .alert {
-            border-radius: 5px;
-            border-color: #000;
-            margin: auto;
-            padding: 20px;
-            z-index: 150;
-            color: #f90;
-            border: 2px solid #f90;
-            background-color: #333;
-        }
-
-        .signinForm,
-        .loginForm {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .siginInput,
-        .loginInput {
-            border: 1px solid #f90;
-            padding: 7px 0;
-            background: #f4f4f4;
-            border-radius: 3px;
-            padding-left: 5px;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-            margin: 10 10 0 10px;
-            flex: auto;
-        }
-
-        .signinBtn,
-        .loginBtn {
-            padding: 0 10px;
-            margin: 10 10 0 10px;
-            display: inline-block;
-            line-height: 100px;
-            font-size: 18px;
-            font-weight: 400;
-            white-space: nowrap;
-            text-align: center;
-            line-height: 30px;
-            border-radius: 4px;
-            box-shadow: none;
-            border: 1px solid #f90;
-            background-color: #f90;
-            flex: auto;
-        }
-
-        .formError {
-            color: #f00;
-            padding-left: 10px;
-            font-size: 14px;
-        }
-    </style>
 </head>
 
 <body>
@@ -357,13 +22,7 @@
         </header>
         <div class="shadow dn" @click="asideBtnClick"></div>
         <nav class='nav'>
-            <div class="navBtn" v-for="info in navTypes" v-text="info.txt" @click="navBtnClick(info.id)"></div>
-            <!-- <div class="navBtn" @click="navBtnClick('lesson')">
-                教材
-            </div>
-            <div class="navBtn" @click="navBtnClick('tag')">
-                标签
-            </div> -->
+            <div class="navBtn" v-for="info in navTypes" v-html="info.txt" @click="navBtnClick(info.id)"></div>
         </nav>
         <main v-if="status.current.type === 'lesson'" class="main">
             <header class="mainHeader">
@@ -373,6 +32,41 @@
                 </h1>
             </header>
         </main>
+        <main v-if="status.current.type === 'hot'" class="main">
+            <header class="mainHeader">
+                <h1>
+                    {{status.current.mainHeaderText}}
+                    <i class="flagIcon world"></i>
+                </h1>
+            </header>
+            <article>
+                <section v-for="info in status.current.list">
+                    <header class="listHeader"></header>
+                    <content :class="'listContent '+info.dire">
+                        <img v-if="info.type=='gif' || info.type=='jpg'" :src="info.src" :alt="info.txt" @click.stop="showDetail(info)">
+                    </content>
+                    <footer>
+                        <span class="listDes" v-text="info.txt"></span>
+                    </footer>
+                </section>
+                <footer class="pages">
+                    <div class="prev btntxt" @click.stop="gotopage(status.current.index-1)">‹ Prev</div>
+                    <div class="num">
+                        <ul class="numList">
+                            <template v-for="num in status.current.pages">
+                                <li v-if="num === '...'" class="pageNum dot">
+                                    <span v-text="num"></span>
+                                </li>
+                                <li v-else :class="'pageNum '+(num==status.current.index?'current':'')" @click.stop="gotopage(num)">
+                                    <span v-text="num"></span>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <div class="next btntxt" @click.stop="gotopage(status.current.index+1)">Next ›</div>
+                </footer>
+            </article>
+        </main>
         <main v-if="status.current.type === 'signin'" class="main singin">
             <header class="mainHeader">
                 <h1>
@@ -380,18 +74,14 @@
                 </h1>
             </header>
             <section class="signinForm">
-                <input class="siginInput" type="text" v-model="user.id" placeholder="请输入登录ID" @keyup="_checkID"
-                    @change="_checkID">
+                <input class="siginInput" type="text" v-model="user.id" placeholder="请输入登录ID" id="s_i_i" @keyup="_checkID" @change="_checkID">
                 <span id="error_id" class="formError dn"></span>
-                <input class="siginInput" type="text" id="userName" v-model="user.name" placeholder="请输入花名"
-                    @keyup="_checkName" @change="_checkName">
-                <span id="error_name" class="formError dn">花名不能为空!</span>
-                <input class="siginInput" type="password" id="userPassword" v-model="user.pwd" placeholder="请输入密码"
-                    @keyup="_checkPwd0" @change="_checkPwd0">
-                <span id="error_pwd_0" class="formError dn">密码不能为空!</span>
-                <input class="siginInput" type="password" id="userPassword2" placeholder="确认密码" @keyup="_checkPwd"
-                    @change="_checkPwd">
-                <span id="error_pwd" class="formError dn">两次密码输入不一致!</span>
+                <input class="siginInput" type="text" id="s_n_i" v-model="user.name" placeholder="请输入花名" @keyup="_checkEmpty('s_n_i', 's_n_e', 'name')" @change="_checkEmpty('s_n_i', 's_n_e', 'name')">
+                <span id="s_n_e" class="formError dn">花名不能为空!</span>
+                <input class="siginInput" type="password" id="s_p_i" v-model="user.pwd" placeholder="请输入密码" @keyup="_checkEmpty('s_p_i', 's_p_e', 'pwd')" @change="_checkEmpty('s_p_i', 's_p_e', 'pwd')">
+                <span id="s_p_e" class="formError dn">密码不能为空!</span>
+                <input class="siginInput" type="password" id="s_p_i_2" placeholder="确认密码" @keyup="_checkSame('s_p_i', 's_p_i_2', 's_p_e_2', 'pwd2')" @change="_checkSame('s_p_i', 's_p_i_2', 's_p_e_2', 'pwd2')">
+                <span id="s_p_e_2" class="formError dn">两次密码输入不一致!</span>
                 <input class="siginInput" type="email" id="userEmail" v-model="user.email" placeholder="请输入邮箱(非必填)">
                 <input class="siginInput" type="text" id="userEcode" v-model="user.ecode" placeholder="请输入邀请码">
                 <button class="signinBtn" @click="saveSignin">提交</button>
@@ -404,12 +94,26 @@
                 </h1>
             </header>
             <section class="loginForm">
-                <input class="loginInput" type="text" v-model="user.id" placeholder="请输入登录ID" @keyup="_login_checkID"
-                    @change="_login_checkID">
-                <span id="login_error_id" class="formError dn">登录ID不能为空</span>
-                <input class="loginInput" type="password" id="userPassword" v-model="user.pwd" placeholder="请输入密码"
-                    @keyup="_login_checkPwd0" @change="_login_checkPwd0">
-                <span id="login_error_pwd_0" class="formError dn">密码不能为空!</span>
+                <input class="loginInput" type="text" v-model="user.id" placeholder="请输入登录ID" id="l_i_i" @keyup="_checkEmpty('l_i_i', 'l_i_e', 'id')" @change="_checkEmpty('l_i_i', 'l_i_e', 'id')">
+                <span id="l_i_e" class="formError dn">登录ID不能为空</span>
+                <input class="loginInput" type="password" id="l_p_i" v-model="user.pwd" placeholder="请输入密码" @keyup="_checkEmpty('l_p_i', 'l_p_e', 'pwd')" @change="_checkEmpty('l_p_i', 'l_p_e', 'pwd')">
+                <span id="l_p_e" class="formError dn">密码不能为空!</span>
+                <button class="loginBtn" @click="doLogin">登录</button>
+            </section>
+        </main>
+        <main v-if="status.current.type === 'changepwd'" class="main login">
+            <header class="mainHeader">
+                <h1>
+                    修改密码
+                </h1>
+            </header>
+            <section class="loginForm">
+                <input class="loginInput" id="c_i_i" type="text" v-model="user.id" placeholder="请输入原始密码" @keyup="_checkEmpty('c_i_i', 'c_i_e', 'id')" @change="_checkEmpty('c_i_i', 'c_i_e', 'id')">
+                <span id="c_i_e" class="formError dn">原始密码不能为空！</span>
+                <input class="loginInput" id="c_p_i" type="password" v-model="user.pwd" placeholder="请输入新密码" @keyup="_checkEmpty('c_p_i', 'c_p_e', 'id')" @change="_checkEmpty('c_i_i', 'c_i_e', 'pwd')">
+                <span id="c_p_e" class="formError dn">密码不能为空!</span>
+                <input class="loginInput" type="password" id="c_p_i_2" v-model="user.pwd" placeholder="请重复新密码" @keyup="_checkSame('c_p_i', 'c_p_i_2', 'c_p_e_2', 'pwd2')" @change="_checkSame('c_p_i', 'c_p_i_2', 'c_p_e_2', 'pwd2')">
+                <span id="c_p_e_2" class="formError dn">两次密码输入不一致!</span>
                 <button class="loginBtn" @click="doLogin">登录</button>
             </section>
         </main>
@@ -461,354 +165,7 @@
             <div class="alert" v-if="isAlert" v-html='alertContent'></div>
         </div>
     </div>
+    <script src="../js/pronSchool.js"></script>
 </body>
-<script>
-
-    let errorList = new Map();
-
-    let vm = new Vue({
-        el: "#app",
-        data() {
-            return {
-                navTypes: [{
-                    id: 'lesson',
-                    txt: '教材'
-                }, {
-                    id: 'tag',
-                    txt: '标签'
-                }, {
-                    id: 'mine',
-                    txt: '我的自拍'
-                }],
-                status: {
-                    last: {
-
-                    },
-                    current: {
-                        mainHeaderText: "Hot Lessons in CHINA",
-                        type: 'lesson'
-                    },
-                    next: {
-
-                    }
-                },
-                user: {
-                    name: "",
-                    id: "",
-                    pwd: "",
-                    isLogin: false,
-                    ecode: "",
-                    email: ""
-                },
-                alertContent: "",
-                isAlert: false,
-                alertTimer: -1,
-                message: []
-            }
-        },
-        methods: {
-            asideBtnClick() {
-                let leftMenu = document.querySelector(".leftMenu");
-                let shadow = document.querySelector(".shadow");
-                if (leftMenu.classList.value.indexOf("leftMenuShow") != -1) {
-                    leftMenu.classList.remove("leftMenuShow");
-                    shadow.classList.add("dn");
-                } else {
-                    leftMenu.classList.add("leftMenuShow");
-                    shadow.classList.remove("dn");
-                }
-            },
-            navBtnClick(type) {
-                this._changeType(type);
-            },
-            saveSignin() {
-                if (this.user.id == "") {
-                    errorList.set("id", 1);
-                    document.querySelector('#error_id').innerHTML = "登录ID不得为空";
-                    document.querySelector('#error_id').classList.remove("dn");
-                }
-                if (this.user.name == "") {
-                    errorList.set("name", 1);
-                    document.querySelector('#error_name').classList.remove("dn");
-                }
-                if (this.user.pwd == "") {
-                    errorList.set("id", 1);
-                    document.querySelector('#error_pwd_0').classList.remove("dn");
-                }
-                if (errorList.size > 0) {
-                    this.alertContent = '<span>注册信息有错误！</span>';
-                    this.isAlert = true;
-                    this._autoHideAlert(0.7);
-                    return;
-                }
-                vm.$http.post(`/signin`, {
-                    data: JSON.stringify(vm.user)
-                }, {
-                    emulateJSON: true
-                }).then(function (data) {
-                    if (data.body.result) {
-                        this.clearUserInfo();
-                        document.querySelector('#userPassword2').value = "";
-                        this.alertContent = `<span>${data.body.data}</span>`;
-                        this.isAlert = true;
-                        this._autoHideAlert(0.7);
-                        this.asideBtnClick();
-                    } else {
-                        if (data.body.reason === "sameId") {
-                            errorList.set("id", 1);
-                            document.querySelector('#error_id').innerHTML = "登录ID重复，请更换";
-                            document.querySelector('#error_id').classList.remove("dn");
-                        } else {
-                            this.alertContent = `<span>${data.body.data}</span>`;
-                            this.isAlert = true;
-                            this._autoHideAlert(0.7);
-                        }
-                    }
-                }).catch(function (data) {
-                    this.alertContent = `<span>${data.body.data || "服务器错误！请稍后重试"}</span>`;
-                    this.isAlert = true;
-                    this._autoHideAlert(0.7);
-                });
-            },
-            login(e) {
-                this.clearUserInfo();
-                this._changeType('login');
-                this.asideBtnClick();
-                this._hideFormError();
-            },
-            doLogin() {
-                if (this.user.id == "") {
-                    errorList.set("id", 1);
-                    document.querySelector('#login_error_id').classList.remove("dn");
-                }
-                if (this.user.pwd == "") {
-                    errorList.set("id", 1);
-                    document.querySelector('#login_error_pwd_0').classList.remove("dn");
-                }
-                if (errorList.size > 0) {
-                    this.alertContent = '<span>登录信息有错误！</span>';
-                    this.isAlert = true;
-                    this._autoHideAlert(0.7);
-                    return;
-                }
-                vm.$http.post(`/login`, {
-                    data: JSON.stringify(vm.user)
-                }, {
-                    emulateJSON: true
-                }).then(function (data) {
-                    if (data.body.result) {
-                        data = data.body;
-                        this.alertContent = `<span>${data.data}</span>`;
-                        this.isAlert = true;
-                        this.user.id = data.info.id;
-                        localStorage.setItem("uuid", data.info.id);
-                        this.user.name = data.info.name;
-                        this.user.isLogin = true;
-                        localStorage.setItem("islogin", "1");
-                        this.checkMessage();
-                        this._autoHideAlert(0.7);
-                        this._changeType('lesson');
-                    } else {
-                        this.alertContent = `<span>${data.body.data}</span>`;
-                        this.isAlert = true;
-                        this._autoHideAlert(0.7);
-                    }
-                }).catch(function (data) {
-                    this.alertContent = `<span>${data.body.data || "服务器错误！请稍后重试"}</span>`;
-                    this.isAlert = true;
-                    this._autoHideAlert(0.7);
-                });
-            },
-            signin(e) {
-                this.clearUserInfo();
-                this._changeType('signin');
-                this.asideBtnClick();
-                this._hideFormError();
-            },
-            logout(e) {
-                this.clearUserInfo();
-                this.alertContent = '<span>登出完成！</span>';
-                this.isAlert = true;
-                this._autoHideAlert(0.7);
-                e.stopPropagation();
-            },
-            showMessage(e) {
-                localStorage.removeItem("messageInfo");
-                this.alertContent = this.message.shift();
-                this.isAlert = true;
-                e.stopPropagation();
-            },
-            upload(e) {
-                if (this.user.isLogin) {
-                    this._changeType("upload");
-                } else {
-                    this.alertContent = '<span>请先登录！</span>';
-                    this.isAlert = true;
-                    this._autoHideAlert(0.7);
-                    e.stopPropagation();
-                }
-            },
-            bodyClick() {
-                if (this.isAlert) {
-                    clearTimeout(this.alertTimer);
-                    this.isAlert = false;
-                    this.alertContent = '';
-                }
-            },
-            setEmail() { },
-            setPwd() { },
-            checkUpload() { },
-            checkMessage() {
-                if (this.user.isLogin) {
-                    var cur = new Date().toDateString();
-                    if (localStorage.getItem("checkMessageDate") !== cur) {
-                        localStorage.setItem("checkMessageDate", cur);
-                        this.message.push("<span>新的一天！你该拍裸照咯~</span>");
-                        localStorage.setItem("messageInfo", "<span>新的一天！你该拍裸照咯~</span>");
-                    }
-                } else {
-                    this.message = [];
-                }
-                setTimeout(vm.checkMessage.bind(vm), 60 * 1000 * 60);
-            },
-            _hideFormError() {
-                document.querySelectorAll(".formError").forEach(e => {
-                    e.classList.add("dn");
-                });
-                errorList = new Map();
-            },
-            _login_checkID() {
-                if (this.user.id != "") {
-                    errorList.delete("id");
-                    document.querySelector('#login_error_id').classList.add("dn");
-                }
-            },
-            _login_checkPwd0() {
-                if (this.user.id != "") {
-                    errorList.delete("pwd");
-                    document.querySelector('#login_error_pwd_0').classList.add("dn");
-                }
-            },
-            _checkID() {
-                var checkStr = this.user.id.replace(/[a-zA-Z0-9]/g, "");
-                if (this.user.id.length < 6) {
-                    errorList.set("id", 1);
-                    document.querySelector('#error_id').innerHTML = "登录ID长度不得小于6位";
-                    document.querySelector('#error_id').classList.remove("dn");
-                } else if (checkStr !== "") {
-                    errorList.set("id", 1);
-                    document.querySelector('#error_id').innerHTML = "请使用数字和字母填写登录ID";
-                    document.querySelector('#error_id').classList.remove("dn");
-                } else {
-                    document.querySelector('#error_id').innerHTML = "登录ID重复，请更换";
-                    document.querySelector('#error_id').classList.add("dn");
-                    vm.$http.get(`/checkId?id=${this.user.id}`).then(function (data) {
-                        if (data.body.result === "pass") {
-                            errorList.delete("id");
-                            document.querySelector('#error_id').classList.add("dn");
-                        } else {
-                            errorList.set("id", 1);
-                            document.querySelector('#error_id').classList.remove("dn");
-                        }
-                    }).catch(function () {
-                        errorList.delete("id");
-                        document.querySelector('#error_id').classList.add("dn");
-                    });
-                }
-            },
-            _checkName() {
-                if (this.user.name === "") {
-                    errorList.set("name", 1);
-                    document.querySelector('#error_name').classList.remove("dn");
-                } else {
-                    errorList.delete("name");
-                    document.querySelector('#error_name').classList.add("dn");
-                }
-            },
-            _checkPwd0() {
-                if (this.user.pwd === "") {
-                    errorList.set("pwd", 1);
-                    document.querySelector('#error_pwd_0').classList.remove("dn");
-                    document.querySelector('#userPassword2').value = "";
-                    errorList.delete("pwd2");
-                    document.querySelector('#error_pwd').classList.add("dn");
-                } else {
-                    errorList.delete("pwd");
-                    document.querySelector('#error_pwd_0').classList.add("dn");
-                }
-                this._checkPwd();
-            },
-            _checkPwd() {
-                let v = document.querySelector('#userPassword2').value;
-                if (v == "" || v == this.user.pwd) {
-                    errorList.delete("pwd2");
-                    document.querySelector('#error_pwd').classList.add("dn");
-                } else {
-                    errorList.set("pwd2", 1);
-                    document.querySelector('#error_pwd').classList.remove("dn");
-                }
-            },
-            _changeType(type) {
-                this.status.last.type = this.status.current.type;
-                this.status.current.type = type;
-            },
-            _autoHideAlert(time) {
-                time = time * 1000;
-                clearTimeout(this.alertTimer);
-                this.alertTimer = setTimeout(() => {
-                    this.isAlert = false;
-                    this.alertContent = '';
-                }, time);
-            },
-            getUserInfo() {
-                if (localStorage.getItem("islogin") == "1" && localStorage.getItem("uuid")) {
-                    vm.$http.post(`/getInfo`, {
-                        id: localStorage.getItem("uuid")
-                    }, {
-                        emulateJSON: true
-                    }).then(function (data) {
-                        if (data.body.isPass) {
-                            data = data.body.data;
-                            localStorage.setItem("uuid", data.id);
-                            this.user.name = data.name;
-                            this.user.isLogin = true;
-                            if(localStorage.getItem("messageInfo")){
-                                this.message = [localStorage.getItem("messageInfo")];
-                            }
-                            this.checkMessage();
-                        } else {
-                            this.clearUserInfo();
-                        }
-                    }).catch(function (data) {
-                        this.clearUserInfo();
-                    });
-                }
-            },
-            clearUserInfo() {
-                this.user = {
-                    name: "",
-                    id: "",
-                    pwd: "",
-                    isLogin: false,
-                    email: ""
-                };
-                this.message = [];
-                localStorage.removeItem("uuid");
-                localStorage.removeItem("islogin");
-                localStorage.removeItem("checkMessageDate");
-                localStorage.removeItem("messageInfo");
-            }
-        },
-        watch: {
-            user: {
-                deep: true,
-                handler(n, o) { }
-            }
-        }
-    });
-
-    vm.getUserInfo();
-
-</script>
 
 </html>

@@ -14,10 +14,11 @@ module.exports = {
         // server.use(express.static('./'));
         // console.log(path.resolve(__dirname, '../static'));
         server.use('/', express.static(path.resolve(__dirname, '../static')));
+        server.use('/img', express.static(path.resolve(__dirname, '../data/content/img')));
 
-        server.use('/user', function (req, res) {
+        server.use('/user', function(req, res) {
             let id = req.query.id;
-            user.get(id).then(function (info) {
+            user.get(id).then(function(info) {
                 if (info.isPass) {
                     res.send(info);
                 } else {
@@ -25,46 +26,46 @@ module.exports = {
                         isPass: false
                     });
                 }
-            }).catch(function () {
+            }).catch(function() {
                 res.status(403).send({
                     isPass: false
                 });
             });
         });
 
-        server.use('/checkId', function (req, res) {
+        server.use('/checkId', function(req, res) {
             let id = req.query.id;
             res.send({
                 result: user.checkId(id) ? "pass" : "notPass"
             });
         });
 
-        server.use('/signin', function (req, res) {
+        server.use('/signin', function(req, res) {
             let data = JSON.parse(req.body.data);
-            user.save(data).then(function (result) {
+            user.save(data).then(function(result) {
                 res.send(result);
-            }).catch(function (result) {
+            }).catch(function(result) {
                 res.send(result);
             });
         });
 
-        server.use('/login', function (req, res) {
+        server.use('/login', function(req, res) {
             let data = JSON.parse(req.body.data);
-            user.login(data).then(function (result) {
+            user.login(data).then(function(result) {
                 res.send(result);
-            }).catch(function (result) {
+            }).catch(function(result) {
                 res.send(result);
             });
         });
 
-        server.use('/getInfo', function (req, res) {
-            user.getInfo(req.body.id).then(function (result) {
+        server.use('/getInfo', function(req, res) {
+            user.getInfo(req.body.id).then(function(result) {
                 res.send(result);
-            }).catch(function (result) {
+            }).catch(function(result) {
                 res.send(result);
             });
         });
-        
+
         // server.use('/save', function (req, res) {
         //     if(req.body.bossId.indexOf("爆操") == -1) {
         //         return res.status(403).send({
