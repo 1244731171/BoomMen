@@ -39,7 +39,7 @@ module.exports = {
                 str += (i + ". ======> " + rootPath + e + "\n");
             });
             console.log(str)
-            fs.writeFileSync(path.resolve(__dirname, './list.txt'), str);
+                // fs.writeFileSync(path.resolve(__dirname, './list.txt'), str);
             let input = readlineSync.question("need output:");
             switch (input.charAt(0)) {
                 case "s":
@@ -71,7 +71,7 @@ module.exports = {
             form.uploadDir = path.resolve(__dirname, './data') // 存储路径
             form.parse(req, function(err, fileds, files) { // 解析 formData数据
                 if (err) { return console.log(err) }
-                console.log(files.img)
+                // console.log(files.img)
                 res.send({
                     "res": "good"
                 })
