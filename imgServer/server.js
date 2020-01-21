@@ -39,7 +39,8 @@ module.exports = {
                 str += (i + ". ======> " + rootPath + e + "\n");
             });
             console.log(str)
-                // fs.writeFileSync(path.resolve(__dirname, './list.txt'), str);
+            console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 收到请求`);
+            // fs.writeFileSync(path.resolve(__dirname, './list.txt'), str);
             let input = readlineSync.question("need output:");
             switch (input.charAt(0)) {
                 case "s":
