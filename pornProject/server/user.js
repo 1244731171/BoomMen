@@ -2,14 +2,14 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = {
-    getInfo: function (id) {
+    getInfo: function(id) {
         let userList = fs.readdirSync(path.resolve(__dirname, `../data/user/`));
-        return new Promise(function (res, rej) {
-            if (userList.indexOf(id+".json") != -1) {
+        return new Promise(function(res, rej) {
+            if (userList.indexOf(id + ".json") != -1) {
                 let data = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/user/${id}.json`)));
                 delete data.pwd;
-                if(!localData.isBoss){
-                    delete localData.isBoss;
+                if (!data.isBoss) {
+                    delete data.isBoss;
                 }
                 res({
                     isPass: true,
@@ -22,7 +22,7 @@ module.exports = {
             }
         })
     },
-    checkId: function (id) {
+    checkId: function(id) {
         let userList = fs.readdirSync(path.resolve(__dirname, `../data/user/`));
         if (userList.indexOf(id + ".json") === -1) {
             return true;
@@ -30,11 +30,11 @@ module.exports = {
             return false;
         }
     },
-    checkEcode: function (code, isDelete = false) {
+    checkEcode: function(code, isDelete = false) {
         let ecodes = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/temp/ecode.json`)));
         let i = ecodes.indexOf(code);
         // console.log(JSON.stringify(ecodes) + "---" + code);
-        return new Promise(function (res, rej) {
+        return new Promise(function(res, rej) {
             if (i != -1) {
                 if (isDelete) {
                     ecodes.splice(i, 1);
@@ -46,7 +46,7 @@ module.exports = {
             }
         });
     },
-    login: function (data) {
+    login: function(data) {
         console.log(`login! data=${JSON.stringify(data)}`);
         if (this.checkId(data.id)) {
             return Promise.resolve({
@@ -58,7 +58,7 @@ module.exports = {
             console.log(`login! local=${JSON.stringify(localData)}`);
             if (localData.pwd === data.pwd) {
                 delete localData.pwd;
-                if(!localData.isBoss){
+                if (!localData.isBoss) {
                     delete localData.isBoss;
                 }
                 return Promise.resolve({
@@ -75,7 +75,7 @@ module.exports = {
         }
 
     },
-    save: function (data) {
+    save: function(data) {
         let self = this;
         if (!this.checkId(data.id)) {
             return Promise.resolve({
@@ -84,7 +84,7 @@ module.exports = {
                 reason: "sameId"
             });
         } else {
-            return this.checkEcode(data.ecode).then(function (result) {
+            return this.checkEcode(data.ecode).then(function(result) {
                 // console.log(result)
                 if (result) {
                     self.checkEcode(data.ecode, true);
@@ -103,7 +103,7 @@ module.exports = {
                         data: "邀请码失效！注册失败"
                     });
                 }
-            }).catch(function (e) {
+            }).catch(function(e) {
                 // console.log(JSON.stringify(e));
                 return Promise.reject({
                     result: 0,
@@ -113,4 +113,3 @@ module.exports = {
         }
     }
 }
-

@@ -24,39 +24,9 @@ let vm = new Vue({
                 current: {
                     mainHeaderText: "Hot Lessons in CHINA",
                     type: mainId,
-                    list: [{
-                        src: "/img/1.jpg",
-                        dire: "con_col",
-                        type: "jpg",
-                        txt: "111111111111111111"
-                    }, {
-                        src: "/img/2.jpg",
-                        dire: "con_col",
-                        type: "jpg",
-                        txt: "222222222222222222222222222222222222"
-                    }, {
-                        src: "/img/1.gif",
-                        dire: "con_col",
-                        type: "jpg",
-                        txt: "333"
-                    }, {
-                        src: "/img/2.gif",
-                        dire: "con_col",
-                        type: "jpg",
-                        txt: "333"
-                    }, {
-                        src: "/img/3.gif",
-                        dire: "con_col",
-                        type: "jpg",
-                        txt: "333"
-                    }, {
-                        src: "/img/4.gif",
-                        dire: "con_col",
-                        type: "jpg",
-                        txt: "333"
-                    }],
-                    index: 21,
-                    pages: ['17', '18', '19', '20', '21', '22', '23', '...', '30']
+                    list: [],
+                    index: 1,
+                    pages: ['1']
                 },
                 next: {
 
@@ -182,6 +152,7 @@ let vm = new Vue({
                     this.checkMessage();
                     this._autoHideAlert(1);
                     this._changeType(this.mainId);
+                    this.getHot();
                 } else {
                     this.alertContent = `<span>${data.body.data}</span>`;
                     this.isAlert = true;
@@ -356,13 +327,44 @@ let vm = new Vue({
                             this.message = [localStorage.getItem("messageInfo")];
                         }
                         this.checkMessage();
+                        this.getHot();
                     } else {
-                        this.clearUserInfo();
+                        // this.clearUserInfo();
                     }
                 }).catch(function(data) {
                     this.clearUserInfo();
                 });
             }
+        },
+        getHot() {
+            vm.$http.get("/getHot").then(function(data) {
+                data = data.body;
+                this.status.current.list = [...data.list];
+                let _index = index = data.index;
+                this.status.current.index = index;
+                this.status.current.length = data.length;
+                let arr = [index];
+                while (index-- > 1 && arr.length < 5) {
+                    arr.unshift(index);
+                }
+                while (arr.length < 9 && _index++ < length) {
+                    arr.push(_index)
+                }
+                if (arr.length == 9) {
+                    if (length > arr[8]) {
+                        arr.splice(7, 2, '...', length)
+                    }
+                    if (arr[0] >= 2) {
+                        arr.splice(0, 2, 1, '...')
+                    }
+                }
+                this.status.current.pages = arr;
+            }).catch(function() {
+                this.status.current.list = [];
+                this.status.current.index = 1;
+                this.status.current.length = 1;
+                this.status.current.pages = [];
+            });
         },
         clearUserInfo() {
             this.user = {

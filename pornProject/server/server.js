@@ -66,6 +66,44 @@ module.exports = {
             });
         });
 
+        server.use('/getHot', function(req, res) {
+            res.send({
+                list: [{
+                    src: "/img/1.jpg",
+                    dire: "con_col",
+                    type: "jpg",
+                    txt: "Nice Body!"
+                }, {
+                    src: "/img/2.jpg",
+                    dire: "con_col",
+                    type: "jpg",
+                    txt: "Nice Body!"
+                }, {
+                    src: "/img/1.gif",
+                    dire: "con_col",
+                    type: "jpg",
+                    txt: "好体位"
+                }, {
+                    src: "/img/2.gif",
+                    dire: "con_col",
+                    type: "jpg",
+                    txt: "口交"
+                }, {
+                    src: "/img/3.gif",
+                    dire: "con_col",
+                    type: "jpg",
+                    txt: "内射"
+                }, {
+                    src: "/img/4.gif",
+                    dire: "con_col",
+                    type: "jpg",
+                    txt: "Sex"
+                }],
+                index: 1,
+                length: 1
+            });
+        });
+
         // server.use('/save', function (req, res) {
         //     if(req.body.bossId.indexOf("爆操") == -1) {
         //         return res.status(403).send({
