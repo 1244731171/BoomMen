@@ -10,14 +10,14 @@ let server = express();
 let readlineSync = require("readline-sync");
 
 let writeHtml = () => {
-    // console.log('write html 1')
-    // let list = fs.readdirSync(path.resolve(__dirname, '../static/dia/data'));
-    // console.log(JSON.stringify(list))
-    // let str = "";
-    // list.forEach(e => {
-    //     str += `<img src="../data/${e}" /><br/>`
-    // });
-    // fs.writeFileSync(path.resolve(__dirname, '../static/dia/html/1.html'), str);
+    let list = fs.readdirSync(path.resolve(__dirname, '../static/dia/data'));
+    console.log(JSON.stringify(list))
+    let str = "";
+    list.forEach(e => {
+        str += `<img src="./data/${e}" /><br/>`
+    });
+    fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), str);
+    console.log('write html 1')
 }
 
 module.exports = {
@@ -82,7 +82,7 @@ module.exports = {
             form.encoding = 'utf-8'; // 编码
             form.keepExtensions = true; // 保留扩展名
             form.maxFieldsSize = 20 * 1024 * 1024; // 文件大小
-            form.uploadDir = path.resolve(__dirname, './static/img') // 存储路径
+            form.uploadDir = path.resolve(__dirname, '../static/dia/data') // 存储路径
                 // form.uploadDir = path.resolve(__dirname, './') // 存储路径
             form.parse(req, function(err, fileds, files) { // 解析 formData数据
                 if (err) { return console.log(err) }
