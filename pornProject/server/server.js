@@ -1,10 +1,13 @@
 let express = require('express');
 let bodyParser = require('body-parser');
 let path = require('path');
+let formidable = require('formidable');
 
 let server = express();
 
 let user = require("./user");
+let content = require("./content");
+let self = require("./self");
 
 module.exports = {
     start: () => {
@@ -15,6 +18,7 @@ module.exports = {
         // console.log(path.resolve(__dirname, '../static'));
         server.use('/', express.static(path.resolve(__dirname, '../static')));
         server.use('/img', express.static(path.resolve(__dirname, '../data/content/img')));
+        server.use('/video', express.static(path.resolve(__dirname, '../data/content/video')));
 
         server.use('/user', function(req, res) {
             let id = req.query.id;
@@ -43,6 +47,9 @@ module.exports = {
         server.use('/signin', function(req, res) {
             let data = JSON.parse(req.body.data);
             user.save(data).then(function(result) {
+                if (result.result == 1) {
+                    self.createInfo(data.id)
+                }
                 res.send(result);
             }).catch(function(result) {
                 res.send(result);
@@ -67,41 +74,70 @@ module.exports = {
         });
 
         server.use('/getHot', function(req, res) {
-            res.send({
-                list: [{
-                    src: "/img/1.jpg",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "Nice Body!"
-                }, {
-                    src: "/img/2.jpg",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "Nice Body!"
-                }, {
-                    src: "/img/1.gif",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "好体位"
-                }, {
-                    src: "/img/2.gif",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "口交"
-                }, {
-                    src: "/img/3.gif",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "内射"
-                }, {
-                    src: "/img/4.gif",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "Sex"
-                }],
-                index: 1,
-                length: 1
+            content.getHot().then(function(data) {
+                res.send(data);
+            }).catch(function() {
+
+            })
+        });
+
+        server.use('/upload', function(req, res) {
+            let form = new formidable.IncomingForm();
+            form.encoding = 'utf-8'; // 编码
+            form.keepExtensions = true; // 保留扩展名
+            form.maxFieldsSize = 20 * 1024 * 1024; // 文件大小
+            form.uploadDir = path.resolve(__dirname, '../data/content/user') // 存储路径
+            form.parse(req, function(err, fileds, files) { // 解析 formData数据
+                if (err) { return console.log(err) }
+                let path = files.img.path.split("\\");
+                path = path[path.length - 1];
+                res.send({
+                    "fileName": path
+                });
             });
+        });
+
+        server.use('/linkFile', function(req, res) {
+            let userId = req.body.userId;
+            let fileName = req.body.fileName;
+            self.linkFile(fileName, userId, );
+        });
+
+        server.use('/activeLink', function(req, res) {
+            try {
+                self.activeLink(req.body);
+                res.send({
+                    result: true,
+                    data: "上传成功！"
+                });
+            } catch (error) {
+                res.send({
+                    result: false,
+                    data: "上传失败！请稍后重试"
+                });
+            }
+        });
+
+        server.use('/passiveLink', function(req, res) {
+            let userId = req.body.userId;
+            let fileName = req.body.fileName;
+            try {
+                self.passiveLink(fileName, userId);
+                res.send({
+                    result: true,
+                    data: "删除成功！"
+                });
+            } catch (error) {
+                res.send({
+                    result: false,
+                    data: "删除失败！"
+                });
+            }
+        });
+
+        server.use('/getList', function(req, res) {
+            let userId = req.body.userId;
+            return self.getList(userId);
         });
 
         // server.use('/save', function (req, res) {
@@ -141,54 +177,6 @@ module.exports = {
         //     });
         // });
 
-        // server.use('/upload?', function (req, res) {
-
-        //     // console.log('/save?' + JSON.stringify(req.body));
-        //     let form = new formidable.IncomingForm();
-        //     form.encoding = 'utf-8'; // 编码
-        //     form.keepExtensions = true; // 保留扩展名
-        //     form.maxFieldsSize = 20 * 1024 * 1024; // 文件大小
-        //     form.uploadDir = 'C:/Users/Administrator/Downloads'  // 存储路径
-        //     form.parse(req, function (err, fileds, files) { // 解析 formData数据
-        //         if (err) { return console.log(err) }
-
-        //         console.log(files.img)
-        //         // let name = new Date().getTime() + "" + files.img.name;
-        //         // let imgPath = files.img.path // 获取文件路径
-        //         // let imgName = `.${basePath}/img/${name}`; // 修改之后的名字
-        //         // let data = fs.readFileSync(imgPath) // 同步读取文件
-
-        //         // let info = fs.readFileSync(`.${basePath}/info.txt`);
-        //         // info = JSON.parse(info);
-        //         // info[id] = {
-        //         //     pwd: pwd,
-        //         //     file: name,
-        //         //     type: files.img.type
-        //         // };
-        //         // writedown(JSON.stringify(info));
-
-        //         // try {
-        //         //     fs.writeFile(imgName, data, function (err) { // 存储文件
-        //         //         if (err) {
-        //         //             console.log(err);
-        //         //             response.writeHead(200, { 'Content-Type': 'text/text;charset=UTF-8' });
-        //         //             response.end("0");
-        //         //             return;
-        //         //         }
-        //         //         fs.unlink(imgPath, function () { }) // 删除文件
-        //         //         response.writeHead(200, { 'Content-Type': 'text/text;charset=UTF-8' });
-        //         //         response.end("1");
-        //         //     });
-        //         // } catch (e) {
-        //         //     console.log(e);
-        //         //     response.writeHead(200, { 'Content-Type': 'text/text;charset=UTF-8' });
-        //         //     response.end("0");
-        //         // }
-        //     })
-        //     res.send({
-        //         "res": "good"
-        //     })
-        // });
 
         let startTime = new Date();
         console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 启动`);

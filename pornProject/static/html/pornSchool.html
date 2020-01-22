@@ -44,6 +44,7 @@
                     <header class="listHeader"></header>
                     <content :class="'listContent '+info.dire">
                         <img v-if="info.type=='gif' || info.type=='jpg'" :src="info.src" :alt="info.txt" @click.stop="showDetail(info)">
+                        <video v-if="info.type=='video'" :src="info.src" controls></video>
                     </content>
                     <footer>
                         <span class="listDes" v-text="info.txt"></span>
@@ -115,6 +116,28 @@
                 <input class="loginInput" type="password" id="c_p_i_2" v-model="user.pwd" placeholder="请重复新密码" @keyup="_checkSame('c_p_i', 'c_p_i_2', 'c_p_e_2', 'pwd2')" @change="_checkSame('c_p_i', 'c_p_i_2', 'c_p_e_2', 'pwd2')">
                 <span id="c_p_e_2" class="formError dn">两次密码输入不一致!</span>
                 <button class="loginBtn" @click="doLogin">登录</button>
+            </section>
+        </main>
+        <main v-if="status.current.type === 'upload'" class="main upload">
+            <header class="mainHeader">
+                <h1>
+                    上传自拍
+                </h1>
+            </header>
+            <section class="uploadForm">
+                <div class="uploadImgDiv">
+                    <img src="" alt="" id="uploadImg" class="dn">
+                </div>
+                <div class="uploadBtn">
+                    <input type="file" accept="image/png,image/jpeg,image/gif" id='u_f_f' class="fileBtn" @change="_choiceFile">
+                    <span class="uploadBtnSpan">
+                        选择上传文件
+                    </span>
+                </div>
+                <!-- <input class="uploadBtn fileBtn" name="img" type="file">点击这里上传文件 -->
+                <!-- <input class="uploadInput" id="u_p_i" type="text" v-model="user.id" placeholder="提取密码" @keyup="_checkUploadPwd('u_p_i','u_p_e')" @change="_checkUploadPwd('u_p_i','u_p_e')">
+                <span id="u_p_e" class="formError dn"></span> -->
+                <button id="doUploadBtn" class="uploadBtn dn" @click.stop="doUpload">上传</button>
             </section>
         </main>
         <aside class="leftMenu">

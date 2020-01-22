@@ -1,5 +1,6 @@
 let errorList = new Map();
 let domId = new Map();
+let currentLocalFileName = "";
 
 let vm = new Vue({
     el: "#app",
@@ -187,6 +188,7 @@ let vm = new Vue({
         upload(e) {
             if (this.user.isLogin) {
                 this._changeType("upload");
+                this.asideBtnClick();
             } else {
                 this.alertContent = '<span>请先登录！</span>';
                 this.isAlert = true;
@@ -223,6 +225,77 @@ let vm = new Vue({
                 this.message = [];
             }
             setTimeout(vm.checkMessage.bind(vm), 60 * 1000 * 60);
+        },
+        _choiceFile() {
+            if (!domId.get('u_f_f')) {
+                domId.set('u_f_f', document.querySelector("#u_f_f"));
+            }
+            if (!domId.get('doUploadBtn')) {
+                domId.set('doUploadBtn', document.querySelector("#doUploadBtn"));
+            }
+            if (!domId.get('uploadImg')) {
+                domId.set('uploadImg', document.querySelector("#uploadImg"));
+            }
+            domId.get('uploadImg').classList.add("dn");
+            if (domId.get('u_f_f').files.length > 0) {
+                let f = domId.get('u_f_f').files[0];
+                this._doUpload(f);
+                let reads = new FileReader();
+                reads.readAsDataURL(f);
+                reads.onload = function(e) {
+                    domId.get('uploadImg').src = this.result;
+                    domId.get('uploadImg').classList.remove("dn");
+                };
+                domId.get('doUploadBtn').classList.remove("dn");
+            } else {
+                domId.get('doUploadBtn').classList.add("dn");
+            }
+        },
+        _doUpload(f) {
+            let formData = new FormData();
+            // formData.append('name', f.name);
+            // formData.append('size', f.size);
+            // formData.append('type', f.type);
+            formData.append('img', f);
+            vm.$http.post(`/upload`, formData).then(function(data) {
+                currentLocalFileName = data.body.fileName;
+                return vm.$http.post("/linkFile", {
+                    "fileName": currentLocalFileName,
+                    "userId": localStorage.getItem("uuid")
+                });
+            }).then(function() {
+
+            }).catch(function(result) {
+
+            });
+        },
+        doUpload() {
+            if (currentLocalFileName) {
+                vm.$http.post("/activeLink", {
+                    "fileName": currentLocalFileName,
+                    "userId": localStorage.getItem("uuid"),
+                    "isPublic": false,
+                    "tag": [],
+                    "title": ""
+                }).then(function(data) {
+                    this.alertContent = data.body.data;
+                    this.isAlert = true;
+                    this._autoHideAlert(0.7);
+                }).catch(function() {
+                    this.alertContent = "上传失败！请稍后重试";
+                    this.isAlert = true;
+                    this._autoHideAlert(0.7);
+                });
+            } else if (domId.get('u_f_f').files[0]) {
+                this._doUpload(domId.get('u_f_f').files[0]);
+                this.alertContent = "上传失败！请稍后重试";
+                this.isAlert = true;
+                this._autoHideAlert(0.7);
+            } else {
+                this.alertContent = "上传失败！请稍后重试";
+                this.isAlert = true;
+                this._autoHideAlert(0.7);
+            }
         },
         _hideFormError() {
             document.querySelectorAll(".formError").forEach(e => {
