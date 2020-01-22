@@ -86,7 +86,7 @@ module.exports = {
     },
     createInfo(userId) {
         try {
-            fs.writeFile(path.resolve(__dirname, `../data/self/${userId}.json`), "[]");
+            fs.writeFileSync(path.resolve(__dirname, `../data/self/${userId}.json`), "[]");
         } catch (error) {
             console.log('create user zipai list error! ' + error);
         }
