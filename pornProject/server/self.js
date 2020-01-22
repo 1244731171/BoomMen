@@ -85,6 +85,10 @@ module.exports = {
         };
     },
     createInfo(userId) {
-        fs.writeFile(path.resolve(__dirname, `../data/self/${userId}.json`), "[]");
+        try {
+            fs.writeFile(path.resolve(__dirname, `../data/self/${userId}.json`), "[]");
+        } catch (error) {
+            console.log('create user zipai list error! ' + error);
+        }
     }
 }

@@ -50,8 +50,10 @@ module.exports = {
                 if (result.result == 1) {
                     self.createInfo(data.id)
                 }
+                console.log('siginin ==> ' + JSON.stringify(result));
                 res.send(result);
             }).catch(function(result) {
+                console.log('siginin Error ==> ' + JSON.stringify(result));
                 res.send(result);
             });
         });
@@ -77,30 +79,36 @@ module.exports = {
             content.getHot().then(function(data) {
                 res.send(data);
             }).catch(function() {
-
+                res.send("getHot");
             })
         });
 
         server.use('/upload', function(req, res) {
-            let form = new formidable.IncomingForm();
-            form.encoding = 'utf-8'; // 编码
-            form.keepExtensions = true; // 保留扩展名
-            form.maxFieldsSize = 20 * 1024 * 1024; // 文件大小
-            form.uploadDir = path.resolve(__dirname, '../data/content/user') // 存储路径
-            form.parse(req, function(err, fileds, files) { // 解析 formData数据
-                if (err) { return console.log(err) }
-                let path = files.img.path.split("\\");
-                path = path[path.length - 1];
-                res.send({
-                    "fileName": path
+            console.log("upload img");
+            try {
+                let form = new formidable.IncomingForm();
+                form.encoding = 'utf-8'; // 编码
+                form.keepExtensions = true; // 保留扩展名
+                form.maxFieldsSize = 20 * 1024 * 1024; // 文件大小
+                form.uploadDir = path.resolve(__dirname, '../data/content/user') // 存储路径
+                form.parse(req, function(err, fileds, files) { // 解析 formData数据
+                    if (err) { return console.log(err) }
+                    let path = files.img.path.split("\\");
+                    path = path[path.length - 1];
+                    res.send({
+                        "fileName": path
+                    });
                 });
-            });
+            } catch (error) {
+                console.log('upload img error! ' + error);
+            }
         });
 
         server.use('/linkFile', function(req, res) {
             let userId = req.body.userId;
             let fileName = req.body.fileName;
             self.linkFile(fileName, userId, );
+            res.send("linkFile");
         });
 
         server.use('/activeLink', function(req, res) {
