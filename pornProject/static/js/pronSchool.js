@@ -90,7 +90,7 @@ let vm = new Vue({
             }).then(function(data) {
                 if (data.body.result) {
                     this.clearUserInfo();
-                    document.querySelector('#userPassword2').value = "";
+                    document.querySelector('#s_p_i_2').value = "";
                     this.alertContent = `<span>${data.body.data}</span>`;
                     this.isAlert = true;
                     this._autoHideAlert(0.7);
