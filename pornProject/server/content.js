@@ -19,47 +19,22 @@ module.exports = {
             data: []
         }
     },
-    getHot(isBoss = false) {
+    getHot(index = 1, step = 5, isBoss = false) {
+        if (index < 1) {
+            index = 1;
+        }
+        console.log(index);
         return new Promise(function(resolve, reject) {
+            let data = fs.readFileSync(path.resolve(__dirname, "../data/content/hot.json"));
+            data = JSON.parse(data);
+            let list = data.slice((index - 1) * step, index * step);
+            console.log(JSON.stringify(list))
+                // console.log(data.slice((index - 1) * step, step));
             resolve({
-                list: [{
-                    src: "/img/1.jpg",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "Nice Body!"
-                }, {
-                    src: "/img/2.jpg",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "Nice Body!"
-                }, {
-                    src: "/img/1.gif",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "好体位"
-                }, {
-                    src: "/img/2.gif",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "口交"
-                }, {
-                    src: "/img/3.gif",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "内射"
-                }, {
-                    src: "/img/4.gif",
-                    dire: "con_col",
-                    type: "jpg",
-                    txt: "Sex"
-                }, {
-                    src: "/video/jiaochaung_1.mp4",
-                    dire: "con_col",
-                    type: "video",
-                    txt: "Sex"
-                }],
-                index: 1,
-                length: 1
+                list: list,
+                index: index,
+                step: step,
+                length: parseInt(data.length / step)
             });
         });
     },

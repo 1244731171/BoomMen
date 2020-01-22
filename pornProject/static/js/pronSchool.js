@@ -153,7 +153,7 @@ let vm = new Vue({
                     this.checkMessage();
                     this._autoHideAlert(1);
                     this._changeType(this.mainId);
-                    this.getHot();
+                    this.getHot(0);
                 } else {
                     this.alertContent = `<span>${data.body.data}</span>`;
                     this.isAlert = true;
@@ -209,6 +209,9 @@ let vm = new Vue({
         gotopage(num) {
             this.isAlert = true;
             this.alertContent = `<span>准备跳转第 ${num} 页</span>`;
+            if (this.status.current.type == "hot") {
+                this.getHot(num);
+            }
         },
         setEmail() {},
         setPwd() {},
@@ -409,19 +412,31 @@ let vm = new Vue({
                 });
             }
         },
-        getHot() {
-            vm.$http.get("/getHot").then(function(data) {
+        getHot(num = 1) {
+            document.querySelector("#app").scrollTop = 0;
+            vm.$http.get(`/getHot?index=${num}`).then(function(data) {
+                this._autoHideAlert(0);
                 data = data.body;
                 this.status.current.list = [...data.list];
                 let _index = index = data.index;
+                let length = data.length;
                 this.status.current.index = index;
-                this.status.current.length = data.length;
+                this.status.current.length = length;
                 let arr = [index];
-                while (index-- > 1 && arr.length < 5) {
-                    arr.unshift(index);
-                }
-                while (arr.length < 9 && _index++ < length) {
-                    arr.push(_index)
+                if (index >= 5) {
+                    while (index-- > 1 && arr.length < 5) {
+                        arr.unshift(index);
+                    }
+                    while (arr.length < 9 && _index++ < length) {
+                        arr.push(_index)
+                    }
+                } else {
+                    while (arr.length < 5 && _index++ < length) {
+                        arr.push(_index)
+                    }
+                    while (index-- > 1 && arr.length < 9) {
+                        arr.unshift(index);
+                    }
                 }
                 if (arr.length == 9) {
                     if (length > arr[8]) {
@@ -433,6 +448,7 @@ let vm = new Vue({
                 }
                 this.status.current.pages = arr;
             }).catch(function() {
+                this._autoHideAlert(0);
                 this.status.current.list = [];
                 this.status.current.index = 1;
                 this.status.current.length = 1;

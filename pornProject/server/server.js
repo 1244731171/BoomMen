@@ -76,9 +76,11 @@ module.exports = {
         });
 
         server.use('/getHot', function(req, res) {
-            content.getHot().then(function(data) {
+            let index = req.query.index;
+            content.getHot(index).then(function(data) {
                 res.send(data);
-            }).catch(function() {
+            }).catch(function(e) {
+                console.log(e);
                 res.send("getHot");
             })
         });

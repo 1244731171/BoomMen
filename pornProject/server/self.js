@@ -65,7 +65,7 @@ module.exports = {
             }
         });
     },
-    getList(userId, index = 0, step = 10, isBoss = false) {
+    getList(userId, index = 1, step = 10, isBoss = false) {
         let data = [];
         try {
             data = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/self/${userId}.json`)));
@@ -79,7 +79,7 @@ module.exports = {
             return i.isActive;
         });
         return {
-            data: arr.slice(index * step, step),
+            data: arr.slice((index - 1) * step, index * step),
             index: index,
             length: arr.length
         };
