@@ -53,6 +53,7 @@
                 <section v-for="info in status.current.list">
                     <header class="listHeader"></header>
                     <content class="listContent">
+                        <div v-if="info.type=='gif' || info.type=='jpg'" class="imgCover" @click.stop="_openFull($event, info.type)"></div>
                         <img v-if="info.type=='gif' || info.type=='jpg'" :src="info.src" :alt="info.txt" @click.stop="showDetail(info)">
                         <video v-if="info.type=='video'" :src="info.src" controls></video>
                     </content>
@@ -222,6 +223,7 @@
         <div v-if="isAlert" class="alertDiv">
             <div class="alert" v-if="isAlert" v-html='alertContent'></div>
         </div>
+        <div class="closeFull dn" @click.stop="_closeFull"></div>
     </div>
     <script src="../js/pronSchool.js"></script>
 </body>

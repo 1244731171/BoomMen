@@ -26,7 +26,7 @@ let vm = new Vue({
                     mainHeaderText: "Hot Lessons in CHINA",
                     type: mainId,
                     list: [],
-                    index: 1,
+                    index: 0,
                     pages: ['1']
                 },
                 next: {
@@ -387,6 +387,16 @@ let vm = new Vue({
                 errorList.delete(type);
             }
         },
+        _closeFull(e) {
+            document.querySelector(".ful").classList.remove("ful");
+            e.target.classList.add("dn");
+        },
+        _openFull(e, type) {
+            if (type === "gif" || type === "jpg") {
+                document.querySelector(".closeFull").classList.remove("dn");
+                e.target.parentElement.classList.add("ful");
+            }
+        },
         getUserInfo() {
             if (localStorage.getItem("islogin") == "1" && localStorage.getItem("uuid")) {
                 vm.$http.post(`/getInfo`, {
@@ -413,6 +423,9 @@ let vm = new Vue({
             }
         },
         getHot(num = 1) {
+            if (this.status.current.index == num) {
+                return;
+            }
             document.querySelector("#app").scrollTop = 0;
             vm.$http.get(`/getHot?index=${num}`).then(function(data) {
                 this._autoHideAlert(0);

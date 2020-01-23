@@ -81,7 +81,8 @@ module.exports = {
         return {
             data: arr.slice((index - 1) * step, index * step),
             index: index,
-            length: arr.length
+            step: 10,
+            length: Math.ceil(arr.length / step)
         };
     },
     createInfo(userId) {

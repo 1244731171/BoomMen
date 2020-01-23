@@ -27,14 +27,15 @@ module.exports = {
         return new Promise(function(resolve, reject) {
             let data = fs.readFileSync(path.resolve(__dirname, "../data/content/hot.json"));
             data = JSON.parse(data);
+            // console.log(JSON.stringify(data))
             let list = data.slice((index - 1) * step, index * step);
-            console.log(JSON.stringify(list))
-                // console.log(data.slice((index - 1) * step, step));
+            // console.log(JSON.stringify(list))
+            // console.log(data.slice((index - 1) * step, step));
             resolve({
                 list: list,
                 index: index,
                 step: step,
-                length: parseInt(data.length / step)
+                length: Math.ceil(data.length / step)
             });
         });
     },
