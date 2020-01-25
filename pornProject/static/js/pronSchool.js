@@ -564,3 +564,5 @@ let vm = new Vue({
 });
 
 vm.getUserInfo();
+
+document.querySelector(".leftMenu").style.height = document.body.offsetHeight - 48 + 'px'

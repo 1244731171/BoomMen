@@ -162,8 +162,10 @@ i.flagIcon {
     border-top: 2px solid #000;
     position: absolute;
     top: 48px;
-    /* left: -270px; */
+    left: -270px;
     transition: all .5s ease;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .leftMenuShow {
@@ -425,7 +427,6 @@ i.flagIcon {
 }
 
 .tags {
-    max-height: 42px;
     display: inline-block;
     overflow: hidden;
     text-align: left;
@@ -434,6 +435,9 @@ i.flagIcon {
     border-radius: 2px;
     border: 1px solid #f90;
     margin-right: 2px;
+    font-size: 8px;
+    line-height: 10px;
+    height: 10px;
 }
 
 .main footer {

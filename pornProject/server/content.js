@@ -19,7 +19,7 @@ module.exports = {
         for (let key in lessonData) {
             arr.push(key);
         }
-        return arr;
+        return arr.reverse();
     },
     getLesson(name, index = 1, step = 5, isBoss = false) {
         let arr = [];
