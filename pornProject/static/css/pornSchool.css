@@ -430,10 +430,10 @@ i.flagIcon {
     display: inline-block;
     overflow: hidden;
     text-align: left;
-    color: #f90;
+    color: #acacac;
     padding: 2px;
     border-radius: 2px;
-    border: 1px solid #f90;
+    border: 1px solid #acacac;
     margin-right: 2px;
     font-size: 8px;
     line-height: 10px;
@@ -441,7 +441,7 @@ i.flagIcon {
 }
 
 .main footer {
-    margin: 10px;
+    margin: 10 0 0 20px;
 }
 
 .closeFull {

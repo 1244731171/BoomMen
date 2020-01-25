@@ -44,11 +44,11 @@
                         <video v-if="info.type=='video'" :src="info.src" controls></video>
                     </content>
                     <footer>
-                        <template v-if="info.tags.length > 0">
-                            <span  v-for="tag in info.tags" class="tags" v-text="tag"></span>
-                            <br>
-                        </template>
                         <span class="listDes" v-text="info.txt"></span>
+                        <template v-if="info.tags.length > 0">
+                            &nbsp;
+                            <span  v-for="tag in info.tags" class="tags" v-text="tag"></span>
+                        </template>
                     </footer>
                 </section>
                 <footer class="pages">
