@@ -28,6 +28,9 @@ module.exports = {
             arr.push(content[key]);
         }
         let list = arr.slice((index - 1) * step, index * step);
+        if (typeof index == "string") {
+            index = parseInt(index);
+        }
         return {
             list: list,
             index: index,
@@ -39,7 +42,9 @@ module.exports = {
         if (index < 1) {
             index = 1;
         }
-        console.log(index);
+        if (typeof index == "string") {
+            index = parseInt(index);
+        }
         return new Promise(function(resolve, reject) {
             let data = fs.readFileSync(path.resolve(__dirname, "../data/content/hot.json"));
             data = JSON.parse(data);

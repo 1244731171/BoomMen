@@ -55,7 +55,7 @@
                     <div class="prev btntxt" @click.stop="gotopage(status.current.lessonIndex-1)">‹ Prev</div>
                     <div class="num">
                         <ul class="numList">
-                            <template v-for="num in status.current.pages">
+                            <template v-for="num in status.current.lessonPages">
                                 <li v-if="num === '...'" class="pageNum dot">
                                     <span v-text="num"></span>
                                 </li>

@@ -458,7 +458,7 @@ i.flagIcon {
     background-color: #000;
     width: 100%;
     padding: 5px 0;
-    margin: 10px 0;
+    margin: 10px 0 !important;
     display: flex;
 }
 
