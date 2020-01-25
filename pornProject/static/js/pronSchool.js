@@ -27,7 +27,14 @@ let vm = new Vue({
                     type: mainId,
                     list: [],
                     index: 0,
-                    pages: ['1']
+                    pages: ['1'],
+                    length: 0,
+                    lessons: [],
+                    lessonText: "",
+                    lessonList: [],
+                    lessonIndex: 0,
+                    lessonPages: ['1'],
+                    lessonLength: 0
                 },
                 next: {
 
@@ -153,7 +160,7 @@ let vm = new Vue({
                     this.checkMessage();
                     this._autoHideAlert(1);
                     this._changeType(this.mainId);
-                    this.getHot(0);
+                    this.getHot(1);
                 } else {
                     this.alertContent = `<span>${data.body.data}</span>`;
                     this.isAlert = true;
@@ -211,6 +218,8 @@ let vm = new Vue({
             this.alertContent = `<span>准备跳转第 ${num} 页</span>`;
             if (this.status.current.type == "hot") {
                 this.getHot(num);
+            } else if (this.status.current.type == "lesson") {
+                this.getLesson(this.status.current.lessonText, num);
             }
         },
         setEmail() {},
@@ -340,8 +349,11 @@ let vm = new Vue({
                     this.status.current.mainHeaderText = "most hot girl in China";
                     break;
                 case 'lesson':
-                    this.status.last.mainHeaderText = this.status.current.mainHeaderText;
-                    this.status.current.mainHeaderText = "most hot lessons in China";
+                    // this.status.last.mainHeaderText = this.status.current.mainHeaderText;
+                    // this.status.current.mainHeaderText = "most hot lessons in China";
+                    if (!this.status.current.lessonText) {
+                        this.getLesson(this.status.current.lessonText, 1);
+                    }
                     break;
                 default:
                     break;
@@ -414,6 +426,7 @@ let vm = new Vue({
                         }
                         this.checkMessage();
                         this.getHot();
+                        this.getLessons();
                     } else {
                         // this.clearUserInfo();
                     }
@@ -424,6 +437,7 @@ let vm = new Vue({
         },
         getHot(num = 1) {
             if (this.status.current.index == num) {
+                this._autoHideAlert(0);
                 return;
             }
             document.querySelector("#app").scrollTop = 0;
@@ -466,6 +480,60 @@ let vm = new Vue({
                 this.status.current.index = 1;
                 this.status.current.length = 1;
                 this.status.current.pages = [];
+            });
+        },
+        getLessons() {
+            vm.$http.get(`/getLessons`).then(function(data) {
+                this.status.current.lessons = data.body;
+            });
+        },
+        getLesson(name, index = 1, needHideLeft = false) {
+            if (!name) {
+                name = this.status.current.lessons[0];
+            }
+            if (this.status.current.lessonIndex == index && this.status.current.lessonText == name) {
+                this._autoHideAlert(0);
+                return;
+            }
+            if (needHideLeft) {
+                this.asideBtnClick();
+            }
+            this.status.current.type = 'lesson';
+            this.status.current.lessonText = name;
+            document.querySelector("#app").scrollTop = 0;
+            vm.$http.get(`/getLesson?name=${encodeURIComponent(name)}&index=${index}`).then(function(data) {
+                this._autoHideAlert(0);
+                data = data.body;
+                this.status.current.lessonList = [...data.list];
+                let _index = index = data.index;
+                let length = data.length;
+                this.status.current.lessonIndex = index;
+                this.status.current.lessonLength = length;
+                let arr = [index];
+                if (index >= 5) {
+                    while (index-- > 1 && arr.length < 5) {
+                        arr.unshift(index);
+                    }
+                    while (arr.length < 9 && _index++ < length) {
+                        arr.push(_index)
+                    }
+                } else {
+                    while (arr.length < 5 && _index++ < length) {
+                        arr.push(_index)
+                    }
+                    while (index-- > 1 && arr.length < 9) {
+                        arr.unshift(index);
+                    }
+                }
+                if (arr.length == 9) {
+                    if (length > arr[8]) {
+                        arr.splice(7, 2, '...', length)
+                    }
+                    if (arr[0] >= 2) {
+                        arr.splice(0, 2, 1, '...')
+                    }
+                }
+                this.status.current.lessonPages = arr;
             });
         },
         clearUserInfo() {

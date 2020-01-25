@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 
+let lessonData = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/content/lesson.json")));
+
 module.exports = {
     getList(id, type, isBoss = false) {
         return {
@@ -13,11 +15,25 @@ module.exports = {
 
     },
     getLessons(isBoss = false) {
-        return {
-            length: 100,
-            index: 1,
-            data: []
+        let arr = [];
+        for (let key in lessonData) {
+            arr.push(key);
         }
+        return arr;
+    },
+    getLesson(name, index = 1, step = 5, isBoss = false) {
+        let arr = [];
+        let content = lessonData[name];
+        for (let key in content) {
+            arr.push(content[key]);
+        }
+        let list = arr.slice((index - 1) * step, index * step);
+        return {
+            list: list,
+            index: index,
+            step: step,
+            length: Math.ceil(arr.length / step)
+        };
     },
     getHot(index = 1, step = 5, isBoss = false) {
         if (index < 1) {
@@ -41,5 +57,8 @@ module.exports = {
     },
     getNew(isBoss = false) {
 
+    },
+    updateLessonInfo() {
+        lessonData = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/content/lesson.json")));
     }
 }

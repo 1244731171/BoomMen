@@ -1,0 +1,149 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <title>addInfo</title>
+    <style>
+        .tag,
+        .lesson,
+        .btn {
+            display: inline-block;
+            height: 18px;
+            line-height: 18px;
+            margin: 2px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #f90;
+            color: black
+        }
+        
+        .btn {
+            height: auto;
+        }
+        
+        .lesson {
+            border: 1px solid slateblue;
+        }
+        
+        .lesed {
+            background-color: slateblue;
+            color: aliceblue;
+        }
+        
+        .taged {
+            background-color: #f90;
+            color: aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <template v-for="tag in tags">
+            <div class="tag" v-text="tag" @click="tagClick"></div>
+        </template>
+        <hr>
+        <template v-for="lesson in lessons">
+            <div class="lesson" v-text="lesson" @click="lessonClick($event, lesson)"></div>
+        </template>
+        <hr>
+        <span>课程名称</span><input type="text" v-model="info.lesson">
+        <hr>
+        <span>描述</span><input type="text" v-model="info.txt">
+        <hr>
+        <img :src="path">
+        <hr>
+        <button class="btn" @click="save">保存并且下一个</button>
+        <button class="btn" @click="next">下一个</button>
+    </div>
+</body>
+
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data() {
+            return {
+                info: {
+                    tags: [],
+                    lesson: "",
+                    txt: "",
+                    name: ""
+                },
+                tags: "自拍-自慰-女女-骚逼-爆操-口交-射精-奶子-乳头-大屁股".split("-"),
+                lessons: [],
+                path: "",
+            }
+        },
+        methods: {
+            lessonClick(e, str) {
+                let t = e.target;
+                try {
+                    document.querySelector(".lesed").classList.remove("lesed");
+                } catch (error) {
+
+                }
+                t.classList.add("lesed")
+                this.info.lesson = str;
+            },
+            tagClick(e) {
+                let t = e.target;
+                if (t.className.indexOf("taged") != -1) {
+                    t.classList.remove("taged")
+                } else {
+                    t.classList.add("taged")
+                }
+            },
+            next() {
+                vm.$http.get("/info_next").then(function(d) {
+                    d = d.body;
+                    if (d.name === "") {
+                        alert("All is Done!");
+                    }
+                    this.info = {
+                        tags: [],
+                        lesson: "",
+                        name: d.name
+                    }
+                    this.path = d.path;
+                    this.lessons = d.lessons;
+                    try {
+                        document.querySelectorAll(".taged").forEach(e => {
+                            e.classList.remove("taged");
+                        })
+                        document.querySelector(".lesed").classList.remove("lesed");
+                    } catch (error) {
+
+                    }
+                });
+            },
+            save() {
+                if (this.info.lesson === "") {
+                    return alert("需要課程名")
+                }
+                var tags = [];
+                document.querySelectorAll(".taged").forEach(e => {
+                    tags.push(e.innerHTML);
+                })
+                this.info.tags = tags
+                vm.$http.get(`/info_save?data=${encodeURIComponent(JSON.stringify(this.info))}`).then(function(d) {
+                    alert(d.body)
+                    this.next();
+                });
+            }
+        },
+        watch: {
+            "info.lesson": {
+                deep: true,
+                handler(n, o) {}
+            }
+        }
+    })
+
+    vm.next();
+</script>
+
+</html>

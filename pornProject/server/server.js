@@ -8,6 +8,7 @@ let server = express();
 let user = require("./user");
 let content = require("./content");
 let self = require("./self");
+let addInfo = require("./addInfo");
 
 module.exports = {
     start: () => {
@@ -18,6 +19,7 @@ module.exports = {
         // console.log(path.resolve(__dirname, '../static'));
         server.use('/', express.static(path.resolve(__dirname, '../static')));
         server.use('/img', express.static(path.resolve(__dirname, '../data/content/img')));
+        server.use('/temp', express.static(path.resolve(__dirname, '../data/content/temp')));
         server.use('/video', express.static(path.resolve(__dirname, '../data/content/video')));
 
         server.use('/user', function(req, res) {
@@ -147,7 +149,24 @@ module.exports = {
 
         server.use('/getList', function(req, res) {
             let userId = req.body.userId;
-            return self.getList(userId);
+            res.send(self.getList(userId));
+        });
+
+        server.use("/getLessons", function(req, res) {
+            res.send(content.getLessons());
+        });
+
+        server.use("/getLesson", function(req, res) {
+            res.send(content.getLesson(decodeURIComponent(req.query.name), req.query.index));
+        });
+
+        server.use('/info_next', function(req, res) {
+            res.send(addInfo.next());
+        });
+
+        server.use('/info_save', function(req, res) {
+            // console.log(decodeURIComponent(req.query.data))
+            res.send(addInfo.save(JSON.parse(decodeURIComponent(req.query.data))));
         });
 
         // server.use('/save', function (req, res) {
