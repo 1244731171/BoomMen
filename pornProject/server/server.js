@@ -15,8 +15,6 @@ module.exports = {
 
         server.listen(6969);
         server.use(bodyParser.urlencoded({ extended: false }));
-        // server.use(express.static('./'));
-        // console.log(path.resolve(__dirname, '../static'));
         server.use('/', express.static(path.resolve(__dirname, '../static')));
         server.use('/img', express.static(path.resolve(__dirname, '../data/content/img')));
         server.use('/temp', express.static(path.resolve(__dirname, '../data/content/temp')));
