@@ -445,7 +445,7 @@ let vm = new Vue({
                 this._autoHideAlert(0);
                 data = data.body;
                 this.status.current.list = [...data.list];
-                let _index = index = data.index;
+                let _index = index = parseInt(data.index);
                 let length = data.length;
                 this.status.current.index = index;
                 this.status.current.length = length;
@@ -505,7 +505,7 @@ let vm = new Vue({
                 this._autoHideAlert(0);
                 data = data.body;
                 this.status.current.lessonList = [...data.list];
-                let _index = index = data.index;
+                let _index = index = parseInt(data.index);
                 let length = data.length;
                 this.status.current.lessonIndex = index;
                 this.status.current.lessonLength = length;

@@ -8,7 +8,7 @@ let server = express();
 let user = require("./user");
 let content = require("./content");
 let self = require("./self");
-let addInfo = require("./addInfo");
+// let addInfo = require("./addInfo");
 
 module.exports = {
     start: () => {
@@ -160,14 +160,14 @@ module.exports = {
             res.send(content.getLesson(decodeURIComponent(req.query.name), req.query.index));
         });
 
-        server.use('/info_next', function(req, res) {
-            res.send(addInfo.next());
-        });
+        // server.use('/info_next', function(req, res) {
+        //     res.send(addInfo.next());
+        // });
 
-        server.use('/info_save', function(req, res) {
-            // console.log(decodeURIComponent(req.query.data))
-            res.send(addInfo.save(JSON.parse(decodeURIComponent(req.query.data))));
-        });
+        // server.use('/info_save', function(req, res) {
+        //     // console.log(decodeURIComponent(req.query.data))
+        //     res.send(addInfo.save(JSON.parse(decodeURIComponent(req.query.data))));
+        // });
 
         // server.use('/save', function (req, res) {
         //     if(req.body.bossId.indexOf("爆操") == -1) {
