@@ -252,6 +252,12 @@ let vm = new Vue({
             if (domId.get('u_f_f').files.length > 0) {
                 let f = domId.get('u_f_f').files[0];
                 this._doUpload(f);
+                if (f.type.indexOf("video") != -1) {
+                    this.isAlert = true;
+                    this.alertContent = `<span>视频暂不支持预览，可以直接点击上传~</span>`;
+                    this._autoHideAlert(0.7);
+                    return;
+                }
                 let reads = new FileReader();
                 reads.readAsDataURL(f);
                 reads.onload = function(e) {
