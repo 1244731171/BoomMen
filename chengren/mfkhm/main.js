@@ -25,7 +25,7 @@ let isLast = false;
 let afterDownloadAll = () => {
     if (isDownload && isLast) {
         if (!hasError) {
-            console.log(id+" hasError");
+            console.log(id + " hasError");
         }
         out();
         doNext();
@@ -33,7 +33,7 @@ let afterDownloadAll = () => {
 }
 
 let startWith = (id) => {
-    if(id){
+    if (id) {
         let index = bookList.indexOf(id);
         bookList = bookList.slice(index);
     }
@@ -41,7 +41,7 @@ let startWith = (id) => {
 
 let doNext = (_id) => {
     id = _id || bookList.shift();
-    if(!id){
+    if (!id) {
         return console.log("ALL is Done!");
     }
     _bookInfo = {};
@@ -70,8 +70,7 @@ let doNext = (_id) => {
             } else {
                 log('null json');
             }
-        } catch (e) {
-        }
+        } catch (e) {}
 
         _bookInfo = localBookInfo || {};
 
@@ -82,7 +81,7 @@ let doNext = (_id) => {
         charpterIndexStart = _bookInfo.chapters.length;
         try {
             fs.mkdirSync(`e:/hanman2/${_bookInfo.name}/`);
-        } catch (error) { }
+        } catch (error) {}
         let checkNextChapter = (chapters, index) => {
             let chapterUrl = chapters[index];
             if (chapterUrl) {
@@ -99,7 +98,7 @@ let doNext = (_id) => {
 
                     try {
                         fs.mkdirSync(_chapterInfo.path);
-                    } catch (error) { }
+                    } catch (error) {}
 
                     let i = 1;
                     let urls = [];
@@ -137,5 +136,5 @@ let doNext = (_id) => {
     });
 }
 
-startWith(293);
+startWith(426);
 doNext();
