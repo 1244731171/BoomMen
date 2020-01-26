@@ -248,22 +248,29 @@ let vm = new Vue({
             if (!domId.get('uploadImg')) {
                 domId.set('uploadImg', document.querySelector("#uploadImg"));
             }
+            if (!domId.get('uploadVideo')) {
+                domId.set('uploadVideo', document.querySelector("#uploadVideo"));
+            }
             domId.get('uploadImg').classList.add("dn");
+            domId.get('uploadVideo').classList.add("dn");
             if (domId.get('u_f_f').files.length > 0) {
                 let f = domId.get('u_f_f').files[0];
-                this._doUpload(f);
+                // this._doUpload(f);
                 if (f.type.indexOf("video") != -1) {
-                    this.isAlert = true;
-                    this.alertContent = `<span>视频暂不支持预览，可以直接点击上传~</span>`;
-                    this._autoHideAlert(0.7);
-                    return;
+                    let reads = new FileReader();
+                    reads.readAsDataURL(f);
+                    reads.onload = function(e) {
+                        domId.get('uploadVideo').src = this.result;
+                        domId.get('uploadVideo').classList.remove("dn");
+                    };
+                } else if (f.type.indexOf("image") != -1) {
+                    let reads = new FileReader();
+                    reads.readAsDataURL(f);
+                    reads.onload = function(e) {
+                        domId.get('uploadImg').src = this.result;
+                        domId.get('uploadImg').classList.remove("dn");
+                    };
                 }
-                let reads = new FileReader();
-                reads.readAsDataURL(f);
-                reads.onload = function(e) {
-                    domId.get('uploadImg').src = this.result;
-                    domId.get('uploadImg').classList.remove("dn");
-                };
                 domId.get('doUploadBtn').classList.remove("dn");
             } else {
                 domId.get('doUploadBtn').classList.add("dn");
