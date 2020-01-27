@@ -8,6 +8,7 @@ let server = express();
 let user = require("./user");
 let content = require("./content");
 let self = require("./self");
+let log = require("./log");
 // let addInfo = require("./addInfo");
 
 module.exports = {
