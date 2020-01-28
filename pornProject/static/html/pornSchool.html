@@ -113,6 +113,47 @@
         </main>
         <!--
             ==========================
+            MINE
+            ==========================
+        -->
+        <main v-if="status.current.type === 'mine'" class="main">
+            <header class="mainHeader">
+                <h1>
+                    我的肉体
+                </h1>
+            </header>
+            <article>
+                <section v-for="info in status.current.mineList">
+                    <header class="listHeader"></header>
+                    <content class="listContent">
+                        <div v-if="info.type=='img'" class="imgCover" @click.stop="_openFull($event, info.type)"></div>
+                        <img v-if="info.type=='img'" :src="info.src" :alt="info.txt" @click.stop="showDetail(info)">
+                        <video v-if="info.type=='video'" :src="info.src" controls></video>
+                    </content>
+                    <footer>
+                        <span class="listDes" v-text="info.txt"></span>
+                    </footer>
+                </section>
+                <footer class="pages">
+                    <div class="prev btntxt" @click.stop="gotopage(status.current.mineIndex-1)">‹ Prev</div>
+                    <div class="num">
+                        <ul class="numList">
+                            <template v-for="num in status.current.minePages">
+                                <li v-if="num === '...'" class="pageNum dot">
+                                    <span v-text="num"></span>
+                                </li>
+                                <li v-else :class="'pageNum '+(num==status.current.mineIndex?'current':'')" @click.stop="gotopage(num)">
+                                    <span v-text="num"></span>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <div class="next btntxt" @click.stop="gotopage(status.current.mineIndex+1)">Next ›</div>
+                </footer>
+            </article>
+        </main>
+        <!--
+            ==========================
             SIGNIN
             ==========================
         -->

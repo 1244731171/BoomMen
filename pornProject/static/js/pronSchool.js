@@ -34,7 +34,11 @@ let vm = new Vue({
                     lessonList: [],
                     lessonIndex: 0,
                     lessonPages: ['1'],
-                    lessonLength: 0
+                    lessonLength: 0,
+                    mineList: [],
+                    mineIndex: 0,
+                    minePages: ['1'],
+                    mineLength: 0
                 },
                 next: {
 
@@ -216,10 +220,18 @@ let vm = new Vue({
         gotopage(num) {
             this.isAlert = true;
             this.alertContent = `<span>准备跳转第 ${num} 页</span>`;
-            if (this.status.current.type == "hot") {
-                this.getHot(num);
-            } else if (this.status.current.type == "lesson") {
-                this.getLesson(this.status.current.lessonText, num);
+            switch (this.status.current.type) {
+                case "hot":
+                    this.getHot(num);
+                    break;
+                case "lesson":
+                    this.getLesson(this.status.current.lessonText, num);
+                    break;
+                case "mine":
+                    this.getMine(num)
+                    break;
+                default:
+                    break;
             }
         },
         setEmail() {},
@@ -255,7 +267,7 @@ let vm = new Vue({
             domId.get('uploadVideo').classList.add("dn");
             if (domId.get('u_f_f').files.length > 0) {
                 let f = domId.get('u_f_f').files[0];
-                // this._doUpload(f);
+                this._doUpload(f);
                 if (f.type.indexOf("video") != -1) {
                     let reads = new FileReader();
                     reads.readAsDataURL(f);
@@ -287,6 +299,12 @@ let vm = new Vue({
                 return vm.$http.post("/linkFile", {
                     "fileName": currentLocalFileName,
                     "userId": localStorage.getItem("uuid")
+                }, {
+                    emulateJSON: true
+                }).then(function() {
+
+                }).catch(function(result) {
+
                 });
             }).then(function() {
 
@@ -302,6 +320,8 @@ let vm = new Vue({
                     "isPublic": false,
                     "tag": [],
                     "title": ""
+                }, {
+                    emulateJSON: true
                 }).then(function(data) {
                     this.alertContent = data.body.data;
                     this.isAlert = true;
@@ -368,6 +388,8 @@ let vm = new Vue({
                         this.getLesson(this.status.current.lessonText, 1);
                     }
                     break;
+                case 'mine':
+                    this.getMine(1);
                 default:
                     break;
             }
@@ -493,6 +515,53 @@ let vm = new Vue({
                 this.status.current.index = 1;
                 this.status.current.length = 1;
                 this.status.current.pages = [];
+            });
+        },
+        getMine(index) {
+            vm.$http.post(`/getMine`, {
+                "index": index,
+                "userId": localStorage.getItem("uuid")
+            }, {
+                emulateJSON: true
+            }).then(function(data) {
+                this._autoHideAlert(0);
+                data = data.body;
+                this.status.current.mineList = [...data.list];
+                let _index = index = parseInt(data.index);
+                let length = data.length;
+                this.status.current.mineIndex = index;
+                this.status.current.mineLength = length;
+                let arr = [index];
+                if (index >= 5) {
+                    while (index-- > 1 && arr.length < 5) {
+                        arr.unshift(index);
+                    }
+                    while (arr.length < 9 && _index++ < length) {
+                        arr.push(_index)
+                    }
+                } else {
+                    while (arr.length < 5 && _index++ < length) {
+                        arr.push(_index)
+                    }
+                    while (index-- > 1 && arr.length < 9) {
+                        arr.unshift(index);
+                    }
+                }
+                if (arr.length == 9) {
+                    if (length > arr[8]) {
+                        arr.splice(7, 2, '...', length)
+                    }
+                    if (arr[0] >= 2) {
+                        arr.splice(0, 2, 1, '...')
+                    }
+                }
+                this.status.current.minePages = arr;
+            }).catch(function() {
+                this._autoHideAlert(0);
+                this.status.current.mineList = [];
+                this.status.current.mineIndex = 1;
+                this.status.current.mineLength = 1;
+                this.status.current.minePages = [];
             });
         },
         getLessons() {

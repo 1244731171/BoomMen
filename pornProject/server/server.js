@@ -18,6 +18,7 @@ module.exports = {
         server.use(bodyParser.urlencoded({ extended: false }));
         server.use('/', express.static(path.resolve(__dirname, '../static')));
         server.use('/img', express.static(path.resolve(__dirname, '../data/content/img')));
+        server.use('/self', express.static(path.resolve(__dirname, '../data/content/user')));
         server.use('/temp', express.static(path.resolve(__dirname, '../data/content/temp')));
         server.use('/video', express.static(path.resolve(__dirname, '../data/content/video')));
 
@@ -108,9 +109,10 @@ module.exports = {
         });
 
         server.use('/linkFile', function(req, res) {
+            console.log(`server.linkFile: req.body(${JSON.stringify(req.body)})`);
             let userId = req.body.userId;
             let fileName = req.body.fileName;
-            self.linkFile(fileName, userId, );
+            self.linkFile(fileName, userId);
             res.send("linkFile");
         });
 
@@ -146,9 +148,10 @@ module.exports = {
             }
         });
 
-        server.use('/getList', function(req, res) {
+        server.use('/getMine', function(req, res) {
             let userId = req.body.userId;
-            res.send(self.getList(userId));
+            let index = req.body.index;
+            res.send(self.getList(userId, index));
         });
 
         server.use("/getLessons", function(req, res) {

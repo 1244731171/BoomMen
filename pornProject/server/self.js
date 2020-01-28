@@ -13,24 +13,32 @@ let getKey = (len) => {
 
 module.exports = {
     linkFile(fileName, userId) {
+        console.log(`linkFile: userId(${userId}), fileName(${fileName})`);
         let data = [];
         try {
             data = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/self/${userId}.json`)));
         } catch (error) {
             this.createInfo(userId);
         }
+        let type = "img";
+        if (fileName.toLocaleUpperCase().match(".MOV|.MP4")) {
+            type = "video";
+        }
         data.push({
-            path: `../self/${fileName}`,
+            src: `../self/${fileName}`,
             fileName: fileName,
             isActive: false,
             shareKey: getKey(4),
             isPublic: false,
+            type: type,
             title: "",
             tag: []
         });
+        fs.writeFileSync(path.resolve(__dirname, `../data/self/${userId}.json`), JSON.stringify(data));
     },
     activeLink(body) {
         let { userId, fileName, tag, title, isPublic } = body;
+        console.log(`activeLink: userId(${userId}), fileName(${fileName})`);
         let data = [];
         try {
             data = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/self/${userId}.json`)));
@@ -48,6 +56,7 @@ module.exports = {
                 return false;
             }
         });
+        fs.writeFileSync(path.resolve(__dirname, `../data/self/${userId}.json`), JSON.stringify(data));
     },
     passiveLink(fileName, userId) {
         let data = [];
@@ -64,24 +73,28 @@ module.exports = {
                 return false;
             }
         });
+        fs.writeFileSync(path.resolve(__dirname, `../data/self/${userId}.json`), JSON.stringify(data));
     },
-    getList(userId, index = 1, step = 10, isBoss = false) {
+    getList(userId, index = 1, step = 5, isBoss = false) {
         let data = [];
         try {
             data = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/self/${userId}.json`)));
         } catch (error) {
+            console.log(error);
             this.createInfo(userId);
         }
+        let arr = [];
         if (isBoss) {
-            return data;
+            arr = data;
+        } else {
+            arr = data.filter(function(i) {
+                return i.isActive;
+            });
         }
-        let arr = data.filter(function(i) {
-            return i.isActive;
-        });
         return {
-            data: arr.slice((index - 1) * step, index * step),
+            list: arr.slice((index - 1) * step, index * step),
             index: index,
-            step: 10,
+            step: step,
             length: Math.ceil(arr.length / step)
         };
     },
