@@ -97,7 +97,7 @@ module.exports = {
                 form.uploadDir = path.resolve(__dirname, '../data/content/user') // 存储路径
                 form.parse(req, function(err, fileds, files) { // 解析 formData数据
                     if (err) { return console.log(err) }
-                    let path = files.img.path.split("\\");
+                    let path = files.img.path.split("\/");
                     path = path[path.length - 1];
                     res.send({
                         "fileName": path
