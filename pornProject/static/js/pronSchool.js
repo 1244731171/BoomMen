@@ -165,6 +165,7 @@ let vm = new Vue({
                     this._autoHideAlert(1);
                     this._changeType(this.mainId);
                     this.getHot(1);
+                    this.getLessons();
                 } else {
                     this.alertContent = `<span>${data.body.data}</span>`;
                     this.isAlert = true;
