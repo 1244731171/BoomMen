@@ -593,13 +593,13 @@ let vm = new Vue({
             if (needHideLeft) {
                 this.asideBtnClick();
             }
+            document.querySelector("#app").scrollTop = 0;
+            this.status.current.type = 'lesson';
+            this.status.current.lessonText = name;
             this.status.current.lessonList = [];
             document.querySelector(".lesson").querySelectorAll("img").forEach(e => {
                 e.src = "";
             })
-            this.status.current.type = 'lesson';
-            this.status.current.lessonText = name;
-            document.querySelector("#app").scrollTop = 0;
             vm.$http.get(`/getLesson?name=${encodeURIComponent(name)}&index=${index}`).then(function(data) {
                 this._autoHideAlert(0);
                 data = data.body;
