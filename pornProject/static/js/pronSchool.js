@@ -594,12 +594,15 @@ let vm = new Vue({
                 this.asideBtnClick();
             }
             document.querySelector("#app").scrollTop = 0;
-            this.status.current.type = 'lesson';
+            if (this.status.current.type == 'lesson') {
+                document.querySelector(".lesson").querySelectorAll("img").forEach(e => {
+                    e.src = "";
+                });
+            } else {
+                this.status.current.type = 'lesson'
+            }
             this.status.current.lessonText = name;
             this.status.current.lessonList = [];
-            document.querySelector(".lesson").querySelectorAll("img").forEach(e => {
-                e.src = "";
-            })
             vm.$http.get(`/getLesson?name=${encodeURIComponent(name)}&index=${index}`).then(function(data) {
                 this._autoHideAlert(0);
                 data = data.body;
