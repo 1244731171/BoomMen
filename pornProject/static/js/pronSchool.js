@@ -439,7 +439,7 @@ let vm = new Vue({
             e.target.classList.add("dn");
         },
         _openFull(e, type) {
-            if (type === "gif" || type === "jpg") {
+            if (type === "gif" || type === "jpg" || type === "img") {
                 document.querySelector(".closeFull").classList.remove("dn");
                 e.target.parentElement.classList.add("ful");
             }
