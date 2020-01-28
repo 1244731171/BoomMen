@@ -593,6 +593,7 @@ let vm = new Vue({
             if (needHideLeft) {
                 this.asideBtnClick();
             }
+            this.status.current.lessonList = [];
             this.status.current.type = 'lesson';
             this.status.current.lessonText = name;
             document.querySelector("#app").scrollTop = 0;
