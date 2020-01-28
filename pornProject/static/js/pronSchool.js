@@ -669,7 +669,7 @@ let vm = new Vue({
             this.message = [];
             this.status.current = {
                 mainHeaderText: "Hot Lessons in CHINA",
-                type: mainId,
+                type: "hot",
                 list: [],
                 index: 0,
                 pages: ['1'],
