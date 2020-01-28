@@ -278,8 +278,7 @@ i.flagIcon {
     color: #ddd;
 }
 
-.menuBtn:nth-of-type(5),
-.menuBtn:nth-of-type(7) {
+.menuBtn:nth-of-type(6) {
     border-left: 4px solid #1471d9
 }
 
