@@ -696,6 +696,14 @@ let vm = new Vue({
         'status.current.list': {
             deep: true,
             handler(n, o) {}
+        },
+        'status.current.lessonList': {
+            deep: true,
+            handler(n, o) {}
+        },
+        'status.current.mineList': {
+            deep: true,
+            handler(n, o) {}
         }
     }
 });
