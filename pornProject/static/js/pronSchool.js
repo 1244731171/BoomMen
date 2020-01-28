@@ -55,7 +55,8 @@ let vm = new Vue({
             alertContent: "",
             isAlert: false,
             alertTimer: -1,
-            message: []
+            message: [],
+            userSort: []
         }
     },
     methods: {
@@ -234,6 +235,14 @@ let vm = new Vue({
                 default:
                     break;
             }
+        },
+        checkSort() {
+            this._changeType("userSort");
+            this.asideBtnClick();
+            vm.$http.get(`/userSort?userId=${localStorage.getItem("uuid")}`)
+                .then(function(data) {
+                    this.userSort = data.body;
+                });
         },
         setEmail() {},
         setPwd() {},

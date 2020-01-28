@@ -104,5 +104,32 @@ module.exports = {
         } catch (error) {
             console.log('create user zipai list error! ' + error);
         }
+    },
+    sort(userId, isBoss = false) {
+        let list = fs.readdirSync(path.resolve(__dirname, `../data/self/`));
+        let arr = [];
+        list.forEach(e => {
+            if (e.endsWith(".json")) {
+                let data = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/self/${e}`)));
+                let nub = 0;
+                if (isBoss) {
+                    nub = data.length;
+                } else {
+                    nub = data.filter(function(i) {
+                        return i.isActive;
+                    }).length;
+                }
+                let id = e.replace(".json", "")
+                arr.push({
+                    id: id,
+                    isTarget: id === userId,
+                    length: nub
+                });
+            }
+        });
+
+        arr.sort((a, b) => { return b.length - a.length });
+
+        return arr;
     }
 }

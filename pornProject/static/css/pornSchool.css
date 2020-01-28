@@ -278,7 +278,8 @@ i.flagIcon {
     color: #ddd;
 }
 
-.menuBtn:nth-of-type(5) {
+.menuBtn:nth-of-type(5),
+.menuBtn:nth-of-type(7) {
     border-left: 4px solid #1471d9
 }
 
@@ -546,4 +547,60 @@ i.flagIcon {
 #uploadImg {
     width: 100%;
     height: auto;
+}
+
+.user_table {
+    width: 100%;
+    color: #fff;
+    border-collapse: collapse;
+}
+
+.user_table span {
+    vertical-align: middle;
+}
+
+.user_table tr:nth-of-type(odd) {
+    background-color: #262626;
+}
+
+.user_table tr:nth-of-type(even) {
+    background-color: #1e1e1e;
+}
+
+tr td {
+    border-bottom: 1px solid #1471d9;
+    padding: 10 20px;
+}
+
+tr.targetUser {
+    color: #f90;
+    font-weight: 800;
+}
+
+tr.user_head td {
+    border-bottom: 1px solid #f90;
+}
+
+.user_head {
+    text-align: center;
+    font-size: 12px;
+    color: #f90;
+}
+
+.user_id {
+    text-align: left;
+}
+
+.user_len {
+    text-align: right;
+}
+
+.user_no1 {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #f90;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 20px;
 }

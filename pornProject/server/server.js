@@ -162,6 +162,10 @@ module.exports = {
             res.send(content.getLesson(decodeURIComponent(req.query.name), req.query.index));
         });
 
+        server.use("/userSort", function(req, res) {
+            res.send(self.sort(req.query.userId));
+        });
+
         // server.use('/info_next', function(req, res) {
         //     res.send(addInfo.next());
         // });
