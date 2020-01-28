@@ -58,7 +58,8 @@ module.exports = {
         });
         fs.writeFileSync(path.resolve(__dirname, `../data/self/${userId}.json`), JSON.stringify(data));
     },
-    passiveLink(fileName, userId) {
+    passiveLink(body) {
+        let { userId, fileName } = body;
         let data = [];
         try {
             data = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/self/${userId}.json`)));
@@ -66,6 +67,8 @@ module.exports = {
             this.createInfo(userId);
         }
         data.some(function(info) {
+            // console.log(JSON.stringify(info))
+            // console.log(JSON.stringify(body))
             if (info.fileName === fileName) {
                 info.isActive = false;
                 return true;
@@ -88,6 +91,8 @@ module.exports = {
             arr = data;
         } else {
             arr = data.filter(function(i) {
+                delete i.isPublic;
+                delete i.shareKey;
                 return i.isActive;
             });
         }

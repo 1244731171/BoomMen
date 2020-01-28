@@ -132,6 +132,10 @@
                     </content>
                     <footer>
                         <span class="listDes" v-text="info.txt"></span>
+                        <div class="mineBtns">
+                            <button class="delete btn" @click.stop="deleteSelf(info.fileName)">&nbsp;</button>
+                            <button class="share btn" @click.stop="shareSelf(info.fileName)">&nbsp;</button>
+                        </div>
                     </footer>
                 </section>
                 <footer class="pages">
@@ -340,8 +344,15 @@
                 </div>
             </template>
         </aside>
-        <div v-if="isAlert" class="alertDiv">
+        <div v-if="isAlert || isConfirm" class="alertDiv">
             <div class="alert" v-if="isAlert" v-html='alertContent'></div>
+            <div class="confirm" v-if="isConfirm">
+                <div class="confirmContent" v-html='confirmContent'></div>
+                <div class="confirmBtns">
+                    <button class="c_ensure" @click.stop="ensure">确认</button>
+                    <button class="c_cancel" @click.stop="cancel">取消</button>
+                </div>
+            </div>
         </div>
         <div class="closeFull dn" @click.stop="_closeFull"></div>
     </div>

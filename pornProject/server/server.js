@@ -97,7 +97,10 @@ module.exports = {
                 form.uploadDir = path.resolve(__dirname, '../data/content/user') // 存储路径
                 form.parse(req, function(err, fileds, files) { // 解析 formData数据
                     if (err) { return console.log(err) }
-                    let path = files.img.path.split("\/");
+                    let path = files.img.path;
+                    path = path.replace(/\\/g, '/');
+                    path = path.split("/");
+                    // console.log(`path: ${files.img.path}`);
                     path = path[path.length - 1];
                     res.send({
                         "fileName": path
@@ -132,10 +135,8 @@ module.exports = {
         });
 
         server.use('/passiveLink', function(req, res) {
-            let userId = req.body.userId;
-            let fileName = req.body.fileName;
             try {
-                self.passiveLink(fileName, userId);
+                self.passiveLink(req.body);
                 res.send({
                     result: true,
                     data: "删除成功！"
@@ -143,7 +144,7 @@ module.exports = {
             } catch (error) {
                 res.send({
                     result: false,
-                    data: "删除失败！"
+                    data: "删除失败！请稍后重试"
                 });
             }
         });

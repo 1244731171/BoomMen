@@ -1,6 +1,7 @@
 let errorList = new Map();
 let domId = new Map();
 let currentLocalFileName = "";
+let confirmPromise = {};
 
 let vm = new Vue({
     el: "#app",
@@ -54,6 +55,8 @@ let vm = new Vue({
             },
             alertContent: "",
             isAlert: false,
+            confirmContent: "",
+            isConfirm: false,
             alertTimer: -1,
             message: [],
             userSort: []
@@ -90,8 +93,7 @@ let vm = new Vue({
                 document.querySelector('#s_p_e').classList.remove("dn");
             }
             if (errorList.size > 0) {
-                this.alertContent = '<span>注册信息有错误！</span>';
-                this.isAlert = true;
+                this._alert("<span>注册信息有错误！</span>");
                 this._autoHideAlert(0.7);
                 return;
             }
@@ -103,8 +105,7 @@ let vm = new Vue({
                 if (data.body.result) {
                     this.clearUserInfo();
                     document.querySelector('#s_p_i_2').value = "";
-                    this.alertContent = `<span>${data.body.data}</span>`;
-                    this.isAlert = true;
+                    this._alert(`<span>${data.body.data}</span>`);
                     this._autoHideAlert(0.7);
                     this.asideBtnClick();
                 } else {
@@ -114,14 +115,12 @@ let vm = new Vue({
                         document.querySelector('#error_id').classList.remove("dn");
                         errorList.set("id", 1);
                     } else {
-                        this.alertContent = `<span>${data.body.data}</span>`;
-                        this.isAlert = true;
+                        this._alert(`<span>${data.body.data}</span>`);
                         this._autoHideAlert(0.7);
                     }
                 }
             }).catch(function(data) {
-                this.alertContent = `<span>${data.body.data || "服务器错误！请稍后重试"}</span>`;
-                this.isAlert = true;
+                this._alert(`<span>${data.body.data || "服务器错误！请稍后重试"}</span>`);
                 this._autoHideAlert(0.7);
             });
         },
@@ -143,8 +142,7 @@ let vm = new Vue({
                 document.querySelector('#l_p_e').classList.remove("dn");
             }
             if (errorList.size > 0) {
-                this.alertContent = '<span>登录信息有错误！</span>';
-                this.isAlert = true;
+                this._alert(`<span>登录信息有错误！</span>`);
                 this._autoHideAlert(0.7);
                 return;
             }
@@ -155,8 +153,7 @@ let vm = new Vue({
             }).then(function(data) {
                 if (data.body.result) {
                     data = data.body;
-                    this.alertContent = `<span>${data.data}</span>`;
-                    this.isAlert = true;
+                    this._alert(`<span>${data.data}</span>`);
                     this.user.id = data.info.id;
                     localStorage.setItem("uuid", data.info.id);
                     this.user.name = data.info.name;
@@ -168,13 +165,11 @@ let vm = new Vue({
                     this.getHot(1);
                     this.getLessons();
                 } else {
-                    this.alertContent = `<span>${data.body.data}</span>`;
-                    this.isAlert = true;
+                    this._alert(`<span>${data.body.data}</span>`);
                     this._autoHideAlert(0.7);
                 }
             }).catch(function(data) {
-                this.alertContent = `<span>${data.body.data || "服务器错误！请稍后重试"}</span>`;
-                this.isAlert = true;
+                this._alert(`<span>${data.body.data || "服务器错误！请稍后重试"}</span>`);
                 this._autoHideAlert(0.7);
             });
         },
@@ -188,23 +183,20 @@ let vm = new Vue({
         logout(e) {
             e.stopPropagation();
             this.clearUserInfo();
-            this.alertContent = '<span>登出完成！</span>';
-            this.isAlert = true;
+            this._alert(`<span>登出完成！</span>`);
             this._autoHideAlert(0.7);
         },
         showMessage(e) {
             e.stopPropagation();
             localStorage.removeItem("messageInfo");
-            this.alertContent = this.message.shift();
-            this.isAlert = true;
+            this._alert(`<span>${this.message.shift()}</span>`);
         },
         upload(e) {
             if (this.user.isLogin) {
                 this._changeType("upload");
                 this.asideBtnClick();
             } else {
-                this.alertContent = '<span>请先登录！</span>';
-                this.isAlert = true;
+                this._alert(`<span>请先登录！</span>`);
                 this._autoHideAlert(0.7);
                 e.stopPropagation();
             }
@@ -220,8 +212,7 @@ let vm = new Vue({
 
         },
         gotopage(num) {
-            this.isAlert = true;
-            this.alertContent = `<span>准备跳转第 ${num} 页</span>`;
+            this._alert(`<span>准备跳转第 ${num} 页</span>`);
             switch (this.status.current.type) {
                 case "hot":
                     this.getHot(num);
@@ -333,22 +324,18 @@ let vm = new Vue({
                 }, {
                     emulateJSON: true
                 }).then(function(data) {
-                    this.alertContent = data.body.data;
-                    this.isAlert = true;
+                    this._alert(`<span>${data.body.data}</span>`);
                     this._autoHideAlert(0.7);
                 }).catch(function() {
-                    this.alertContent = "上传失败！请稍后重试";
-                    this.isAlert = true;
+                    this._alert("<span>上传失败！请稍后重试</span>");
                     this._autoHideAlert(0.7);
                 });
             } else if (domId.get('u_f_f').files[0]) {
                 this._doUpload(domId.get('u_f_f').files[0]);
-                this.alertContent = "上传失败！请稍后重试";
-                this.isAlert = true;
+                this._alert("<span>上传失败！请稍后重试</span>");
                 this._autoHideAlert(0.7);
             } else {
-                this.alertContent = "上传失败！请稍后重试";
-                this.isAlert = true;
+                this._alert("<span>上传失败！请稍后重试</span>");
                 this._autoHideAlert(0.7);
             }
         },
@@ -386,6 +373,9 @@ let vm = new Vue({
             }
         },
         _changeType(type) {
+            if (this.status.current.type == type) {
+                return;
+            }
             switch (type) {
                 case 'hot':
                     this.status.last.mainHeaderText = this.status.current.mainHeaderText;
@@ -406,13 +396,22 @@ let vm = new Vue({
             this.status.last.type = this.status.current.type;
             this.status.current.type = type;
         },
+        _alert(str) {
+            this.isAlert = true;
+            this.alertContent = str;
+        },
         _autoHideAlert(time) {
             time = time * 1000;
             clearTimeout(this.alertTimer);
-            this.alertTimer = setTimeout(() => {
+            if (!time) {
                 this.isAlert = false;
                 this.alertContent = '';
-            }, time);
+            } else {
+                this.alertTimer = setTimeout(() => {
+                    this.isAlert = false;
+                    this.alertContent = '';
+                }, time);
+            }
         },
         _checkEmpty(inputId, errorId, type) {
             if (!domId.get(inputId)) {
@@ -480,8 +479,8 @@ let vm = new Vue({
                 });
             }
         },
-        getHot(num = 1) {
-            if (this.status.current.index == num) {
+        getHot(num = 1, force = false) {
+            if (this.status.current.index == num && !force) {
                 this._autoHideAlert(0);
                 return;
             }
@@ -527,7 +526,11 @@ let vm = new Vue({
                 this.status.current.pages = [];
             });
         },
-        getMine(index) {
+        getMine(index = 1, force = false) {
+            if (this.status.current.mineIndex == index && !force) {
+                this._autoHideAlert(0);
+                return;
+            }
             vm.$http.post(`/getMine`, {
                 "index": index,
                 "userId": localStorage.getItem("uuid")
@@ -569,7 +572,7 @@ let vm = new Vue({
             }).catch(function() {
                 this._autoHideAlert(0);
                 this.status.current.mineList = [];
-                this.status.current.mineIndex = 1;
+                this.status.current.mineIndex = 0;
                 this.status.current.mineLength = 1;
                 this.status.current.minePages = [];
             });
@@ -628,6 +631,26 @@ let vm = new Vue({
                 this.status.current.lessonPages = arr;
             });
         },
+        shareSelf(fileName) {},
+        deleteSelf(fileName) {
+            this._confirm(`<span>确认删除</span>`).then(result => {
+                if (result) {
+                    vm.$http.post("/passiveLink", {
+                        "fileName": fileName,
+                        "userId": localStorage.getItem("uuid")
+                    }, {
+                        emulateJSON: true
+                    }).then(function(data) {
+                        this._alert(`<span>${data.body.data}</span>`);
+                        this._autoHideAlert(0.7);
+                        this.getMine(1, true);
+                    }).catch(function() {
+                        this._alert("<span>删除失败！请稍后重试</span>");
+                        this._autoHideAlert(0.7);
+                    });
+                }
+            });
+        },
         clearUserInfo() {
             this.user = {
                 name: "",
@@ -641,6 +664,28 @@ let vm = new Vue({
             localStorage.removeItem("islogin");
             localStorage.removeItem("checkMessageDate");
             localStorage.removeItem("messageInfo");
+        },
+        _confirm(str) {
+            this.confirmContent = str;
+            this.isConfirm = true;
+            return new Promise(function(resolve, reject) {
+                confirmPromise.ensure = function() {
+                    resolve(true);
+                };
+                confirmPromise.cancel = function() {
+                    resolve(false);
+                };
+            });
+        },
+        cancel() {
+            this.confirmContent = "";
+            this.isConfirm = false;
+            confirmPromise.cancel();
+        },
+        ensure() {
+            this.confirmContent = "";
+            this.isConfirm = false;
+            confirmPromise.ensure();
         }
     },
     watch: {

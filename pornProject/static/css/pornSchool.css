@@ -292,7 +292,8 @@ i.flagIcon {
     left: 0;
 }
 
-.alert {
+.alert,
+.confirm {
     border-radius: 5px;
     border-color: #000;
     margin: auto;
@@ -302,6 +303,8 @@ i.flagIcon {
     border: 2px solid #f90;
     background-color: #333;
 }
+
+.confirmBtn {}
 
 .signinForm,
 .loginForm,
@@ -603,4 +606,59 @@ tr.user_head td {
     text-align: center;
     line-height: 20px;
     background: url(../img/crowd3.png) no-repeat 0px 0px/ 20px 20px;
+}
+
+.mineBtns {
+    text-align: right;
+    position: relative;
+    right: 10px;
+}
+
+.delete,
+.share {
+    padding: 0 30px;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 4px;
+    box-shadow: none;
+    border: 1px solid #f90;
+    background-color: #f90;
+}
+
+.delete {
+    background: #f90 url(../img/del.png) no-repeat center / 20px 20px;
+}
+
+.share {
+    background: #f90 url(../img/sha.png) no-repeat center / 20px 20px;
+}
+
+.confirmContent {
+    margin-bottom: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.confirm {
+    padding-bottom: 10px !important;
+}
+
+.c_ensure,
+.c_cancel {
+    margin: 0 10px;
+    padding: 3 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    display: inline-block;
+    border: 2px solid #f90;
+    box-shadow: none;
+    line-height: 20px;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #2f2f2f;
+    color: #acacac;
 }
