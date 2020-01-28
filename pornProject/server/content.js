@@ -21,7 +21,7 @@ module.exports = {
         }
         return arr.reverse();
     },
-    getLesson(name, index = 1, step = 5, isBoss = false) {
+    getLesson(name, index = 1, step = 3, isBoss = false) {
         let arr = [];
         let content = lessonData[name];
         for (let key in content) {
