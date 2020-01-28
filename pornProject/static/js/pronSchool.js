@@ -667,6 +667,24 @@ let vm = new Vue({
                 email: ""
             };
             this.message = [];
+            this.status.current = {
+                mainHeaderText: "Hot Lessons in CHINA",
+                type: mainId,
+                list: [],
+                index: 0,
+                pages: ['1'],
+                length: 0,
+                lessons: [],
+                lessonText: "",
+                lessonList: [],
+                lessonIndex: 0,
+                lessonPages: ['1'],
+                lessonLength: 0,
+                mineList: [],
+                mineIndex: 0,
+                minePages: ['1'],
+                mineLength: 0
+            };
             localStorage.removeItem("uuid");
             localStorage.removeItem("islogin");
             localStorage.removeItem("checkMessageDate");
