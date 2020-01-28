@@ -594,6 +594,9 @@ let vm = new Vue({
                 this.asideBtnClick();
             }
             this.status.current.lessonList = [];
+            document.querySelector(".lesson").querySelectorAll("img").forEach(e => {
+                e.src = "";
+            })
             this.status.current.type = 'lesson';
             this.status.current.lessonText = name;
             document.querySelector("#app").scrollTop = 0;
