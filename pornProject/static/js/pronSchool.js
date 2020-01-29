@@ -2,6 +2,7 @@ let errorList = new Map();
 let domId = new Map();
 let currentLocalFileName = "";
 let confirmPromise = {};
+let isChangeFile = false;
 
 let vm = new Vue({
     el: "#app",
@@ -267,6 +268,7 @@ let vm = new Vue({
             domId.get('uploadImg').classList.add("dn");
             domId.get('uploadVideo').classList.add("dn");
             if (domId.get('u_f_f').files.length > 0) {
+                isChangeFile = true;
                 let f = domId.get('u_f_f').files[0];
                 this._doUpload(f);
                 if (f.type.indexOf("video") != -1) {

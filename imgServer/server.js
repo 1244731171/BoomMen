@@ -53,7 +53,11 @@ module.exports = {
             });
             console.log(str)
             console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 收到请求`);
-            // fs.writeFileSync(path.resolve(__dirname, './list.txt'), str);
+            try {
+                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), `<span>${str}</span>`);
+            } catch (error) {
+
+            }
             let input = readlineSync.question("need output:");
             switch (input.charAt(0)) {
                 case "s":
