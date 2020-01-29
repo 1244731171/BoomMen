@@ -212,8 +212,12 @@ let vm = new Vue({
 
         },
         gotopage(num) {
+            let c = this.status.current;
+            if (num < 1 || num > c[c.type == "hot" ? "length" : (c.type + 'Length')]) {
+                return;
+            }
             this._alert(`<span>准备跳转第 ${num} 页</span>`);
-            switch (this.status.current.type) {
+            switch (c.type) {
                 case "hot":
                     this.getHot(num);
                     break;
@@ -587,7 +591,7 @@ let vm = new Vue({
             });
         },
         getMine(index = 1, force = false) {
-            if (this.status.current.mineIndex == index && !force) {
+            if (this.status.current.type == 'mine' && this.status.current.mineIndex == index && !force) {
                 this._autoHideAlert(0);
                 return;
             }
