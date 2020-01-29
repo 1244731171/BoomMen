@@ -1,8 +1,11 @@
 let errorList = new Map();
 let domId = new Map();
 let currentLocalFileName = "";
+let isLinked = false;
+let isUpload = false;
 let confirmPromise = {};
 let isChangeFile = false;
+let c_f_n = "";
 
 let vm = new Vue({
     el: "#app",
@@ -265,10 +268,10 @@ let vm = new Vue({
             if (!domId.get('uploadVideo')) {
                 domId.set('uploadVideo', document.querySelector("#uploadVideo"));
             }
+            isChangeFile = true;
             domId.get('uploadImg').classList.add("dn");
             domId.get('uploadVideo').classList.add("dn");
             if (domId.get('u_f_f').files.length > 0) {
-                isChangeFile = true;
                 let f = domId.get('u_f_f').files[0];
                 this._doUpload(f);
                 if (f.type.indexOf("video") != -1) {
@@ -297,26 +300,34 @@ let vm = new Vue({
             // formData.append('size', f.size);
             // formData.append('type', f.type);
             formData.append('img', f);
+            isUpload = false;
             vm.$http.post(`/upload`, formData).then(function(data) {
                 currentLocalFileName = data.body.fileName;
-                return vm.$http.post("/linkFile", {
+                isLinked = false;
+                isUpload = true;
+                vm.$http.post("/linkFile", {
                     "fileName": currentLocalFileName,
                     "userId": localStorage.getItem("uuid")
                 }, {
                     emulateJSON: true
                 }).then(function() {
-
+                    isLinked = true;
                 }).catch(function(result) {
-
+                    isLinked = false;
+                    isUpload = false;
                 });
-            }).then(function() {
-
             }).catch(function(result) {
-
+                isUpload = false;
+                isLinked = false;
             });
         },
         doUpload() {
-            if (currentLocalFileName) {
+            if (!isChangeFile) {
+                this._alert(`<span>请勿重复上传</span>`);
+                this._autoHideAlert(0.7);
+                return;
+            }
+            if (isLinked && isUpload) {
                 vm.$http.post("/activeLink", {
                     "fileName": currentLocalFileName,
                     "userId": localStorage.getItem("uuid"),
@@ -326,6 +337,7 @@ let vm = new Vue({
                 }, {
                     emulateJSON: true
                 }).then(function(data) {
+                    isChangeFile = false;
                     this._alert(`<span>${data.body.data}</span>`);
                     this._autoHideAlert(0.7);
                 }).catch(function() {
@@ -334,10 +346,10 @@ let vm = new Vue({
                 });
             } else if (domId.get('u_f_f').files[0]) {
                 this._doUpload(domId.get('u_f_f').files[0]);
-                this._alert("<span>上传失败！请稍后重试</span>");
+                this._alert("<span>上网络有点差，请稍后重试</span>");
                 this._autoHideAlert(0.7);
             } else {
-                this._alert("<span>上传失败！请稍后重试</span>");
+                this._alert("<span>请添加文件后再上传</span>");
                 this._autoHideAlert(0.7);
             }
         },
@@ -533,6 +545,7 @@ let vm = new Vue({
                 this._autoHideAlert(0);
                 return;
             }
+            document.querySelector("#app").scrollTop = 0;
             vm.$http.post(`/getMine`, {
                 "index": index,
                 "userId": localStorage.getItem("uuid")
