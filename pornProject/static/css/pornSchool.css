@@ -546,7 +546,8 @@ i.flagIcon {
     margin: 0 auto;
 }
 
-#uploadImg {
+.uploadImg,
+.uploadVideo {
     width: 100%;
     height: auto;
 }

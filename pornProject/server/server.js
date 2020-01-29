@@ -8,8 +8,12 @@ let server = express();
 let user = require("./user");
 let content = require("./content");
 let self = require("./self");
-let log = require("./log");
+// let log = require("./log");
 // let addInfo = require("./addInfo");
+
+let log = (str) => {
+    console.log(str);
+}
 
 module.exports = {
     start: () => {
@@ -52,10 +56,10 @@ module.exports = {
                 if (result.result == 1) {
                     self.createInfo(data.id)
                 }
-                console.log('siginin ==> ' + JSON.stringify(result));
+                log('siginin ==> ' + JSON.stringify(result));
                 res.send(result);
             }).catch(function(result) {
-                console.log('siginin Error ==> ' + JSON.stringify(result));
+                log('siginin Error ==> ' + JSON.stringify(result));
                 res.send(result);
             });
         });
@@ -82,57 +86,86 @@ module.exports = {
             content.getHot(index).then(function(data) {
                 res.send(data);
             }).catch(function(e) {
-                console.log(e);
+                log(e);
                 res.send("getHot");
             })
         });
 
         server.use('/upload', function(req, res) {
-            console.log("upload img");
+            log("upload img");
             try {
+                // log(JSON.stringify(req.body)) // {}
                 let form = new formidable.IncomingForm();
                 form.encoding = 'utf-8'; // 编码
                 form.keepExtensions = true; // 保留扩展名
                 form.maxFieldsSize = 20 * 1024 * 1024; // 文件大小
                 form.uploadDir = path.resolve(__dirname, '../data/content/user') // 存储路径
                 form.parse(req, function(err, fileds, files) { // 解析 formData数据
-                    if (err) { return console.log(err) }
-                    let path = files.img.path;
-                    path = path.replace(/\\/g, '/');
-                    path = path.split("/");
-                    // console.log(`path: ${files.img.path}`);
-                    path = path[path.length - 1];
+                    if (err) { return log(err) }
+                    // log(typeof files); // object
+                    // log(JSON.stringify(files))
+                    let paths = [];
+                    for (let key in files) {
+                        let path = files[key].path;
+                        path = path.replace(/\\/g, '/');
+                        path = path.split("/");
+                        path = path[path.length - 1];
+                        // log(`path: ${files.img.path}`);
+                        paths.push(path);
+                    }
                     res.send({
-                        "fileName": path
+                        "result": true,
+                        "data": paths
                     });
                 });
             } catch (error) {
-                console.log('upload img error! ' + error);
+                log('upload img error! ' + error);
+                res.send({
+                    "result": false,
+                    "data": "上传失败！请稍后重试"
+                });
             }
         });
 
-        server.use('/linkFile', function(req, res) {
-            console.log(`server.linkFile: req.body(${JSON.stringify(req.body)})`);
-            let userId = req.body.userId;
-            let fileName = req.body.fileName;
-            self.linkFile(fileName, userId);
-            res.send("linkFile");
-        });
-
-        server.use('/activeLink', function(req, res) {
+        server.use('/linkAndActiveFile', function(req, res) {
+            log(`server.linkAndActiveFile: req.body(${JSON.stringify(req.body)})`);
             try {
-                self.activeLink(req.body);
+                self.linkAndActiveFile(req.body);
                 res.send({
-                    result: true,
-                    data: "上传成功！"
+                    "result": true,
+                    "data": `上传成功！${req.body.userId},请继续加油哟~`
                 });
             } catch (error) {
+                log(error);
                 res.send({
-                    result: false,
-                    data: "上传失败！请稍后重试"
+                    "result": true,
+                    "data": `上传失败！请稍后重试`
                 });
             }
         });
+
+        // server.use('/linkFile', function(req, res) {
+        //     log(`server.linkFile: req.body(${JSON.stringify(req.body)})`);
+        //     let userId = req.body.userId;
+        //     let fileName = req.body.fileName;
+        //     self.linkFile(fileName, userId);
+        //     res.send("linkFile");
+        // });
+
+        // server.use('/activeLink', function(req, res) {
+        //     try {
+        //         self.activeLink(req.body);
+        //         res.send({
+        //             result: true,
+        //             data: "上传成功！"
+        //         });
+        //     } catch (error) {
+        //         res.send({
+        //             result: false,
+        //             data: "上传失败！请稍后重试"
+        //         });
+        //     }
+        // });
 
         server.use('/passiveLink', function(req, res) {
             try {
@@ -172,7 +205,7 @@ module.exports = {
         // });
 
         // server.use('/info_save', function(req, res) {
-        //     // console.log(decodeURIComponent(req.query.data))
+        //     // log(decodeURIComponent(req.query.data))
         //     res.send(addInfo.save(JSON.parse(decodeURIComponent(req.query.data))));
         // });
 
@@ -197,7 +230,7 @@ module.exports = {
         // });
 
         // server.use('/get', function (req, res) {
-        //     console.log("/get?" + JSON.stringify(req.query));
+        //     log("/get?" + JSON.stringify(req.query));
         //     analysis.get(req.query.id).then((data) => {
         //         res.send(data);
         //     }).catch((e) => {
@@ -205,7 +238,7 @@ module.exports = {
         //     });
         // });
         // server.use('/show', function (req, res) {
-        //     console.log('/show?' + JSON.stringify(req.query));
+        //     log('/show?' + JSON.stringify(req.query));
         //     analysis.show(req.query.id).then((data) => {
         //         res.send(data);
         //     }).catch((e) => {
@@ -215,6 +248,6 @@ module.exports = {
 
 
         let startTime = new Date();
-        console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 启动`);
+        log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 启动`);
     }
 }

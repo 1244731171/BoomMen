@@ -1,11 +1,7 @@
 let errorList = new Map();
 let domId = new Map();
-let currentLocalFileName = "";
-let isLinked = false;
-let isUpload = false;
 let confirmPromise = {};
 let isChangeFile = false;
-let c_f_n = "";
 
 let vm = new Vue({
     el: "#app",
@@ -262,97 +258,147 @@ let vm = new Vue({
             if (!domId.get('doUploadBtn')) {
                 domId.set('doUploadBtn', document.querySelector("#doUploadBtn"));
             }
-            if (!domId.get('uploadImg')) {
-                domId.set('uploadImg', document.querySelector("#uploadImg"));
-            }
-            if (!domId.get('uploadVideo')) {
-                domId.set('uploadVideo', document.querySelector("#uploadVideo"));
+            if (!domId.get('uploadImgDiv')) {
+                domId.set('uploadImgDiv', document.querySelector(".uploadImgDiv"));
             }
             isChangeFile = true;
-            domId.get('uploadImg').classList.add("dn");
-            domId.get('uploadVideo').classList.add("dn");
+            document.querySelectorAll(".uploadImg").forEach(e => {
+                e.remove();
+            });
+            document.querySelectorAll(".uploadVideo").forEach(e => {
+                e.remove();
+            });
+            let p = domId.get('uploadImgDiv');
             if (domId.get('u_f_f').files.length > 0) {
-                let f = domId.get('u_f_f').files[0];
-                this._doUpload(f);
-                if (f.type.indexOf("video") != -1) {
-                    let reads = new FileReader();
-                    reads.readAsDataURL(f);
-                    reads.onload = function(e) {
-                        domId.get('uploadVideo').src = this.result;
-                        domId.get('uploadVideo').classList.remove("dn");
-                    };
-                } else if (f.type.indexOf("image") != -1) {
-                    let reads = new FileReader();
-                    reads.readAsDataURL(f);
-                    reads.onload = function(e) {
-                        domId.get('uploadImg').src = this.result;
-                        domId.get('uploadImg').classList.remove("dn");
-                    };
-                }
+                let fs = [...domId.get('u_f_f').files];
+                fs.forEach(f => {
+                    if (f.type.startsWith("video")) {
+                        let v = document.createElement("video");
+                        v.classList.add("uploadVideo");
+                        v.setAttribute("controls", "controls");
+                        p.append(v);
+                        let reads = new FileReader();
+                        reads.readAsDataURL(f);
+                        reads.onload = function(e) {
+                            v.src = this.result;
+                        };
+                    } else if (f.type.startsWith("image")) {
+                        let i = new Image();
+                        i.classList.add("uploadImg");
+                        p.append(i);
+                        let reads = new FileReader();
+                        reads.readAsDataURL(f);
+                        reads.onload = function(e) {
+                            i.src = this.result;
+                        };
+                    }
+                });
                 domId.get('doUploadBtn').classList.remove("dn");
             } else {
                 domId.get('doUploadBtn').classList.add("dn");
             }
         },
-        _doUpload(f) {
-            let formData = new FormData();
-            // formData.append('name', f.name);
-            // formData.append('size', f.size);
-            // formData.append('type', f.type);
-            formData.append('img', f);
-            isUpload = false;
-            vm.$http.post(`/upload`, formData).then(function(data) {
-                currentLocalFileName = data.body.fileName;
-                isLinked = false;
-                isUpload = true;
-                vm.$http.post("/linkFile", {
-                    "fileName": currentLocalFileName,
-                    "userId": localStorage.getItem("uuid")
-                }, {
-                    emulateJSON: true
-                }).then(function() {
-                    isLinked = true;
-                }).catch(function(result) {
-                    isLinked = false;
-                    isUpload = false;
-                });
-            }).catch(function(result) {
-                isUpload = false;
-                isLinked = false;
-            });
-        },
         doUpload() {
             if (!isChangeFile) {
-                this._alert(`<span>请勿重复上传</span>`);
+                this._alert(`<span>这些文件已经上传过啦，上传些新的吧~</span>`);
                 this._autoHideAlert(0.7);
                 return;
             }
-            if (isLinked && isUpload) {
-                vm.$http.post("/activeLink", {
-                    "fileName": currentLocalFileName,
-                    "userId": localStorage.getItem("uuid"),
-                    "isPublic": false,
-                    "tag": [],
-                    "title": ""
-                }, {
-                    emulateJSON: true
-                }).then(function(data) {
-                    isChangeFile = false;
-                    this._alert(`<span>${data.body.data}</span>`);
-                    this._autoHideAlert(0.7);
-                }).catch(function() {
-                    this._alert("<span>上传失败！请稍后重试</span>");
-                    this._autoHideAlert(0.7);
-                });
-            } else if (domId.get('u_f_f').files[0]) {
-                this._doUpload(domId.get('u_f_f').files[0]);
-                this._alert("<span>上网络有点差，请稍后重试</span>");
-                this._autoHideAlert(0.7);
-            } else {
-                this._alert("<span>请添加文件后再上传</span>");
-                this._autoHideAlert(0.7);
+            let formData = new FormData();
+            let fs = [...domId.get('u_f_f').files];
+            if (fs.length > 1) {
+                this._alert("<span>多文件上传，耗时稍久，请耐心等待~</span>");
             }
+            formData.append("userId", localStorage.getItem("uuid"));
+            fs.forEach((f, i) => {
+                formData.append(`img${i}`, f);
+            });
+            vm.$http.post(`/upload`, formData).then(function(data) {
+                if (data.body.result) {
+                    vm.$http.post("/linkAndActiveFile", {
+                        "fileNames": JSON.stringify(data.body.data),
+                        "userId": localStorage.getItem("uuid")
+                    }, {
+                        emulateJSON: true
+                    }).then(function(data) {
+                        if (data.body.result) {
+                            isChangeFile = false;
+                        }
+                        this._alert(`<span>${data.body.data}</span>`);
+                        this._autoHideAlert(1);
+                    }).catch(function(result) {
+                        this._alert("<span>上传失败！请稍后重试</span>");
+                        this._autoHideAlert(1);
+                    });
+                } else {
+                    this._alert(`<span>${data.body.data}</span>`);
+                    this._autoHideAlert(1);
+                }
+            }).catch(function(error) {
+                console.log(error);
+                this._alert("<span>上传失败！请稍后重试</span>");
+                this._autoHideAlert(1);
+            });
         },
+        // _doUpload(f) {
+        //     let formData = new FormData();
+        //     // formData.append('name', f.name);
+        //     // formData.append('size', f.size);
+        //     // formData.append('type', f.type);
+        //     formData.append('img', f);
+        //     isUpload = false;
+        //     vm.$http.post(`/upload`, formData).then(function(data) {
+        //         currentLocalFileName = data.body.fileName;
+        //         isLinked = false;
+        //         isUpload = true;
+        //         vm.$http.post("/linkFile", {
+        //             "fileName": currentLocalFileName,
+        //             "userId": localStorage.getItem("uuid")
+        //         }, {
+        //             emulateJSON: true
+        //         }).then(function() {
+        //             isLinked = true;
+        //         }).catch(function(result) {
+        //             isLinked = false;
+        //             isUpload = false;
+        //         });
+        //     }).catch(function(result) {
+        //         isUpload = false;
+        //         isLinked = false;
+        //     });
+        // },
+        // doUpload() {
+        //     if (!isChangeFile) {
+        //         this._alert(`<span>请勿重复上传</span>`);
+        //         this._autoHideAlert(0.7);
+        //         return;
+        //     }
+        //     if (isLinked && isUpload) {
+        //         vm.$http.post("/activeLink", {
+        //             "fileName": currentLocalFileName,
+        //             "userId": localStorage.getItem("uuid"),
+        //             "isPublic": false,
+        //             "tag": [],
+        //             "title": ""
+        //         }, {
+        //             emulateJSON: true
+        //         }).then(function(data) {
+        //             isChangeFile = false;
+        //             this._alert(`<span>${data.body.data}</span>`);
+        //             this._autoHideAlert(0.7);
+        //         }).catch(function() {
+        //             this._alert("<span>上传失败！请稍后重试</span>");
+        //             this._autoHideAlert(0.7);
+        //         });
+        //     } else if (domId.get('u_f_f').files[0]) {
+        //         this._doUpload(domId.get('u_f_f').files[0]);
+        //         this._alert("<span>上网络有点差，请稍后重试</span>");
+        //         this._autoHideAlert(0.7);
+        //     } else {
+        //         this._alert("<span>请添加文件后再上传</span>");
+        //         this._autoHideAlert(0.7);
+        //     }
+        // },
         _hideFormError() {
             document.querySelectorAll(".formError").forEach(e => {
                 e.classList.add("dn");

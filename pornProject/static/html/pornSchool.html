@@ -267,12 +267,12 @@
             </header>
             <section class="uploadForm">
                 <div class="uploadImgDiv">
-                    <img src="" alt="" id="uploadImg" class="dn">
-                    <video src="" id="uploadVideo" class="dn" controls></video>
+                    <!-- <img src="" alt="" id="uploadImg" class="dn">
+                    <video src="" id="uploadVideo" class="dn" controls></video> -->
                 </div>
                 <div class="uploadBtn">
                     <!-- <input type="file" accept="image/png,image/jpeg,image/gif" id='u_f_f' class="fileBtn" @change="_choiceFile"> -->
-                    <input type="file" id='u_f_f' class="fileBtn" @change="_choiceFile">
+                    <input type="file" id='u_f_f' class="fileBtn" accept="image/*,video/*" multiple @change="_choiceFile">
                     <span class="uploadBtnSpan">
                         选择上传文件
                     </span>

@@ -12,6 +12,35 @@ let getKey = (len) => {
 }
 
 module.exports = {
+    linkAndActiveFile(info) {
+        let { fileNames, userId } = info;
+        let data = [];
+        try {
+            data = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../data/self/${userId}.json`)));
+        } catch (error) {
+            this.createInfo(userId);
+        }
+        if (typeof fileNames == "string") {
+            fileNames = JSON.parse(fileNames);
+        }
+        fileNames.forEach(fileName => {
+            let type = "img";
+            if (fileName.toLocaleUpperCase().match(".MOV|.MP4")) {
+                type = "video";
+            }
+            data.push({
+                src: `../self/${fileName}`,
+                fileName: fileName,
+                isActive: true,
+                shareKey: getKey(4),
+                isPublic: false,
+                type: type,
+                title: "",
+                tag: []
+            });
+        });
+        fs.writeFileSync(path.resolve(__dirname, `../data/self/${userId}.json`), JSON.stringify(data));
+    },
     linkFile(fileName, userId) {
         console.log(`linkFile: userId(${userId}), fileName(${fileName})`);
         let data = [];
