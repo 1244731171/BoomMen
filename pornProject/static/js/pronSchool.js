@@ -595,6 +595,13 @@ let vm = new Vue({
                 this._autoHideAlert(0);
                 return;
             }
+            if (this.status.current.type == 'mine') {
+                document.querySelector(".mine").querySelectorAll("img").forEach(e => {
+                    e.src = "";
+                });
+            } else {
+                this.status.current.type = 'mine'
+            }
             document.querySelector("#app").scrollTop = 0;
             vm.$http.post(`/getMine`, {
                 "index": index,
