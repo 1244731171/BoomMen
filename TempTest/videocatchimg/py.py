@@ -142,7 +142,7 @@ def video2frames(pathIn='',
 
 
 ##### 测试
-_name = 'IMG_8653'
+_name = 'IMG_9195'
 pathIn = './input/'+_name+'.MOV'
 # video2frames(pathIn, only_output_video_info = True)
 
