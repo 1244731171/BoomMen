@@ -1,4 +1,3 @@
-
 let url = require('url'); // url解析模块
 let fs = require('fs'); // 文件系统模块
 let Request = require('request')
@@ -6,7 +5,7 @@ let d = [];
 
 let ban = 0;
 let getInfo = (id) => {
-    let url = `http://lms.tokyowins.com/appjsonv2/videoMain?app_type=ios&token=iKjFHCJGSXTHCUeoEyBibufJiRULsluN&urlencode=false&user_id=95476&version=1&video_id=${id}`;
+    let url = `http://lms.tokyowins.com/appjsonv2/videoMain?app_type=ios&token=zCGMNYvExZJfauqHUvAVipRqhogMvrUM&urlencode=false&user_id=95476&version=1&video_id=${id}`;
     console.log(url);
     Request(url, { json: true }, (err, res, body) => {
         // console.log(body);
@@ -26,10 +25,10 @@ let getInfo = (id) => {
                 //     });
                 //     writedown(d.join(""));
                 //     writedown2(d1.join(""));
-            }else{
+            } else {
                 ban++;
             }
-        }else{
+        } else {
             ban++;
         }
         if (d.length == 20 || ban > 20) {
@@ -46,4 +45,4 @@ let next = (id) => {
 }
 
 
-getInfo(8486);
+getInfo(8759);

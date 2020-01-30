@@ -1,4 +1,3 @@
-
 let os = require('os');
 let http = require('http'); // http协议模块
 let url = require('url'); // url解析模块
@@ -11,13 +10,13 @@ const formidable = require('formidable');
 global.Buffer = global.Buffer || require('buffer').Buffer;
 
 if (typeof btoa === 'undefined') {
-    global.btoa = function (str) {
+    global.btoa = function(str) {
         return new Buffer(str, 'binary').toString('base64');
     };
 }
 
 if (typeof atob === 'undefined') {
-    global.atob = function (b64Encoded) {
+    global.atob = function(b64Encoded) {
         return new Buffer(b64Encoded, 'base64').toString('binary');
     };
 }
@@ -75,12 +74,10 @@ let waitInput = () => {
 
 let writedown = (str) => {
     fs.open(`.${basePath}/1.html`, 'w', (err, fd) => {
-        if (err) {
-        }
-        str = str || log;//JSON.stringify(log);
+        if (err) {}
+        str = str || log; //JSON.stringify(log);
         fs.writeFile(fd, str, (err) => {
-            if (err) {
-            }
+            if (err) {}
             fs.close(fd, (err) => {
                 // console.log('saved');
             });
@@ -89,12 +86,10 @@ let writedown = (str) => {
 }
 let writedown2 = (str) => {
     fs.open(`.${basePath}/2.html`, 'w', (err, fd) => {
-        if (err) {
-        }
-        str = str || log;//JSON.stringify(log);
+        if (err) {}
+        str = str || log; //JSON.stringify(log);
         fs.writeFile(fd, str, (err) => {
-            if (err) {
-            }
+            if (err) {}
             fs.close(fd, (err) => {
                 // console.log('saved');
             });
@@ -169,7 +164,8 @@ let listener = (request, response) => {
             console.log(`====> real local name: ${pathName}`);
             let contentType = CONTENT_TYPE[fileType];
             let _basePath = [`.${basePath}/${pathName}`, `../../baseJs/${pathName}`, `./base/${pathName}`, `../base/${pathName}`];
-            let i = 0, p, isMatched;
+            let i = 0,
+                p, isMatched;
             while (p = _basePath[i]) {
                 if (fs.existsSync(p)) {
                     response.writeHead(200, { 'content-type': contentType });
@@ -259,7 +255,7 @@ let listener = (request, response) => {
             });
             let type = kv[0];
             let id = kv[1];
-            let token = "iKjFHCJGSXTHCUeoEyBibufJiRULsluN";
+            let token = "zCGMNYvExZJfauqHUvAVipRqhogMvrUM";
             let uv = `http://lms.tokyowins.com/appjsonv2/videoMain?app_type=ios&token=${token}&urlencode=false&user_id=95476&version=1&video_id=${id}`;
             let ua = `http://lms.tokyowins.com/appjsonv2/albumMain?album_id=${id}&app_type=ios&token=${token}&urlencode=false&user_id=95476&version=1`;
 

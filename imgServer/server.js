@@ -54,7 +54,7 @@ module.exports = {
             console.log(str)
             console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 收到请求`);
             try {
-                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), `<span>${str}</span>`);
+                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), str.replace(/\\n/g, "<br>"));
             } catch (error) {
 
             }
