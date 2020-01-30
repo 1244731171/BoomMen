@@ -41,6 +41,7 @@ module.exports = {
                 rootPath = rootPath + "/";
             }
             let str = "";
+            let str2 = "";
             let arr = [];
             data.forEach((e, i) => {
                 // if (e.endsWith(".jpg") || e.endsWith(".JPG") ||
@@ -50,11 +51,12 @@ module.exports = {
                 // }
                 arr.push(rootPath + e);
                 str += (i + ". ======> " + rootPath + e + "\n");
+                str2 += (i + ". ======> " + rootPath + e + "<br>");
             });
             console.log(str)
             console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 收到请求`);
             try {
-                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), str.replace(/\\n/g, "<br>"));
+                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), str2);
             } catch (error) {
 
             }
