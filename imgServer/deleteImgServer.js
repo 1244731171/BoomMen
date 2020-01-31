@@ -1,25 +1,25 @@
 let express = require('express');
 let bodyParser = require('body-parser');
 let path = require('path');
-let formidable = require('formidable');
+// let formidable = require('formidable');
 let fs = require('fs');
 
-let multer = require('multer');
+// let multer = require('multer');
 
 let server = express();
-let readlineSync = require("readline-sync");
+// let readlineSync = require("readline-sync");
 
-let writeHtml = () => {
-    let list = fs.readdirSync(path.resolve(__dirname, '../static/dia/data'));
-    console.log(JSON.stringify(list))
-    let str = "";
-    list.forEach(e => {
-        // str += `<img src="./data/${e}" /><br/>`
-        str += `<a href="./data/${e}" target="blank" /><br/>`
-    });
-    fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), str);
-    console.log('write html 1')
-}
+// let writeHtml = () => {
+//     let list = fs.readdirSync(path.resolve(__dirname, '../static/dia/data'));
+//     console.log(JSON.stringify(list))
+//     let str = "";
+//     list.forEach(e => {
+//         // str += `<img src="./data/${e}" /><br/>`
+//         str += `<a href="./data/${e}" target="blank" /><br/>`
+//     });
+//     fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), str);
+//     console.log('write html 1')
+// }
 
 module.exports = {
     start() {
