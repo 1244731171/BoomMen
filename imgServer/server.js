@@ -14,7 +14,8 @@ let writeHtml = () => {
     console.log(JSON.stringify(list))
     let str = "";
     list.forEach(e => {
-        str += `<img src="./data/${e}" /><br/>`
+        // str += `<img src="./data/${e}" /><br/>`
+        str += `<a href="./data/${e}" target="blank" /><br/>`
     });
     fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), str);
     console.log('write html 1')
