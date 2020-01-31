@@ -3,7 +3,7 @@ let bodyParser = require('body-parser');
 let path = require('path');
 let formidable = require('formidable');
 let fs = require('fs');
-let gm = require('gm');
+let tinify = require('tinify');
 
 let server = express();
 let readlineSync = require("readline-sync");
@@ -24,9 +24,20 @@ let writeHtml = () => {
     console.log('write 1.html');
 }
 
+tinify.key = "R6gxfzz08ZhLyQccf42Qf2NqyHwP73d6"
 let tini = (_path, _spath) => {
-    gm(_path).resize(200).quality(10).write(_spath,
-        function(err) { console.log("err: " + err); })
+    try {
+        tinify.fromFile(_path)
+            .resize({
+                method: "scale",
+                width: 200
+            }).toFile(_spath);
+        console.log("tinify is good!")
+    } catch (error) {
+        console.log("tinify is error!" + error)
+    }
+    // gm(_path).resize(200).quality(10).write(_spath,
+    //     function(err) { console.log("err: " + err); })
 }
 
 module.exports = {
