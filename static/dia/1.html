@@ -1,16 +1,15 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
     <script src="../base/jquery.js"></script>
     <title>1</title>
     <script>
         let deleteAll = (e) => {
-            document.querySelector('a').forEach(d => {
+            document.querySelectorAll('a').forEach(d => {
                 $.ajax({
                     type: "GET",
-                    url: `http://114.116.250.115:8100/?delete=${d.getAttribute("n")}`
+                    url: `http://114.116.250.115:8101/delete?id=${d.getAttribute("n")}`
                         // url: `http:/localhost:8100/?delete=${d.getAttribute("n")}`
                 });
             });
@@ -19,7 +18,7 @@
 </head>
 
 <body>
-    <button click="deleteAll">deleteAll</button> <a href="./data/1.jpg" n="1.jpg" target="blank" />1.jpg<img src="s__1.jpg"><br/><a href="./data/1580481452259.png" n="1580481452259.png" target="blank" />1580481452259.png<img src="s__1580481452259.png"><br/><a href="./data/1580481606227.png" n="1580481606227.png" target="blank" />1580481606227.png<img src="s__1580481606227.png"><br/><a href="./data/1580481644978.png" n="1580481644978.png" target="blank" />1580481644978.png<img src="s__1580481644978.png"><br/><a href="./data/1580481764169.png" n="1580481764169.png" target="blank" />1580481764169.png<img src="s__1580481764169.png"><br/>
+    <button onclick="deleteAll()">deleteAll</button><br> <a href="./data/1580488037738.png" n="1580488037738.png" target="blank" />1580488037738.png<img src="s__1580488037738.png"><br/><a href="./data/1580488328328.png" n="1580488328328.png" target="blank" />1580488328328.png<img src="s__1580488328328.png"><br/><a href="./data/1580488461126.png" n="1580488461126.png" target="blank" />1580488461126.png<img src="s__1580488461126.png"><br/><a href="./data/1580488558653.png" n="1580488558653.png" target="blank" />1580488558653.png<img src="s__1580488558653.png"><br/><a href="./data/upload_3ca6f97a6045e452f7911ae5e8f08faa.png" n="upload_3ca6f97a6045e452f7911ae5e8f08faa.png" target="blank" />upload_3ca6f97a6045e452f7911ae5e8f08faa.png<img src="s__upload_3ca6f97a6045e452f7911ae5e8f08faa.png"><br/><a href="./data/upload_8b0235df946d23252da8d85a837547a1.png" n="upload_8b0235df946d23252da8d85a837547a1.png" target="blank" />upload_8b0235df946d23252da8d85a837547a1.png<img src="s__upload_8b0235df946d23252da8d85a837547a1.png"><br/>
 </body>
 
 </html>

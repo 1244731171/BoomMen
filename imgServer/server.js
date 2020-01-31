@@ -24,23 +24,29 @@ let writeHtml = () => {
     console.log('write 1.html');
 }
 
-tinify.key = "R6gxfzz08ZhLyQccf42Qf2NqyHwP73d6"
-let tini = (_path, _spath) => {
-    setTimeout(() => {
-        try {
-            tinify.fromFile(_path)
-                .resize({
-                    method: "scale",
-                    width: 200
-                }).toFile(_spath);
-            console.log("tinify is good!")
-        } catch (error) {
-            console.log("tinify is error!" + error)
-        }
+tinify.key = "R6gxfzz08ZhLyQccf42Qf2NqyHwP73d6";
+// let tini = (_path, _spath) => {
+//     setTimeout(() => {
+//         try {
+//             tinify.fromFile(_path)
+//                 .resize({
+//                     method: "scale",
+//                     width: 200
+//                 }).toFile(_spath);
+//             console.log("tinify is good!")
+//         } catch (error) {
+//             console.log("tinify is error!" + error)
+//         }
 
-    }, 10);
-    // gm(_path).resize(200).quality(10).write(_spath,
-    //     function(err) { console.log("err: " + err); })
+//     }, 10);
+//     // gm(_path).resize(200).quality(10).write(_spath,
+//     //     function(err) { console.log("err: " + err); })
+// }
+let p = path.resolve(__dirname, './1.txt');
+let checkT = () => {
+    if (!fs.existsSync(p)) {
+        fs.writeFileSync(p, "1");
+    }
 }
 
 module.exports = {
@@ -129,7 +135,8 @@ module.exports = {
                 res.send({
                     "res": "good"
                 });
-                tini(path.resolve(__dirname, `../static/dia/data/${name}`), path.resolve(__dirname, `../static/dia/data/s__${name}`));
+                // tini(path.resolve(__dirname, `../static/dia/data/${name}`), path.resolve(__dirname, `../static/dia/data/s__${name}`));
+                checkT();
                 writeHtml();
             })
         });
