@@ -11,7 +11,8 @@
             // "program": "${workspaceFolder}\\static\\qingyou\\baseServer.js"
             // "program": "${workspaceFolder}\\app\\TripDocument.js"
             // "program": "${workspaceFolder}\\app\\stealDiaImg.js"
-            "program": "${workspaceFolder}\\app\\porn.js"
+            "program": "${workspaceFolder}\\imgServer\\tinify.js"
+            // "program": "${workspaceFolder}\\app\\porn.js"
         }
     ]
 }

@@ -3,9 +3,9 @@ let bodyParser = require('body-parser');
 let path = require('path');
 let formidable = require('formidable');
 let fs = require('fs');
-let images = require('images');
-
-let multer = require('multer');
+// let tinify = require('tinify');
+let gm = require('gm');
+// let multer = require('multer');
 
 let server = express();
 let readlineSync = require("readline-sync");
@@ -18,12 +18,22 @@ let writeHtml = () => {
     let str = "";
     list.forEach(e => {
         if (!e.startsWith("s__")) {
-            str += `<a href="./data/${e}" target="blank" />${e}<img src="${"s__"+e}" n="${e}"><br/>`;
+            str += `<a href="./data/${e}" n="${e}" target="blank" />${e}<img src="${"s__"+e}"><br/>`;
         }
         // str += `<img src="./data/${e}" /><br/>`
     });
     fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), str);
     console.log('write html 1')
+}
+
+let tini = (_path, name) => {
+    // tinify.key = "R6gxfzz08ZhLyQccf42Qf2NqyHwP73d6"
+    // var source = tinify.fromFile(_path);
+    // var resized = source.resize({
+    //     method: "scale",
+    //     width: 300
+    // });
+    // resized.toFile(path.resolve(__dirname, `../static/dia/data/s__${name}`));
 }
 
 module.exports = {
@@ -38,6 +48,8 @@ module.exports = {
             console.log(`log: ${req.query.msg}`);
             res.send("");
         });
+
+        // let is = ["e", "c12", "c6", "s2"]
 
         server.use('/next', function(req, res) {
             // console.log('/next' + JSON.stringify(req.body));
@@ -67,6 +79,7 @@ module.exports = {
 
             }
             let input = readlineSync.question("next => ");
+            // input = is.shift()
             switch (input.charAt(0)) {
                 case "s":
                     res.send("s>" + arr[input.replace("s", "")]);
@@ -100,10 +113,12 @@ module.exports = {
                 let fn = files.img.name.split(".");
                 fn = fn[fn.length - 1];
                 let name = Date.now() + '.' + fn;
-                fs.renameSync(files.img.path, path.resolve(__dirname, `../static/dia/data/${name}`))
-                images(files.img.path).size(300).save(`../static/dia/data/s__${name}`, {
-                    quality: 50
-                })
+                try {
+                    fs.renameSync(files.img.path, path.resolve(__dirname, `../static/dia/data/${name}`))
+                    tini(path.resolve(__dirname, `../static/dia/data/${name}`), name);
+                } catch (error) {
+                    console.log(error)
+                }
                 if (err) { return console.log(err) }
                 res.send({
                     "res": "good"
