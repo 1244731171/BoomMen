@@ -39,10 +39,11 @@ module.exports = {
                 res.send("ok")
             } catch (error) {
                 res.send(error)
+            } finally {
+                clearTimeout(t);
+                t = setTimeout(writeHtml, 100);
             }
 
-            clearTimeout(t);
-            t = setTimeout(writeHtml, 100);
 
         });
 
