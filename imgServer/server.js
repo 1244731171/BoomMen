@@ -67,7 +67,7 @@ module.exports = {
             // console.log(str)
             console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 收到请求`);
             try {
-                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), str2);
+                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), `<html lang="en"><head><meta charset="utf-8"><title>1</title></head><body>${str2}</body></html>`);
             } catch (error) {
 
             }
