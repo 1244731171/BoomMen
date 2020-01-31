@@ -11,6 +11,7 @@ let tini = () => {
     console.log("check!!!")
     if (fs.existsSync(p)) {
         console.log("tinify!!!")
+        fs.unlinkSync(p);
         let list = [...fs.readdirSync(path.resolve(__dirname, `../static/dia/data/`))];
         list.forEach(f => {
             if (!f.startsWith("s__") && f !== "1.jpg" && !fs.existsSync(path.resolve(__dirname, `../static/dia/data/s__${f}`))) {
@@ -21,7 +22,6 @@ let tini = () => {
                 }).toFile(path.resolve(__dirname, `../static/dia/data/s__${f}`));
             }
         });
-        fs.unlinkSync(p);
     }
     setTimeout(tini, 1000);
 }

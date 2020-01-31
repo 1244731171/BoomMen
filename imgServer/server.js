@@ -16,7 +16,7 @@ let writeHtml = () => {
     let str = "";
     list.forEach(e => {
         if (!e.startsWith("s__") && e !== "1.jpg") {
-            str += `<a href="./data/${e}" n="${e}" target="blank" />${e}<img src="${"s__"+e}"><br/>`;
+            str += `<a href="./data/${e}" n="${e}" target="blank" />${e}<img src="./data/${"s__"+e}"><br/>`;
         }
         // str += `<img src="./data/${e}" /><br/>`
     });
