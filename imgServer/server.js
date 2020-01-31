@@ -9,7 +9,6 @@ let server = express();
 let readlineSync = require("readline-sync");
 
 let baseHTML = fs.readFileSync(path.resolve(__dirname, '../static/dia/b.html')).toString();
-console.log(baseHTML)
 
 let writeHtml = () => {
     let list = fs.readdirSync(path.resolve(__dirname, '../static/dia/data'));
