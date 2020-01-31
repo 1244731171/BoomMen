@@ -9,7 +9,7 @@
             document.querySelectorAll('a').forEach(d => {
                 $.ajax({
                     type: "GET",
-                    url: `http://114.116.250.115:8100/?delete=${d.getAttribute("n")}`
+                    url: `http://114.116.250.115:8101/delete?id=${d.getAttribute("n")}`
                         // url: `http:/localhost:8100/?delete=${d.getAttribute("n")}`
                 });
             });

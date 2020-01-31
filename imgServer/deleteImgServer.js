@@ -27,8 +27,6 @@ module.exports = {
         server.use(bodyParser.urlencoded({ extended: false }));
         server.use(express.json())
 
-        server.use('/', express.static(path.resolve(__dirname, './static')));
-
         server.use('/delete', function(req, res) {
             console.log('/delete' + JSON.stringify(req.query.id));
             try {
