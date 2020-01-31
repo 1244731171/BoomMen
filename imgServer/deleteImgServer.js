@@ -9,20 +9,25 @@ let fs = require('fs');
 let server = express();
 // let readlineSync = require("readline-sync");
 
-// let writeHtml = () => {
-//     let list = fs.readdirSync(path.resolve(__dirname, '../static/dia/data'));
-//     console.log(JSON.stringify(list))
-//     let str = "";
-//     list.forEach(e => {
-//         // str += `<img src="./data/${e}" /><br/>`
-//         str += `<a href="./data/${e}" target="blank" /><br/>`
-//     });
-//     fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), str);
-//     console.log('write html 1')
-// }
+let writeHtml = () => {
+    let list = fs.readdirSync(path.resolve(__dirname, '../static/dia/data'));
+    console.log(JSON.stringify(list))
+    let str = "";
+    list.forEach(e => {
+        if (!e.startsWith("s__") && e !== "1.jpg") {
+            str += `<a href="./data/${e}" n="${e}" target="blank" />${e}<img src="${"s__"+e}"><br/>`;
+        }
+        // str += `<img src="./data/${e}" /><br/>`
+    });
+    fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), baseHTML.replace("{{body}}", str));
+    console.log('write 1.html');
+}
 
 module.exports = {
     start() {
+
+        let t = -1;
+
         server.listen(8101);
         server.use(bodyParser.urlencoded({ extended: false }));
         server.use(express.json())
@@ -35,6 +40,10 @@ module.exports = {
             } catch (error) {
                 res.send(error)
             }
+
+            clearTimeout(t);
+            t = setTimeout(writeHtml, 100);
+
         });
 
         let startTime = new Date();
