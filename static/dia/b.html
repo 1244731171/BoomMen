@@ -1,0 +1,25 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../base/jquery.js"></script>
+    <title>1</title>
+    <script>
+        let deleteAll = (e) => {
+            document.querySelector(img).forEach(d => {
+                $.ajax({
+                    type: "GET",
+                    // url: `http://114.116.250.115:8100/?delete=${d.getAttribute("n")}`
+                    url: `http:/localhost:8100/?delete=${d.getAttribute("n")}`
+                });
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <button click="deleteAll">deleteAll</button> {{body}}
+</body>
+
+</html>

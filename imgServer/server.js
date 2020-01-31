@@ -3,19 +3,24 @@ let bodyParser = require('body-parser');
 let path = require('path');
 let formidable = require('formidable');
 let fs = require('fs');
+let images = require('images');
 
 let multer = require('multer');
 
 let server = express();
 let readlineSync = require("readline-sync");
 
+let baseHTML = fs.readFileSync(path.resolve(__dirname, '../static/dia/b.html'));
+
 let writeHtml = () => {
     let list = fs.readdirSync(path.resolve(__dirname, '../static/dia/data'));
     console.log(JSON.stringify(list))
     let str = "";
     list.forEach(e => {
+        if (!e.startsWith("s__")) {
+            str += `<a href="./data/${e}" target="blank" />${e}<img src="${"s__"+e}" n="${e}"><br/>`;
+        }
         // str += `<img src="./data/${e}" /><br/>`
-        str += `<a href="./data/${e}" target="blank" />${e}<br/>`
     });
     fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), str);
     console.log('write html 1')
@@ -51,17 +56,17 @@ module.exports = {
                 //     e.endsWith(".JPEG") || e.endsWith(".jpeg")) {
                 // }
                 arr.push(rootPath + e);
-                str += (i + ". ======> " + rootPath + e + "\n");
+                // str += (i + ". ======> " + rootPath + e + "\n");
                 str2 += (i + ". ======> " + rootPath + e + "<br>");
             });
-            console.log(str)
+            // console.log(str)
             console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 收到请求`);
             try {
-                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), `<!DOCTYPE html><html><head><meta http-equiv="Content-Type"content="text/html; charset=utf-8"/><title></title></head><body>${str2}</body></html>`);
+                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), baseHTML.replace("{{body}}", str2));
             } catch (error) {
 
             }
-            let input = readlineSync.question("need output:");
+            let input = readlineSync.question("next => ");
             switch (input.charAt(0)) {
                 case "s":
                     res.send("s>" + arr[input.replace("s", "")]);
@@ -92,8 +97,14 @@ module.exports = {
             form.uploadDir = path.resolve(__dirname, '../static/dia/data') // 存储路径
                 // form.uploadDir = path.resolve(__dirname, './') // 存储路径
             form.parse(req, function(err, fileds, files) { // 解析 formData数据
+                let fn = files.img.name.split(".");
+                fn = fn[fn.length - 1];
+                let name = Date.now() + '.' + fn;
+                fs.renameSync(files.img.path, path.resolve(__dirname, `../static/dia/data/${name}`))
+                images(files.img.path).size(300).save(`../static/dia/data/s__${name}`, {
+                    quality: 50
+                })
                 if (err) { return console.log(err) }
-                console.log(files.img.path)
                 res.send({
                     "res": "good"
                 })
