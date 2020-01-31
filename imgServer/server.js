@@ -15,7 +15,7 @@ let writeHtml = () => {
     console.log(JSON.stringify(list))
     let str = "";
     list.forEach(e => {
-        if (!e.startsWith("s__")) {
+        if (!e.startsWith("s__") && e !== "1.jpg") {
             str += `<a href="./data/${e}" n="${e}" target="blank" />${e}<img src="${"s__"+e}"><br/>`;
         }
         // str += `<img src="./data/${e}" /><br/>`
