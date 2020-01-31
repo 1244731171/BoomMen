@@ -26,16 +26,19 @@ let writeHtml = () => {
 
 tinify.key = "R6gxfzz08ZhLyQccf42Qf2NqyHwP73d6"
 let tini = (_path, _spath) => {
-    try {
-        tinify.fromFile(_path)
-            .resize({
-                method: "scale",
-                width: 200
-            }).toFile(_spath);
-        console.log("tinify is good!")
-    } catch (error) {
-        console.log("tinify is error!" + error)
-    }
+    setTimeout(() => {
+        try {
+            tinify.fromFile(_path)
+                .resize({
+                    method: "scale",
+                    width: 200
+                }).toFile(_spath);
+            console.log("tinify is good!")
+        } catch (error) {
+            console.log("tinify is error!" + error)
+        }
+
+    }, 10);
     // gm(_path).resize(200).quality(10).write(_spath,
     //     function(err) { console.log("err: " + err); })
 }
