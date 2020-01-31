@@ -1,1 +1,25 @@
-<a href="./data/1.jpg" target="blank" />1.jpg<img src="s__1.jpg" n="1.jpg"><br/><a href="./data/1580479253423.png" target="blank" />1580479253423.png<img src="s__1580479253423.png" n="1580479253423.png"><br/>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../base/jquery.js"></script>
+    <title>1</title>
+    <script>
+        let deleteAll = (e) => {
+            document.querySelector('a').forEach(d => {
+                $.ajax({
+                    type: "GET",
+                    url: `http://114.116.250.115:8100/?delete=${d.getAttribute("n")}`
+                        // url: `http:/localhost:8100/?delete=${d.getAttribute("n")}`
+                });
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <button click="deleteAll">deleteAll</button> <a href="./data/1.jpg" n="1.jpg" target="blank" />1.jpg<img src="s__1.jpg"><br/><a href="./data/1580481452259.png" n="1580481452259.png" target="blank" />1580481452259.png<img src="s__1580481452259.png"><br/><a href="./data/1580481606227.png" n="1580481606227.png" target="blank" />1580481606227.png<img src="s__1580481606227.png"><br/><a href="./data/1580481644978.png" n="1580481644978.png" target="blank" />1580481644978.png<img src="s__1580481644978.png"><br/><a href="./data/1580481764169.png" n="1580481764169.png" target="blank" />1580481764169.png<img src="s__1580481764169.png"><br/>
+</body>
+
+</html>

@@ -3,14 +3,13 @@ let bodyParser = require('body-parser');
 let path = require('path');
 let formidable = require('formidable');
 let fs = require('fs');
-// let tinify = require('tinify');
 let gm = require('gm');
-// let multer = require('multer');
 
 let server = express();
 let readlineSync = require("readline-sync");
 
-let baseHTML = fs.readFileSync(path.resolve(__dirname, '../static/dia/b.html'));
+let baseHTML = fs.readFileSync(path.resolve(__dirname, '../static/dia/b.html')).toString();
+console.log(baseHTML)
 
 let writeHtml = () => {
     let list = fs.readdirSync(path.resolve(__dirname, '../static/dia/data'));
@@ -22,18 +21,13 @@ let writeHtml = () => {
         }
         // str += `<img src="./data/${e}" /><br/>`
     });
-    fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), str);
-    console.log('write html 1')
+    fs.writeFileSync(path.resolve(__dirname, '../static/dia/1.html'), baseHTML.replace("{{body}}", str));
+    console.log('write 1.html');
 }
 
-let tini = (_path, name) => {
-    // tinify.key = "R6gxfzz08ZhLyQccf42Qf2NqyHwP73d6"
-    // var source = tinify.fromFile(_path);
-    // var resized = source.resize({
-    //     method: "scale",
-    //     width: 300
-    // });
-    // resized.toFile(path.resolve(__dirname, `../static/dia/data/s__${name}`));
+let tini = (_path, _spath) => {
+    gm(_path).resize(200).quality(10).write(_spath,
+        function(err) { console.log("err: " + err); })
 }
 
 module.exports = {
@@ -74,7 +68,7 @@ module.exports = {
             // console.log(str)
             console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 收到请求`);
             try {
-                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), baseHTML.replace("{{body}}", str2));
+                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), str2);
             } catch (error) {
 
             }
@@ -115,14 +109,14 @@ module.exports = {
                 let name = Date.now() + '.' + fn;
                 try {
                     fs.renameSync(files.img.path, path.resolve(__dirname, `../static/dia/data/${name}`))
-                    tini(path.resolve(__dirname, `../static/dia/data/${name}`), name);
                 } catch (error) {
                     console.log(error)
                 }
                 if (err) { return console.log(err) }
                 res.send({
                     "res": "good"
-                })
+                });
+                tini(path.resolve(__dirname, `../static/dia/data/${name}`), path.resolve(__dirname, `../static/dia/data/s__${name}`));
                 writeHtml();
             })
         });
