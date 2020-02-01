@@ -87,11 +87,11 @@ module.exports = {
             // console.log(str)
             console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 收到请求`);
             try {
-                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), `<html lang="en"><head><meta charset="utf-8"><title>1</title></head><body>${str2}</body></html>`);
+                fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), `<html lang="en"><head><meta charset="utf-8"><title>${new Date().toLocaleString()}</title></head><body>${str2}</body></html>`);
             } catch (error) {
 
             }
-            let input = readlineSync.question("next => ");
+            let input = readlineSync.question(`${new Date().toLocaleString()}, next => `);
             // input = is.shift()
             switch (input.charAt(0)) {
                 case "s":
