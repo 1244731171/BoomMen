@@ -566,7 +566,7 @@ let vm = new Vue({
                         arr.push(_index)
                     }
                 } else {
-                    while (arr.length < 5 && _index++ < length) {
+                    while (arr.length < (10 - index) && _index++ < length) {
                         arr.push(_index)
                     }
                     while (index-- > 1 && arr.length < 9) {
