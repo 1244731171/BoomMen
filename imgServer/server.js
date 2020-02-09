@@ -85,7 +85,7 @@ module.exports = {
                 str2 += (i + ". ======> " + rootPath + e + "<br>");
             });
             // console.log(str)
-            console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 收到请求`);
+            console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} get request`);
             try {
                 fs.writeFileSync(path.resolve(__dirname, '../static/dia/l.html'), `<html lang="en"><head><meta charset="utf-8"><title>${new Date().toLocaleString()}</title></head><body>${str2}</body></html>`);
             } catch (error) {
@@ -142,6 +142,6 @@ module.exports = {
         });
 
         let startTime = new Date();
-        console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} 启动`);
+        console.log(`${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()} engine start!`);
     }
 }
