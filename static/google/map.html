@@ -1,0 +1,168 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>googleMap</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/leaflet.js"></script>
+    <script src="./js/map.js"></script>
+</head>
+
+<body>
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+</body>
+<script>
+    var area = "北京市";
+    var z = 14;
+    var wd = "39.904674831529526"; // lat 纬度
+    var jd = "116.39767885208131"; // lng 经度
+
+    // if (navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(function(position) {
+    //         // position.accuracy：精确度
+    //         // position.latitude：纬度
+    //         // position.longitude：经度
+    //         // position.altitude：海拔
+    //         // position.altitudeAcuracy：海拔高度的精确度
+    //         // position.heading：朝向
+    //         // position.speed：速度        
+    //         wd = position.latitude;
+    //         jd = position.longitude;
+    //         area = "当前位置"
+
+    //     }, function(error) {
+    //         switch (error.code) {
+    //             case error.PERMISSION_DENIED:
+    //                 console.log("定位失败,用户拒绝请求地理定位");
+    //                 break;
+    //             case error.POSITION_UNAVAILABLE:
+    //                 console.log("定位失败,位置信息是不可用");
+    //                 break;
+    //             case error.TIMEOUT:
+    //                 console.log("定位失败,请求获取用户位置超时");
+    //                 break;
+    //             case error.UNKNOWN_ERROR:
+    //                 console.log("定位失败,定位系统失效");
+    //                 break;
+    //         }
+    //     });
+    // } else {
+    //     console.log("浏览器不支持地理定位。");
+    // }
+    /**
+     * Created by 忆枫 on 2018/4/10.
+     */
+    var script, ac = 0,
+        ad = 0;
+    // 加载地图
+
+
+    // 谷歌街道
+    var GoogleNormalMap = L.tileLayer.chinaProvider('Google.Normal.Map', {
+            maxZoom: 23,
+            minZoom: 0
+        }),
+        // 地形
+        GoogleTerrainMap = L.tileLayer.chinaProvider('Google.Terrain.Map', {
+            maxZoom: 23,
+            minZoom: 0
+        }),
+        GoogleTerrainAnnotion = L.tileLayer.chinaProvider('Google.Terrain.Annotion', {
+            maxZoom: 23,
+            minZoom: 0
+        }),
+        // 卫星
+        GoogleSatelliteMap = L.tileLayer.chinaProvider('Google.Satellite.Map', {
+            maxZoom: 23,
+            minZoom: 0
+        }),
+        GoogleSatelliteAnnotion = L.tileLayer.chinaProvider('Google.Satellite.Annotion', {
+            maxZoom: 23,
+            minZoom: 0
+        });
+
+    // 高德街道
+    var GaoDeNormalMap = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+            maxZoom: 18,
+            minZoom: 3
+        }),
+        // 卫星
+        GaoDeSatelliteMap = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
+            maxZoom: 18,
+            minZoom: 0
+        }),
+        GaoDeSatelliteAnnotion = L.tileLayer.chinaProvider('GaoDe.Satellite.Annotion', {
+            maxZoom: 18,
+            minZoom: 0
+        });
+
+    // Arcgis街道
+    var ArcgisNormalMap = L.tileLayer.chinaProvider('Arcgis.Normal.Map', {
+            maxZoom: 18,
+            minZoom: 0
+        }),
+        // 卫星
+        ArcgisSatelliteMap = L.tileLayer.chinaProvider('Arcgis.Satellite.Map', {
+            maxZoom: 18,
+            minZoom: 0
+        }),
+        ArcgisSatelliteAnnotion = L.tileLayer.chinaProvider('Arcgis.Satellite.Annotion', {
+            maxZoom: 18,
+            minZoom: 0
+        });
+
+    // Open街道
+    var OpenNormalMap = L.tileLayer.chinaProvider('Open.Normal.Map', {
+        maxZoom: 23,
+        minZoom: 0,
+        id: 'mapbox.streets'
+    });
+
+
+    var google_streets = L.layerGroup([GoogleNormalMap]),
+        google_terrain = L.layerGroup([GoogleTerrainMap, GoogleTerrainAnnotion]),
+        google_satellite = L.layerGroup([GoogleSatelliteMap]),
+        google_hybrid = L.layerGroup([GoogleSatelliteMap, GoogleSatelliteAnnotion]);
+
+    var gaode_streets = L.layerGroup([GaoDeNormalMap]),
+        gaode_satellite = L.layerGroup([GaoDeSatelliteMap]),
+        gaode_hybrid = L.layerGroup([GaoDeSatelliteMap, GaoDeSatelliteAnnotion]);
+
+    var arcgis_streets = L.layerGroup([ArcgisNormalMap]),
+        arcgis_satellite = L.layerGroup([ArcgisSatelliteMap]),
+        arcgis_hybrid = L.layerGroup([ArcgisSatelliteMap, ArcgisSatelliteAnnotion]);
+
+    var open_streets = L.layerGroup([OpenNormalMap]);
+
+    var baseLayers = {
+        "谷歌地图(街道)": google_streets,
+        "谷歌地图(卫星)": google_hybrid,
+        "谷歌地图(地形)": google_terrain,
+        "高德地图(街道)": gaode_streets,
+        "高德地图(卫星)": gaode_hybrid,
+    };
+
+    var overlayLayers = {};
+
+
+    var map = L.map("map_canvas", {
+        center: [parseFloat(wd), parseFloat(jd)],
+        zoom: z,
+        layers: [google_streets],
+        zoomControl: true,
+        worldCopyJump: true,
+
+        wheelPxPerZoomLevel: 120
+    });
+    // L.marker([parseFloat(wd), parseFloat(jd)]).addTo(map)
+    //     .bindPopup(area).openPopup();
+    L.control.scale().addTo(map); //比例尺
+    L.control.layers(baseLayers).addTo(map);
+    //L.control.attribution({ position: 'bottomright', prefix: 'google' }).addTo(map); 
+    L.tileLayer('', {
+        attribution: 'Map data &copy; Google',
+    }).addTo(map);
+</script>
+
+</html>
