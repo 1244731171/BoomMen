@@ -15,29 +15,25 @@
         body {
             font-size: 14px;
         }
-        
-        img {
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            width: 600px;
-            height: 800px;
-        }
     </style>
 </head>
 
 <body>
     <input type="file" name="" id="file">
-    <img src="" alt="preview" id="img">
+    <br>
     <label for="">纬度-经度</label><input type="radio" name="d" value="wjd" checked>
     <label for="">经度-纬度</label><input type="radio" name="d" value="jwd">
-
+    <br>
     <div id="show"></div>
+    <br>
     <iframe id="iframe" src="" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+    <br>
+    <img src="" alt="preview" id="img">
     <script>
         let ta = document.querySelector("#show");
         let files = document.querySelector('#file');
         let img = document.querySelector('#img');
+        let iframe = document.querySelector('#iframe');
         files.addEventListener('change', e => {
             if (files.files.length === 0) return;
             img.src = URL.createObjectURL(files.files[0]);
@@ -77,7 +73,8 @@
                     return sfm[cunt++ % 3];
                 })
                 ta.innerHTML = str + "</br>" + str2;
-                window.open(`https://www.google.com/maps/place/${info.GPSLatitude.reduce(sum, 0)},${info.GPSLongitude.reduce(sum, 0)}`, '_black');
+                iframe.setAttribute("src", `./map.html?lat=${info.GPSLatitude.reduce(sum, 0)}&lng=${info.GPSLongitude.reduce(sum, 0)}&name=${files.files[0].name}`);
+                // window.open(`https://www.google.com/maps/place/${info.GPSLatitude.reduce(sum, 0)},${info.GPSLongitude.reduce(sum, 0)}`, '_black');
                 // EXIF.getTag(this, 'Orientation');
             });
         })

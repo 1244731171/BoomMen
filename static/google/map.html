@@ -7,16 +7,17 @@
     <link rel="stylesheet" href="./css/style.css">
     <script src="./js/leaflet.js"></script>
     <script src="./js/map.js"></script>
+    <script src="../base/tool.js"></script>
 </head>
 
 <body>
     <div id="map_canvas" style="width:100%; height:100%"></div>
 </body>
 <script>
-    var area = "北京市";
+    var area = decodeURI(location.getValue("name")) || "北京市";
     var z = 14;
-    var wd = "39.904674831529526"; // lat 纬度
-    var jd = "116.39767885208131"; // lng 经度
+    var wd = location.getValue("lat") || "39.904674831529526"; // lat 纬度
+    var jd = location.getValue("lng") || "116.39767885208131"; // lng 经度
 
     // if (navigator.geolocation) {
     //     navigator.geolocation.getCurrentPosition(function(position) {
@@ -155,8 +156,8 @@
 
         wheelPxPerZoomLevel: 120
     });
-    // L.marker([parseFloat(wd), parseFloat(jd)]).addTo(map)
-    //     .bindPopup(area).openPopup();
+    L.marker([parseFloat(wd), parseFloat(jd)]).addTo(map)
+        .bindPopup(area).openPopup();
     L.control.scale().addTo(map); //比例尺
     L.control.layers(baseLayers).addTo(map);
     //L.control.attribution({ position: 'bottomright', prefix: 'google' }).addTo(map); 
