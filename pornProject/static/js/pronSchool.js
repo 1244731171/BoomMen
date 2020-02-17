@@ -277,15 +277,15 @@ let vm = new Vue({
                 let fs = [...domId.get('u_f_f').files];
                 fs.forEach(f => {
                     if (f.type.startsWith("video")) {
-                        let v = document.createElement("video");
-                        v.classList.add("uploadVideo");
-                        v.setAttribute("controls", "controls");
-                        p.append(v);
-                        let reads = new FileReader();
-                        reads.readAsDataURL(f);
-                        reads.onload = function(e) {
-                            v.src = this.result;
-                        };
+                        // let v = document.createElement("video");
+                        // v.classList.add("uploadVideo");
+                        // v.setAttribute("controls", "controls");
+                        // p.append(v);
+                        // let reads = new FileReader();
+                        // reads.readAsDataURL(f);
+                        // reads.onload = function(e) {
+                        //     v.src = this.result;
+                        // };
                     } else if (f.type.startsWith("image")) {
                         let i = new Image();
                         i.classList.add("uploadImg");
