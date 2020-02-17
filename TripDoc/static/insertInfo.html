@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
-    <!-- <script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script> -->
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-    <script src="./tool.js"></script>
+    <script src="./js/tool.js"></script>
     <title>添加信息</title>
-    <link rel="stylesheet" href="insert.css">
+    <link rel="stylesheet" href="./css/insert.css">
 </head>
 
 <body>
@@ -95,9 +94,7 @@
                         <div class="dynamic" v-for="(item, index) of part_3_url">
                             <input type="url" class="i_u" v-model="part_3_url[index]" :key="index">
                             <input type="button" class="i_b arr_ctl" value="+" @click="url_add(part_3_url, index)">
-                            <input type="button" value="-"
-                                :class="'i_b arr_ctl ' + (part_3_url.length === 1 ? 'arr_ctl_disable' : '')"
-                                @click="url_remove(part_3_url, index)">
+                            <input type="button" value="-" :class="'i_b arr_ctl ' + (part_3_url.length === 1 ? 'arr_ctl_disable' : '')" @click="url_remove(part_3_url, index)">
                         </div>
                     </td>
                 </tr>
@@ -109,9 +106,7 @@
                         <div class="dynamic" v-for="(item, index) of part_3_cn_url">
                             <input type="url" class="i_u" v-model="part_3_cn_url[index]" :key="index">
                             <input type="button" class="i_b arr_ctl" value="+" @click="url_add(part_3_cn_url, index)">
-                            <input type="button" value="-"
-                                :class="'i_b arr_ctl ' + (part_3_cn_url.length === 1 ? 'arr_ctl_disable' : '')"
-                                @click="url_remove(part_3_cn_url, index)">
+                            <input type="button" value="-" :class="'i_b arr_ctl ' + (part_3_cn_url.length === 1 ? 'arr_ctl_disable' : '')" @click="url_remove(part_3_cn_url, index)">
                         </div>
                     </td>
                 </tr>
@@ -120,11 +115,8 @@
                     <td>
                         <div class="dynamic" v-for="(item, index) of part_3_other_url">
                             <input type="url" class="i_u" v-model="part_3_other_url[index]" :key="index">
-                            <input type="button" class="i_b arr_ctl" value="+"
-                                @click="url_add(part_3_other_url, index)">
-                            <input type="button" value="-"
-                                :class="'i_b arr_ctl ' + (part_3_other_url.length === 1 ? 'arr_ctl_disable' : '')"
-                                @click="url_remove(part_3_other_url, index)">
+                            <input type="button" class="i_b arr_ctl" value="+" @click="url_add(part_3_other_url, index)">
+                            <input type="button" value="-" :class="'i_b arr_ctl ' + (part_3_other_url.length === 1 ? 'arr_ctl_disable' : '')" @click="url_remove(part_3_other_url, index)">
                         </div>
                     </td>
                 </tr>
@@ -141,8 +133,7 @@
                         <label for="part_3_markdown">Markdown</label>
                     </td>
                     <td>
-                        <textarea class="ta" v-model="part_3_markdown" id="part_3_markdown" cols="70"
-                            rows="5"></textarea>
+                        <textarea class="ta" v-model="part_3_markdown" id="part_3_markdown" cols="70" rows="5"></textarea>
                     </td>
                 </tr>
             </table>
@@ -170,11 +161,8 @@
                             <td>
                                 <div class="dynamic" v-for="(item, index) of part_3_url">
                                     <input type="url" class="i_u" v-model="part_3_url[index]" :key="index">
-                                    <input type="button" class="i_b arr_ctl" value="+"
-                                        @click="url_add(part_3_url, index)">
-                                    <input type="button" value="-"
-                                        :class="'i_b arr_ctl ' + (part_3_url.length === 1 ? 'arr_ctl_disable' : '')"
-                                        @click="url_remove(part_3_url, index)">
+                                    <input type="button" class="i_b arr_ctl" value="+" @click="url_add(part_3_url, index)">
+                                    <input type="button" value="-" :class="'i_b arr_ctl ' + (part_3_url.length === 1 ? 'arr_ctl_disable' : '')" @click="url_remove(part_3_url, index)">
                                 </div>
                             </td>
                         </tr>
@@ -183,11 +171,8 @@
                             <td>
                                 <div class="dynamic" v-for="(item, index) of part_3_cn_url">
                                     <input type="url" class="i_u" v-model="part_3_cn_url[index]" :key="index">
-                                    <input type="button" class="i_b arr_ctl" value="+"
-                                        @click="url_add(part_3_cn_url, index)">
-                                    <input type="button" value="-"
-                                        :class="'i_b arr_ctl ' + (part_3_cn_url.length === 1 ? 'arr_ctl_disable' : '')"
-                                        @click="url_remove(part_3_cn_url, index)">
+                                    <input type="button" class="i_b arr_ctl" value="+" @click="url_add(part_3_cn_url, index)">
+                                    <input type="button" value="-" :class="'i_b arr_ctl ' + (part_3_cn_url.length === 1 ? 'arr_ctl_disable' : '')" @click="url_remove(part_3_cn_url, index)">
                                 </div>
                             </td>
                         </tr>
@@ -208,11 +193,8 @@
                             <td>
                                 <div class="dynamic" v-for="(item, index) of part_3_2_floor_url">
                                     <input type="url" class="i_u" v-model="part_3_2_floor_url[index]" :key="index">
-                                    <input type="button" class="i_b arr_ctl" value="+"
-                                        @click="url_add(part_3_2_floor_url, index)">
-                                    <input type="button" value="-"
-                                        :class="'i_b arr_ctl ' + (part_3_2_floor_url.length === 1 ? 'arr_ctl_disable' : '')"
-                                        @click="url_remove(part_3_2_floor_url, index)">
+                                    <input type="button" class="i_b arr_ctl" value="+" @click="url_add(part_3_2_floor_url, index)">
+                                    <input type="button" value="-" :class="'i_b arr_ctl ' + (part_3_2_floor_url.length === 1 ? 'arr_ctl_disable' : '')" @click="url_remove(part_3_2_floor_url, index)">
                                 </div>
                             </td>
                         </tr>
@@ -221,11 +203,8 @@
                             <td>
                                 <div class="dynamic" v-for="(item, index) of part_3_2_shop_url">
                                     <input type="url" class="i_u" v-model="part_3_2_shop_url[index]" :key="index">
-                                    <input type="button" class="i_b arr_ctl" value="+"
-                                        @click="url_add(part_3_2_shop_url, index)">
-                                    <input type="button" value="-"
-                                        :class="'i_b arr_ctl ' + (part_3_2_shop_url.length === 1 ? 'arr_ctl_disable' : '')"
-                                        @click="url_remove(part_3_2_shop_url, index)">
+                                    <input type="button" class="i_b arr_ctl" value="+" @click="url_add(part_3_2_shop_url, index)">
+                                    <input type="button" value="-" :class="'i_b arr_ctl ' + (part_3_2_shop_url.length === 1 ? 'arr_ctl_disable' : '')" @click="url_remove(part_3_2_shop_url, index)">
                                 </div>
                             </td>
                         </tr>
@@ -234,11 +213,8 @@
                             <td>
                                 <div class="dynamic" v-for="(item, index) of part_3_2_traffic_url">
                                     <input type="url" class="i_u" v-model="part_3_2_traffic_url[index]" :key="index">
-                                    <input type="button" class="i_b arr_ctl" value="+"
-                                        @click="url_add(part_3_2_traffic_url, index)">
-                                    <input type="button" value="-"
-                                        :class="'i_b arr_ctl ' + (part_3_2_traffic_url.length === 1 ? 'arr_ctl_disable' : '')"
-                                        @click="url_remove(part_3_2_traffic_url, index)">
+                                    <input type="button" class="i_b arr_ctl" value="+" @click="url_add(part_3_2_traffic_url, index)">
+                                    <input type="button" value="-" :class="'i_b arr_ctl ' + (part_3_2_traffic_url.length === 1 ? 'arr_ctl_disable' : '')" @click="url_remove(part_3_2_traffic_url, index)">
                                 </div>
                             </td>
                         </tr>
@@ -246,15 +222,13 @@
                             <td>
                                 <label for="part_3_2_time">{{ part_3_2_time_TITLE_CN }}</label></td>
                             <td>
-                                <textarea class="ta" v-model="part_3_2_time" id="part_3_2_time" cols="70"
-                                    rows="5"></textarea>
+                                <textarea class="ta" v-model="part_3_2_time" id="part_3_2_time" cols="70" rows="5"></textarea>
                             </td>
                         </tr>
                         <tr v-if="part_1_type == 'PLAY'">
                             <td><label for="part_3_2_cost">门票价格</label></td>
                             <td>
-                                <textarea class="ta" v-model="part_3_2_cost" id="part_3_2_cost" cols="70"
-                                    rows="5"></textarea>
+                                <textarea class="ta" v-model="part_3_2_cost" id="part_3_2_cost" cols="70" rows="5"></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -262,26 +236,21 @@
                             <td>
                                 <div class="dynamic" v-for="(item, index) of part_3_other_url">
                                     <input type="url" class="i_u" v-model="part_3_other_url[index]" :key="index">
-                                    <input type="button" class="i_b arr_ctl" value="+"
-                                        @click="url_add(part_3_other_url, index)">
-                                    <input type="button" value="-"
-                                        :class="'i_b arr_ctl ' + (part_3_other_url.length === 1 ? 'arr_ctl_disable' : '')"
-                                        @click="url_remove(part_3_other_url, index)">
+                                    <input type="button" class="i_b arr_ctl" value="+" @click="url_add(part_3_other_url, index)">
+                                    <input type="button" value="-" :class="'i_b arr_ctl ' + (part_3_other_url.length === 1 ? 'arr_ctl_disable' : '')" @click="url_remove(part_3_other_url, index)">
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td><label for="part_3_remarks">备注</label></td>
                             <td>
-                                <textarea class="ta" v-model="part_3_remarks" id="part_3_remarks" cols="70"
-                                    rows="5"></textarea>
+                                <textarea class="ta" v-model="part_3_remarks" id="part_3_remarks" cols="70" rows="5"></textarea>
                             </td>
                         </tr>
                         <tr>
                             <td><label for="part_3_markdown">Markdown</label></td>
                             <td>
-                                <textarea class="ta" v-model="part_3_markdown" id="part_3_markdown" cols="70"
-                                    rows="5"></textarea>
+                                <textarea class="ta" v-model="part_3_markdown" id="part_3_markdown" cols="70" rows="5"></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -317,8 +286,7 @@
                         <tr>
                             <td><label for="part_3_2_google_url">谷歌地图分享url</label></td>
                             <td class="dynamic">
-                                <input type="url" class="i_u" class="i_t" v-model="part_3_2_google_url"
-                                    id="part_3_2_google_url">
+                                <input type="url" class="i_u" class="i_t" v-model="part_3_2_google_url" id="part_3_2_google_url">
                                 <a v-bind:href="part_3_2_google_url" target="_blank">
                                     <input type="button" class="i_b" value="View in Google Maps">
                                 </a>
@@ -348,7 +316,7 @@
             <input type="button" class="i_b" value="保存" @click="checkAndSave">
         </div>
     </div>
-    <script src="./insert.js"></script>
+    <script src="./js/insert.js"></script>
 </body>
 
 </html>
