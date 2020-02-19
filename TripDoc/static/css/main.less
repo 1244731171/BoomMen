@@ -1,6 +1,7 @@
 /* rgb(255,153,0)  @basecolor1*/
 
 @basecolor1: #f90;
+@basecolor2: #1471d9;
 @logo-width: auto;
 @logo-height: 48px;
 
@@ -44,6 +45,18 @@ i {
     margin: 0 auto;
 }
 
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .header {
     background-color: #1e1e1e;
     height: 48px;
@@ -52,6 +65,7 @@ i {
     z-index: 100;
     position: sticky;
     top: 0;
+    flex:  0 0 48px;
 }
 
 .btn {
@@ -102,6 +116,7 @@ i {
     font-weight: 700;
     text-align: center;
     display: flex;
+    flex: 0 0 39px;
 }
 
 .navBtn {
@@ -116,6 +131,12 @@ i {
     color: #ccc;
     display: block;
     flex: auto;
+}
+
+.main {
+    position: relative;
+    flex: 0 1 100%;
+    overflow: hidden;
 }
 
 .mainHeader {
@@ -159,13 +180,13 @@ i.flagIcon {
 }
 
 .leftMenu {
-    width: 270px;
-    /* min-height: 100%; */
+    width: 270px; 
+    min-height: 100%;
     z-index: 90;
     background-color: #111;
     border-top: 2px solid #000;
     position: absolute;
-    top: 48px;
+    top: 0px;
     left: -270px;
     transition: all .5s ease;
     overflow-x: hidden;
@@ -283,7 +304,7 @@ i.flagIcon {
 }
 
 .menuBtn:nth-of-type(6) {
-    border-left: 4px solid #1471d9
+    border-left: 4px solid @basecolor2
 }
 
 .alertDiv {
@@ -575,7 +596,7 @@ i.flagIcon {
 }
 
 tr td {
-    border-bottom: 1px solid #1471d9;
+    border-bottom: 1px solid @basecolor2;
     padding: 10 20px;
 }
 
@@ -665,4 +686,14 @@ tr.user_head td {
     text-align: center;
     background-color: #2f2f2f;
     color: #acacac;
+}
+
+.navBtn.hover {
+    color: @basecolor1;
+}
+
+.leftMenu .blank {
+    height: 48px;
+    pointer-events: none;
+    background-color: #000;
 }

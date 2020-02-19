@@ -17,34 +17,35 @@
 
 <body>
     <div id="app" @click="bodyClick">
-        <header class='header'>
-            <button class="asideBtn btn" type="button" @click="asideBtnClick">
-                <i class="icon"></i>
-            </button>
-            <div class="logoDiv">
-                <img src="../images/logo-60.png" alt="TripInfo" width="128" height="37" class="logo">
-            </div>
-        </header>
-        <div class="shadow dn" @click="asideBtnClick"></div>
-        <nav class='nav'>
-            <div class="navBtn" v-for="info in navTypes" v-html="info.txt" @click="navBtnClick(info.id)"></div>
-        </nav>
-        <!--
-            ==========================
-            LIST
-            ==========================
-        -->
-        <main v-if="current.type === 'list'" class="main list">
+        <content class='content'>
+            <header class='header'>
+                <button class="asideBtn btn" type="button" @click="asideBtnClick">
+                    <i class="icon"></i>
+                </button>
+                <div class="logoDiv">
+                    <img src="../images/logo-60.png" alt="TripInfo" width="128" height="37" class="logo">
+                </div>
+            </header>
+            <nav class='nav'>
+                <div :class="'navBtn ' + (current.type == info.id ? 'hover' : '') " v-for="info in navTypes" v-html="info.txt" @click="navBtnClick(info.id)"></div>
+            </nav>
+            <!--
+                ==========================
+                LIST
+                ==========================
+            -->
+            <main v-if="current.type === 'list'" class="main list">
 
-        </main>
-        <!--
-            ==========================
-            MAP
-            ==========================
-        -->
-        <main v-if="current.type === 'list'" class="main map">
-
-        </main>
+            </main>
+            <!--
+                ==========================
+                MAP
+                ==========================
+            -->
+            <main v-if="current.type === 'map'" class="main map">
+                <iframe id="map" src="http://114.116.250.115/google/map.html" frameborder="0" scrolling='yes' noresize></iframe>
+            </main>
+        </content>
         <!--
             ==========================
             SIGNIN
@@ -138,7 +139,9 @@
             LEFTMENU
             ==========================
         -->
+        <div class="shadow dn" @click="asideBtnClick"></div>
         <aside class="leftMenu">
+            <div class="blank"></div>
             <div v-if="!user.isLogin" class="menuBtn userAction">
                 <div class="userBtn">
                     <i class="login" @click="login"></i>
@@ -165,7 +168,7 @@
                 </div>
                 <div class="userBtn">
                     <i class="upload" @click.stop="upload"></i>
-                    <span>上传</span>
+                    <span>照片定位</span>
                 </div>
             </div>
             <div v-if="user.isLogin" class="menuBtn userInfo">
@@ -177,9 +180,6 @@
             </div>
             <div v-if="user.isLogin" class="menuBtn userInfoAction" @click="setPwd">
                 <span>修改密码</span>
-            </div>
-            <div v-if="user.isLogin" class="menuBtn userInfoAction" @click="checkUpload">
-                <span>管理上传文件</span>
             </div>
             <div class="menuGap">
             </div>

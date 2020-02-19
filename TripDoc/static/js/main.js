@@ -6,9 +6,12 @@ let isChangeFile = false;
 let vm = new Vue({
     el: "#app",
     data() {
-        let mainId = "hot";
+        let mainId = "map";
         return {
             navTypes: [{
+                id: 'map',
+                txt: '<span>世界地图</span>'
+            }, {
                 id: 'list',
                 txt: '<span>全部信息</span>'
             }, {
@@ -16,7 +19,7 @@ let vm = new Vue({
                 txt: '<span>我的行程</span>'
             }],
             current: {
-                type: "list"
+                type: "map"
             },
             mainId: mainId,
             user: {
