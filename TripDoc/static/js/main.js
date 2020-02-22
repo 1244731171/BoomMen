@@ -40,6 +40,26 @@ let vm = new Vue({
         }
     },
     methods: {
+        created() {
+            vm.$http.get(`./list`).then((data) => {
+                let newData = {
+                    py: {},
+                    type: {}
+                };
+                for (var key of py_head) {
+                    let infos = data.body.py[key];
+                    if (infos) {
+                        newData.py[key] = infos;
+                    }
+                }
+                for (var key in data.body.types) {
+                    newData.type[key] = true;
+                }
+                // vm.updateList(newData);
+            }).catch((error) => {
+                alert(JSON.stringify(error));
+            });
+        },
         asideBtnClick() {
             let leftMenu = document.querySelector(".leftMenu");
             let shadow = document.querySelector(".shadow");

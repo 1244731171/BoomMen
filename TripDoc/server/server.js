@@ -5,6 +5,17 @@ let path = require('path');
 let server = express();
 let analysis = require('./analysis');
 
+server.all('*', function(req, res, next) {
+    //设为指定的域
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header("X-Powered-By", ' 3.2.1');
+    next();
+});
+
 module.exports = {
     start: () => {
 
@@ -15,8 +26,8 @@ module.exports = {
         // server.use(express.static('./'));
         // console.log(path.resolve(__dirname, '../static'));
         server.use('/', express.static(path.resolve(__dirname, '../static')));
-        server.use('/save', function (req, res) {
-            if(req.body.bossId.indexOf("爆操") == -1) {
+        server.use('/save', function(req, res) {
+            if (req.body.bossId.indexOf("爆操") == -1) {
                 return res.status(403).send({
                     result: 0,
                     data: '无权保存'
@@ -37,7 +48,7 @@ module.exports = {
             });
         });
 
-        server.use('/get', function (req, res) {
+        server.use('/get', function(req, res) {
             console.log("/get?" + JSON.stringify(req.query));
             analysis.get(req.query.id).then((data) => {
                 res.send(data);
@@ -46,7 +57,7 @@ module.exports = {
             });
         });
 
-        server.use('/checkName', function (req, res) {
+        server.use('/checkName', function(req, res) {
             console.log("/checkName?" + JSON.stringify(req.query));
             analysis.checkName(req.query.id).then((data) => {
                 res.send(data);
@@ -55,12 +66,12 @@ module.exports = {
             });
         });
 
-        server.use('/list', function (req, res) {
+        server.use('/list', function(req, res) {
             console.log("/list?");
             res.send(analysis.list());
         });
 
-        server.use('/show', function (req, res) {
+        server.use('/show', function(req, res) {
             console.log('/show?' + JSON.stringify(req.query));
             analysis.show(req.query.id).then((data) => {
                 res.send(data);

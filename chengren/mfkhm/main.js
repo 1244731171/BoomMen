@@ -44,6 +44,7 @@ let doNext = (_id) => {
     if (!id) {
         return console.log("ALL is Done!");
     }
+
     _bookInfo = {};
 
     isDownload = false;
