@@ -36,7 +36,7 @@
                 MAP
                 ==========================
       -->
-      <Map v-if="current.type === 'map'" :type="map.type" :lat="map.lat" :lng="map.lng" :name="map.name"></Map>
+      <TripMap v-if="current.type === 'map'" :type="map.type" :lat="map.lat" :lng="map.lng" :name="map.name"></TripMap>
     </content>
 
     <!--
@@ -109,13 +109,13 @@
 <script>
 let mainId = "map";
 
-import Map from "./components/Map";
+import TripMap from "./components/TripMap";
 import TripList from "./components/TripList";
 
 export default {
   name: "Main",
   components: {
-    Map,
+    TripMap,
     TripList,
   },
   data() {

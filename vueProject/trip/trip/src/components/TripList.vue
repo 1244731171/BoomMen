@@ -1,11 +1,12 @@
 <template>
+<div class="list main">
   <div id="list">
     <div class="parent_flex_column">
       <div class="html_nav parent_flex_row">
         <template v-for="(value, key) in key2CN">
           <input :key="key" type="checkbox" :id="'type_'+key" class="i_c" v-model="showMap[key]" />
           <label
-            :key="key"
+            :key="value"
             :class="'i_c_l '+ (showMap[key] ? 'i_c_l_checked' : '')"
             :for="'type_'+key"
             v-text="value"
@@ -24,9 +25,9 @@
               <content>
                 <div
                   class="name_info"
-                  v-for="(info, index) in value"
+                  v-for="(info) in value"
                   :title="info.id"
-                  :key="index"
+                  :key="info.id"
                   v-if="showMap[info.type]"
                 >
                   <div class="showName" @click="showSelf(info.id)">
@@ -51,6 +52,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -115,6 +117,22 @@ export default {
         alert(JSON.stringify(error));
       });
   },
+  updated() {
+    // let py_div = document.querySelectorAll(".py_content article");
+    // let py_nav = document.querySelectorAll(".py_nav")[0];
+    // py_div.forEach(e => {
+    //   let hrefWord = py_nav.querySelector(
+    //     "#py_nav_" + e.getAttribute("keyname")
+    //   );
+    //   if (e.querySelectorAll(".name_info").length === 0) {
+    //     e.style.display = "none";
+    //     hrefWord.style.display = "none";
+    //   } else {
+    //     e.style.display = "block";
+    //     hrefWord.style.display = "block";
+    //   }
+    // });
+  },
   methods: {
     updateList(data) {
       this.list = data;
@@ -123,22 +141,6 @@ export default {
       window.open(`./insertInfo?id=${id}`);
     },
     search() {}
-  },
-  updated() {
-    let py_div = document.querySelectorAll(".py_content article");
-    let py_nav = document.querySelectorAll(".py_nav")[0];
-    py_div.forEach(e => {
-      let hrefWord = py_nav.querySelector(
-        "#py_nav_" + e.getAttribute("keyname")
-      );
-      if (e.querySelectorAll(".name_info").length === 0) {
-        e.style.display = "none";
-        hrefWord.style.display = "none";
-      } else {
-        e.style.display = "block";
-        hrefWord.style.display = "block";
-      }
-    });
   }
 };
 </script>

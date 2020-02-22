@@ -1,10 +1,12 @@
 <template>
-  <iframe v-if="type == 'mine'" id="map" :src="mapSrc" frameborder="0" scrolling="yes" noresize></iframe>
+  <div class="main map">
+    <iframe v-if="type == 'mine'" id="map" :src="mapSrc" frameborder="0" scrolling="yes" noresize></iframe>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "map",
+  name: "TripMap",
   props: ["type", "lat", "lng", "name"],
   data() {
     return {

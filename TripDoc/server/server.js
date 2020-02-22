@@ -7,12 +7,12 @@ let analysis = require('./analysis');
 
 server.all('*', function(req, res, next) {
     //设为指定的域
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Credentials', true);
-    res.header("X-Powered-By", ' 3.2.1');
+    res.header('X-Powered-By', ' 3.2.1');
     next();
 });
 
@@ -27,7 +27,7 @@ module.exports = {
         // console.log(path.resolve(__dirname, '../static'));
         server.use('/', express.static(path.resolve(__dirname, '../static')));
         server.use('/save', function(req, res) {
-            if (req.body.bossId.indexOf("爆操") == -1) {
+            if (req.body.bossId.indexOf('爆操') == -1) {
                 return res.status(403).send({
                     result: 0,
                     data: '无权保存'
@@ -49,7 +49,7 @@ module.exports = {
         });
 
         server.use('/get', function(req, res) {
-            console.log("/get?" + JSON.stringify(req.query));
+            console.log('/get?' + JSON.stringify(req.query));
             analysis.get(req.query.id).then((data) => {
                 res.send(data);
             }).catch((e) => {
@@ -58,7 +58,7 @@ module.exports = {
         });
 
         server.use('/checkName', function(req, res) {
-            console.log("/checkName?" + JSON.stringify(req.query));
+            console.log('/checkName?' + JSON.stringify(req.query));
             analysis.checkName(req.query.id).then((data) => {
                 res.send(data);
             }).catch((e) => {
@@ -67,7 +67,7 @@ module.exports = {
         });
 
         server.use('/list', function(req, res) {
-            console.log("/list?");
+            console.log('/list?');
             res.send(analysis.list());
         });
 
