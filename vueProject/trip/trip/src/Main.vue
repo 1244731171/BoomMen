@@ -36,7 +36,13 @@
                 MAP
                 ==========================
       -->
-      <TripMap v-if="current.type === 'map'" :type="map.type" :lat="map.lat" :lng="map.lng" :name="map.name"></TripMap>
+      <TripMap
+        v-if="current.type === 'map'"
+        :type="map.type"
+        :lat="map.lat"
+        :lng="map.lng"
+        :name="map.name"
+      ></TripMap>
     </content>
 
     <!--
@@ -47,37 +53,38 @@
     <div class="shadow dn" @click="asideBtnClick"></div>
     <aside class="leftMenu">
       <div class="blank"></div>
-      <!-- <div v-if="!user.isLogin" class="menuBtn userAction">
-                <div class="userBtn">
-                    <i class="login" @click="login"></i>
-                    <span>登录</span>
-                </div>
-                <div class="userBtn">
-                    <i class="signin" @click="signin"></i>
-                    <span>注册</span>
-                </div>
-                <div class="userBtn">
-                    <i class="upload" @click="upload"></i>
-                    <span>上传</span>
-                </div>
-            </div>
-            <div v-if="user.isLogin" class="menuBtn userAction">
-                <div class="userBtn">
-                    <i class="logout" @click="logout"></i>
-                    <span>登出</span>
-                </div>
-                <div class="userBtn">
-                    <i class="message" @click="showMessage"></i>
-                    <div class="news" v-if="message.length > 0"></div>
-                    <span>信息</span>
-                </div>
-                <div class="userBtn">
-                    <i class="upload" @click.stop="upload"></i>
-                    <span>照片定位</span>
-                </div>
-      </div>-->
+      <div v-if="!user.isLogin" class="menuBtn userAction">
+        <div class="userBtn">
+          <i class="login" @click="login"></i>
+          <span>登录</span>
+        </div>
+        <div class="userBtn">
+          <i class="signin" @click="signin"></i>
+          <span>注册</span>
+        </div>
+        <div class="userBtn">
+          <i class="upload" @click="checkLocal"></i>
+          <span>照片定位</span>
+        </div>
+      </div>
+      <div v-if="user.isLogin" class="menuBtn userAction">
+        <div class="userBtn">
+          <i class="logout" @click="logout"></i>
+          <span>登出</span>
+        </div>
+        <div class="userBtn">
+          <i class="message" @click="showMessage"></i>
+          <div class="news" v-if="message.length > 0"></div>
+          <span>信息</span>
+        </div>
+        <div class="userBtn">
+          <i class="upload" @click.stop="checkLocal"></i>
+          <span>照片定位</span>
+        </div>
+      </div>
       <div v-if="user.isLogin" class="menuBtn userInfo">
-        <img src="./assets/images/male.png" alt width="43" height="43" />
+        <img src="./assets/images/panda.png" alt width="43" height="43" />
+        <!-- <embed src="./assets/images/fox.svg" type="image/svg+xml" width="43" height="43"  /> -->
         <span v-text="user.name"></span>
       </div>
       <!-- <div v-if="user.isLogin" class="menuBtn userInfoAction" @click="setEmail">
@@ -91,6 +98,16 @@
             <div v-if="user.isLogin" class="menuBtn userInfoAction" @click="checkSort">
                 <span>查看排名</span>
       </div>-->
+      <template v-for="(info) in navTypes">
+        <div
+          v-if="user.isLogin"
+          class="menuBtn userInfoAction"
+          :key="info"
+          @click="navBtnClick(info.id)"
+        >
+          <span v-html="info.txt"></span>
+        </div>
+      </template>
       <div class="menuGap"></div>
     </aside>
     <div v-if="isAlert || isConfirm" class="alertDiv">
@@ -116,7 +133,7 @@ export default {
   name: "Main",
   components: {
     TripMap,
-    TripList,
+    TripList
   },
   data() {
     return {
@@ -139,7 +156,7 @@ export default {
       },
       mainId: mainId,
       user: {
-        name: "",
+        name: "Boss",
         id: "",
         pwd: "",
         isLogin: true,
@@ -157,13 +174,14 @@ export default {
       isAlert: false,
       confirmContent: "",
       isConfirm: false,
-      alertTimer: -1
+      alertTimer: -1,
+      message: []
     };
   },
   methods: {
     created() {},
 
-    navBtnClick(id){
+    navBtnClick(id) {
       this.current.type = id;
     },
 
@@ -183,7 +201,17 @@ export default {
 
     ensure() {},
 
-    cancel() {}
+    cancel() {},
+
+    signin() {},
+
+    login() {},
+
+    logout() {},
+
+    checkLocal() {},
+
+    showMessage() {}
   }
 };
 </script>

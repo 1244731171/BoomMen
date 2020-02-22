@@ -1,58 +1,58 @@
 <template>
-<div class="list main">
-  <div id="list">
-    <div class="parent_flex_column">
-      <div class="html_nav parent_flex_row">
-        <template v-for="(value, key) in key2CN">
-          <input :key="key" type="checkbox" :id="'type_'+key" class="i_c" v-model="showMap[key]" />
-          <label
-            :key="value"
-            :class="'i_c_l '+ (showMap[key] ? 'i_c_l_checked' : '')"
-            :for="'type_'+key"
-            v-text="value"
-            v-if="list.type[key]"
-          ></label>
-        </template>
-        <input type="text" id="name_search" v-model="nameSearch" />
-      </div>
-      <div class="parent_flex_row html_content">
-        <main class="py_content">
-          <article v-for="(value, key) in list.py" :key="key">
-            <section :id="key">
-              <header>
-                <b>{{key}}</b>
-              </header>
-              <content>
-                <div
-                  class="name_info"
-                  v-for="(info) in value"
-                  :title="info.id"
-                  :key="info.id"
-                  v-if="showMap[info.type]"
-                >
-                  <div class="showName" @click="showSelf(info.id)">
-                    <span class="type" v-text="key2CN[info.type]"></span>
-                    <span class="name" v-text="info.name"></span>
+  <div class="list main">
+    <div id="list">
+      <div class="parent_flex_column">
+        <div class="html_nav parent_flex_row">
+          <input type="text" id="name_search" v-model="nameSearch" />
+          <template v-for="(value, key) in key2CN">
+            <input :key="key" type="checkbox" :id="'type_'+key" class="i_c" v-model="showMap[key]" />
+            <label
+              :key="value"
+              :class="'i_c_l '+ (showMap[key] ? 'i_c_l_checked' : '')"
+              :for="'type_'+key"
+              v-text="value"
+              v-if="list.type[key]"
+            ></label>
+          </template>
+        </div>
+        <div class="parent_flex_row html_content">
+          <main class="py_content">
+            <article v-for="(value, key) in list.py" :key="key">
+              <section :id="key">
+                <header>
+                  <b>{{key}}</b>
+                </header>
+                <content>
+                  <div
+                    class="name_info"
+                    v-for="(info) in value"
+                    :title="info.id"
+                    :key="info.id"
+                    v-if="showMap[info.type]"
+                  >
+                    <div class="showName" @click="showSelf(info.id)">
+                      <span class="type" v-text="key2CN[info.type]"></span>
+                      <span class="name" v-text="info.name"></span>
+                    </div>
                   </div>
-                </div>
-              </content>
-              <footer>
+                </content>
+                <!-- <footer>
                 <small>-</small>
-              </footer>
-            </section>
-          </article>
-        </main>
-        <nav class="py_nav">
-          <div>
-            <a v-for="(value, key) in list.py" :key="key" :href="'#'+key" :id="'py_nav_'+key">
-              <b>{{key}}</b>
-            </a>
-          </div>
-        </nav>
+                </footer>-->
+              </section>
+            </article>
+          </main>
+          <nav class="py_nav">
+            <div>
+              <a v-for="(value, key) in list.py" :key="key" :href="'#'+key" :id="'py_nav_'+key">
+                <b>{{key}}</b>
+              </a>
+            </div>
+          </nav>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>

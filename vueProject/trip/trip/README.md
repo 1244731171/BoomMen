@@ -25,3 +25,12 @@ npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+## some nice user head icon
+
+[旅行者头像](https://www.flaticon.com/packs/travel-people-10)
+[动物头像](https://www.flaticon.com/packs/wildlife-14)
+```
+Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+```

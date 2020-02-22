@@ -1,17 +1,10 @@
-/* rgb(255,153,0)  @basecolor1*/
-
-@basecolor1 : #f90;
-@basecolor2 : #1471d9;
-@logo-width : auto;
-@logo-height: 48px;
-
 #app {
-    width           : 100%;
-    height          : 100%;
-    background-color: #141414;
-    line-height     : 100%;
-    overflow-y      : auto;
-    overflow-x      : hidden;
+    width                 : 100%;
+    height                : 100%;
+    // background-color   : #141414;
+    // line-height        : 100%;
+    overflow-y            : auto;
+    overflow-x            : hidden;
 
     // @media screen and (min-width:769px) {
     //     //css style
@@ -43,14 +36,14 @@
 }
 
 .header {
-    background-color: #1e1e1e;
-    height          : 48px;
-    width           : 100%;
-    position        : relative;
-    z-index         : 100;
-    position        : sticky;
-    top             : 0;
-    flex            : 0 0 48px;
+    background: @basecolor4;
+    height    : 48px;
+    width     : 100%;
+    position  : relative;
+    z-index   : 100;
+    position  : sticky;
+    top       : 0;
+    flex      : 0 0 48px;
 }
 
 .btn {
@@ -62,8 +55,8 @@
 .asideBtn {
     width           : 55px;
     height          : 47px;
-    background-color: #1e1e1e;
-    border-right    : 1px solid #111;
+    background-color: @basecolor4;
+    border-right    : 1px solid @basecolor-border;
     top             : 0;
     left            : 0;
     position        : absolute;
@@ -97,25 +90,29 @@
 
 .nav {
     color      : #ccc;
-    font-size  : .14px;
     font-weight: 700;
     text-align : center;
     display    : flex;
     flex       : 0 0 39px;
+    margin-left: -2px; // 左移1像素为的是隐藏 .navBtn第一个元素的border-left
 }
 
 .navBtn {
-    padding         : 11px 5px;
-    font-size       : 14px;
-    font-weight     : 700;
-    text-align      : center;
-    /* height       : 38px; */
-    background-color: #000;
-    border-left     : 1px solid #262626;
-    border-bottom   : 1px solid #262626;
-    color           : #ccc;
-    display         : block;
-    flex            : auto;
+    padding            : 11px 5px;
+    font-size          : 1.5rem;
+    font-weight        : 500;
+    text-align         : center;
+    background-color   : @basecolor5;
+    border-left        : 2px solid @basecolor-border;
+    // border-bottom   : 2px solid @basecolor-border;
+    color              : #ccc;
+    display            : block;
+    flex               : auto;
+}
+
+.navBtn.hover {
+    font-weight: 700;
+    color      : @basecolor1;
 }
 
 .main {
@@ -128,7 +125,7 @@
 //     width     : 100%;
 //     margin    : 5px auto 0;
 //     position  : relative;
-//     background: #1e1e1e;
+//     background: @basecolor3;
 //     padding   : 10 0 10 10px;
 // }
 
@@ -149,7 +146,7 @@
 // }
 
 .shadow {
-    background-color: rgba(0, 0, 0, .7);
+    background-color: rgba(0, 0, 0, .3);
     position        : fixed;
     top             : 0;
     bottom          : 0;
@@ -168,8 +165,8 @@
     width           : 270px;
     min-height      : 100%;
     z-index         : 90;
-    background-color: #111;
-    border-top      : 2px solid #000;
+    background-color: @basecolor4;
+    border-top      : 2px solid @basecolor-border;
     position        : absolute;
     top             : 0px;
     left            : -270px;
@@ -188,14 +185,15 @@
 
 .menuBtn,
 .menuGap {
+    font-weight  : 500;
     width        : 100%;
     height       : 38px;
-    line-height  : 38px;
+    line-height  : 3.8rem;
     border-bottom: 1px solid #111;
-    color        : @basecolor1;
+    color        : #dbf0e7;
     display      : block;
     padding      : 9px 0 9px 17px;
-    font-size    : .9em;
+    font-size    : 1.5rem;
     border-bottom: 2px solid #000;
 }
 
@@ -203,103 +201,99 @@
     height: 10px;
 }
 
-// .userAction {
-//     display: flex;
-//     padding: 9 0px;
-//     height : auto;
-// }
+.userAction {
+    display: flex;
+    padding: 9 0px;
+    height : auto;
+}
 
-// .userBtn {
-//     font-size  : 10px;
-//     border     : 0;
-//     flex       : auto;
-//     text-align : center;
-//     position   : relative;
-//     padding-top: 7px;
-// }
+.userBtn {
+    font-size  : 10px;
+    border     : 0;
+    flex       : auto;
+    text-align : center;
+    position   : relative;
+    padding-top: 7px;
+}
 
-// .userBtn span {
-//     font-size    : 10px;
-//     text-align   : center;
-//     color        : #999;
-//     margin-bottom: 10px;
-//     line-height  : 1.4;
-// }
+.userBtn span {
+    font-size    : 10px;
+    text-align   : center;
+    color        : @basecolor1;
+    margin-bottom: 10px;
+    line-height  : 1.4;
+}
 
-// .userBtn i {
-//     background-image : url(../images/sprite-common@2x.png);
-//     background-repeat: no-repeat;
-//     background-size  : 303px 287px;
-//     width            : 40px;
-//     height           : 40px;
-//     display          : block;
-//     margin           : 0 auto 5px;
-//     cursor           : pointer;
-// }
+.userBtn i {
+    background-image : url(../images/sprite-common@2x.png);
+    background-repeat: no-repeat;
+    border-color     : @basecolor1;
+    border-radius    : 50%;
+    background-size  : 303px 287px;
+    width            : 40px;
+    height           : 40px;
+    display          : block;
+    margin           : 0 auto 5px;
+    cursor           : pointer;
+}
 
-// .userBtn .login {
-//     background-position: -1px -49px;
-// }
+.userBtn .login {
+    background-position: -1px -49px;
+}
 
-// .userBtn .signin {
-//     background-position: -91px -1px;
-// }
+.userBtn .signin {
+    background-position: -91px -1px;
+}
 
-// .userBtn .upload {
-//     background-position: -43px -49px;
-// }
+.userBtn .upload {
+    background-position: -43px -49px;
+}
 
-// .userBtn .logout {
-//     background-position: -1px -91px;
-//     background-color   : @basecolor1;
-//     border-radius      : 50%;
-// }
+.userBtn .logout {
+    background-position: -1px -91px;
+}
 
-// .userBtn .message {
-//     background-position: -91px -43px;
-// }
+.userBtn .message {
+    background-position: -91px -43px;
+}
 
-// .userBtn .news {
-//     width           : 10px;
-//     height          : 10px;
-//     border-radius   : 50%;
-//     background-color: #f00;
-//     position        : absolute;
-//     top             : 7px;
-//     right           : 7px;
-// }
+.userBtn .news {
+    width           : 10px;
+    height          : 10px;
+    border-radius   : 50%;
+    background-color: #f00;
+    position        : absolute;
+    top             : 7px;
+    right           : 7px;
+}
 
-// .userInfo span {
-//     font-size     : 16px;
-//     vertical-align: middle;
-//     font-weight   : 800;
-// }
+.userInfo span {
+    font-size     : 16px;
+    vertical-align: middle;
+    font-weight   : 800;
+}
 
-// .userInfo img {
-//     width         : 40px;
-//     height        : 40px;
-//     margin-right  : 12px;
-//     display       : inline-block;
-//     vertical-align: middle;
-// }
+.userInfo img {
+    width         : 40px;
+    height        : 40px;
+    margin-right  : 12px;
+    display       : inline-block;
+    vertical-align: middle;
+}
 
-// .userInfoAction {
-//     border-left: 4px @basecolor1 solid;
-//     color      : #ddd;
-// }
+.userInfoAction {
+    border-left: 4px @basecolor-border-2 solid;
+    color      : #ddd;
+}
 
-// .menuBtn:nth-of-type(6) {
-//     border-left: 4px solid @basecolor2
-// }
-
-// .alertDiv {
-//     width   : 100%;
-//     height  : 100%;
-//     display : flex;
-//     position: absolute;
-//     top     : 0;
-//     left    : 0;
-// }
+.alertDiv {
+    width   : 100%;
+    height  : 100%;
+    display : flex;
+    position: absolute;
+    top     : 0;
+    left    : 0;
+}
 
 .alert,
 .confirm {
@@ -573,15 +567,15 @@
 // }
 
 // .user_table tr:nth-of-type(odd) {
-//     background-color: #262626;
+//     background-color: @basecolor-border;
 // }
 
 // .user_table tr:nth-of-type(even) {
-//     background-color: #1e1e1e;
+//     background-color: @basecolor3;
 // }
 
 // tr td {
-//     border-bottom: 1px solid @basecolor2;
+//     border-bottom: 1px solid @basecolor3;
 //     padding      : 10 20px;
 // }
 
@@ -661,20 +655,16 @@
 .c_cancel {
     margin          : 0 10px;
     padding         : 3 20px;
-    font-size       : 14px;
+    font-size       : 1.4rem;
     border-radius   : 4px;
     display         : inline-block;
     border          : 2px solid @basecolor1;
     box-shadow      : none;
-    line-height     : 20px;
+    line-height     : 2rem;
     white-space     : nowrap;
     text-align      : center;
     background-color: #2f2f2f;
     color           : #acacac;
-}
-
-.navBtn.hover {
-    color: @basecolor1;
 }
 
 .leftMenu .blank {
