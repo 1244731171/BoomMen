@@ -2,8 +2,11 @@
   <div class="list main">
     <div id="list">
       <div class="parent_flex_column">
-        <div class="html_nav parent_flex_row">
+        <div class="parent_flex_row search_nav">
           <input type="text" id="name_search" v-model="nameSearch" />
+        </div>
+
+        <div class="type_nav_scroll">
           <template v-for="(value, key) in key2CN">
             <input :key="key" type="checkbox" :id="'type_'+key" class="i_c" v-model="showMap[key]" />
             <label
@@ -145,6 +148,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+@import "../assets/less/base.less";
 @import "../assets/less/list.less";
 </style>

@@ -1,19 +1,22 @@
-.list {
-    margin     : 0;
-    overflow-y : auto;
-    color      : @basecolor10;
-    font-size  : 1.6rem;
+* {
     font-family: PingFangSC-Regular, Helvetica, Arial, "Microsoft Yahei", sans-serif;
+    color      : #310031;
+    font-size  : 1.6rem;
+}
+
+.list {
+    margin          : 0;
+    overflow-y      : auto;
 }
 
 #list {
-    @media screen and (min-width:768px) {
-        max-width: 700px;
+    @media screen and (min-width:800px) {
+        max-width: 800px;
     }
 
     min-height      : 100%;
     margin          : 0 auto;
-    background-color: @basecolor8;
+    background-color: #edeadf;
     // background   : url('../images/4.gif');
 }
 
@@ -46,12 +49,11 @@
 }
 
 .py_nav div a {
-    font-size      : 1.6rem;
-    line-height    : 1.4rem;
+    font-size      : 1.2rem;
+    line-height    : 1.2rem;
     text-align     : center;
     margin         : 2px;
     text-decoration: none;
-    color          : @basecolor10;
 }
 
 .html_nav {
@@ -81,7 +83,7 @@
     border       : 1px solid transparent;
     /*用于清除button组件的立体感边框*/
 
-    @media screen and (max-width:767px) {
+    @media screen and (max-width:481px) {
         padding    : 0 5px;
         margin     : 0 0 5 5px;
         line-height: 2rem;
@@ -90,66 +92,28 @@
 }
 
 .i_c_l {
-    border: 1px solid @btncolor;
+    border: 1px solid #839d9b;
 }
 
 .i_c_l_b {
-    border: 1px solid@btncolor-hover;
+    border: 1px solid #e67d7d;
 }
 
 .i_c_l_b_checked {
-    border          : 1px solid@btncolor-hover;
-    background-color: @btncolor-hover;
-    box-shadow      : inset 0 1px 1px@btncolor-hover, 0 0 2px@btncolor-hover;
+    border          : 1px solid #e67d7d;
+    background-color: #e67d7d;
+    box-shadow      : inset 0 1px 1px #e67d7d, 0 0 2px #e67d7d;
     color           : #f4f4f4;
 }
 
 .i_c_l_checked {
-    background-color: @btncolor;
-    box-shadow      : inset 0 1px 1px @btncolor, 0 0 2px @btncolor;
+    background-color: #839d9b;
+    box-shadow      : inset 0 1px 1px #839d9b, 0 0 2px #839d9b;
     color           : #f4f4f4;
 }
 
-.search_nav {
-    flex: none;
-}
-
-.type_nav {
-    font-size   : 0px;
-    margin-right: 10px;
-
-    @media screen and (max-width:767px) {
-        margin-right: 5px;
-    }
-}
-
-.type_nav_scroll {
-    font-size  : 0px;
-    margin     : 0 10 10px;
-    overflow   : auto;
-    white-space: nowrap;
-
-    @media screen and (max-width:767px) {
-        margin: 0 5 5px;
-    }
-}
-
-.type_nav_scroll .i_c_l:nth-of-type(1) {
-    // 第一个没有外边距
-    margin: 0px;
-}
-
-.type_nav_scroll .i_c_l {
-    // 所有按钮间隔由后一个按钮的margin-left控制
-    margin: 0 0 0 10px;
-
-    @media screen and (max-width:767px) {
-        margin: 0 0 0 5px;
-    }
-}
-
 #name_search {
-    border            : 1px solid @btncolor;
+    border            : 1px solid #839d9b;
     padding           : 7px 0;
     background        : #f4f4f4;
     border-radius     : 3px;
@@ -161,7 +125,7 @@
     transition        : border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     margin            : 10px;
 
-    @media screen and (max-width:767px) {
+    @media screen and (max-width:481px) {
         margin: 5px;
     }
 
@@ -170,8 +134,8 @@
 
 #name_search:focus {
     outline           : 0;
-    -webkit-box-shadow: inset 0 0 3px @btncolor, 0 0 3px @btncolor;
-    box-shadow        : inset 0 0 3px @btncolor, 0 0 3px @btncolor
+    -webkit-box-shadow: inset 0 0 3px #839d9b, 0 0 3px #839d9b;
+    box-shadow        : inset 0 0 3px #839d9b, 0 0 3px #839d9b
 }
 
 input {
@@ -187,7 +151,7 @@ input {
 section header {
     position    : sticky;
     top         : 0;
-    background  : @basecolor7;
+    background  : #c8c8a9;
     padding-left: 20px;
     height      : 22px;
     line-height : 2.2rem;
@@ -195,7 +159,7 @@ section header {
 }
 
 section content .name_info {
-    border-top: 2px solid @basecolor7;
+    border-top: 2px solid #c8c8a9;
     padding   : 5 5 5 20px;
     position  : relative;
 }
@@ -213,7 +177,7 @@ section content .name_info:first-child {
 }
 
 .type {
-    border: 1px solid @btncolor;
+    border: 1px solid #839d9b;
 }
 
 .detailBtn,

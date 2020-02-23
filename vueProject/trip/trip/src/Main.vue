@@ -102,7 +102,7 @@
         <div
           v-if="user.isLogin"
           class="menuBtn userInfoAction"
-          :key="info"
+          :key="info.id"
           @click="navBtnClick(info.id)"
         >
           <span v-html="info.txt"></span>
@@ -183,6 +183,10 @@ export default {
 
     navBtnClick(id) {
       this.current.type = id;
+      if(document.querySelector(".leftMenuShow")){
+        // 如果左边栏显示中，切换tag页就要隐藏左边栏
+        this.asideBtnClick();
+      }
     },
 
     asideBtnClick() {

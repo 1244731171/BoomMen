@@ -36,15 +36,14 @@
 }
 
 .header {
-    background   : @basecolor7;
-    height       : 48px;
-    width        : 100%;
-    position     : relative;
-    z-index      : 100;
-    position     : sticky;
-    top          : 0;
-    flex         : 0 0 48px;
-    border-bottom: 2px solid @basecolor9;
+    background: @basecolor4;
+    height    : 48px;
+    width     : 100%;
+    position  : relative;
+    z-index   : 100;
+    position  : sticky;
+    top       : 0;
+    flex      : 0 0 48px;
 }
 
 .btn {
@@ -54,19 +53,19 @@
 }
 
 .asideBtn {
-    width              : 55px;
-    height             : 47px;
-    background-color   : @basecolor7;
-    // border-right    : 1px solid @basecolor-border;
-    top                : 0;
-    left               : 0;
-    position           : absolute;
-    text-align         : center
+    width           : 55px;
+    height          : 47px;
+    background-color: @basecolor4;
+    border-right    : 1px solid @basecolor-border;
+    top             : 0;
+    left            : 0;
+    position        : absolute;
+    text-align      : center
 }
 
 .asideBtn .icon {
     margin             : 0 auto;
-    background-image   : url(../images/sprite-common@2x.1.png);
+    background-image   : url(../images/sprite-common.png);
     background-repeat  : no-repeat;
     background-size    : 303px 287px;
     width              : 32px;
@@ -90,11 +89,6 @@
 }
 
 .nav {
-    // ipad下不显示导航栏
-    @media screen and (max-height:812px) {
-        display: none
-    }
-
     color      : #ccc;
     font-weight: 700;
     text-align : center;
@@ -109,23 +103,22 @@
     font-weight        : 500;
     text-align         : center;
     background-color   : @basecolor5;
-    border-left        : 2px solid @basecolor9;
+    border-left        : 2px solid @basecolor-border;
     // border-bottom   : 2px solid @basecolor-border;
-    color              : @basecolor9;
+    color              : #ccc;
     display            : block;
     flex               : auto;
 }
 
 .navBtn.hover {
     font-weight: 700;
-    color      : @basecolor9;
+    color      : @basecolor1;
 }
 
 .main {
-    position  : relative;
-    flex      : 0 1 100%;
-    overflow  : hidden;
-    background: url(../images/spikes.png);
+    position: relative;
+    flex    : 0 1 100%;
+    overflow: hidden;
 }
 
 // .mainHeader {
@@ -172,7 +165,8 @@
     width           : 270px;
     min-height      : 100%;
     z-index         : 90;
-    background-color: @basecolor10;
+    background-color: @basecolor4;
+    border-top      : 2px solid @basecolor-border;
     position        : absolute;
     top             : 0px;
     left            : -270px;
@@ -182,12 +176,11 @@
 }
 
 .leftMenuShow {
-    left        : 0px;
-    height      : auto;
-    transition  : all .5s ease;
-    overflow-x  : hidden;
-    overflow-y  : auto;
-    border-right: 2px solid @basecolor9;
+    left      : 0px;
+    height    : auto;
+    transition: all .5s ease;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .menuBtn,
@@ -195,12 +188,13 @@
     font-weight  : 500;
     width        : 100%;
     height       : 38px;
-    line-height  : 3.4rem;
-    color        : @basecolor9;
+    line-height  : 3.8rem;
+    border-bottom: 1px solid #111;
+    color        : #dbf0e7;
     display      : block;
     padding      : 9px 0 9px 17px;
-    font-size    : 1.6rem;
-    border-bottom: 2px solid @basecolor9;
+    font-size    : 1.5rem;
+    border-bottom: 2px solid #000;
 }
 
 .menuGap {
@@ -225,15 +219,15 @@
 .userBtn span {
     font-size    : 10px;
     text-align   : center;
-    color        : @basecolor9;
+    color        : @basecolor1;
     margin-bottom: 10px;
     line-height  : 1.4;
 }
 
 .userBtn i {
-    background-image : url(../images/sprite-common@2x.1.png);
+    background-image : url(../images/sprite-common@2x.png);
     background-repeat: no-repeat;
-    border-color     : @basecolor9;
+    border-color     : @basecolor1;
     border-radius    : 50%;
     background-size  : 303px 287px;
     width            : 40px;
@@ -274,7 +268,7 @@
 }
 
 .userInfo span {
-    font-size     : 1.8rem;
+    font-size     : 16px;
     vertical-align: middle;
     font-weight   : 800;
 }
@@ -289,6 +283,7 @@
 
 .userInfoAction {
     border-left: 4px @basecolor-border-2 solid;
+    color      : #ddd;
 }
 
 .alertDiv {
@@ -675,6 +670,5 @@
 .leftMenu .blank {
     height          : 48px;
     pointer-events  : none;
-    border-bottom   : 2px solid @basecolor9;
     background-color: #000;
 }
