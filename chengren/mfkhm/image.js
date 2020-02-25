@@ -9,15 +9,17 @@ module.exports = {
             url: url,
             type: 'mobile',
             callback: (str, status) => {
-                if(status !== "ERROR") {
+                if (status !== "ERROR") {
                     let body = new JSDOM(str);
                     let images = body.window.document.querySelectorAll("img[data-original]");
                     let name = body.window.document.querySelector(".view-fix-top-bar-title").innerHTML;
-                    name = name.replace(/\/|\||\\|\"|\<|\>|\*|\?|\:/g,"");
+                    name = name.replace(/\/|\||\\|\"|\<|\>|\*|\?|\:/g, "");
                     let output = [];
                     images.forEach((dom) => {
                         let _url = dom.getAttribute('data-original');
-                        if(_url.endsWith(".jpg")){
+                        let style = dom.getAttribute("style");
+                        // console.log(`style ==> ${style}`);
+                        if (style.indexOf("display:none") == -1 && _url.endsWith(".jpg")) {
                             output.push(_url);
                         }
                     });
@@ -25,7 +27,7 @@ module.exports = {
                         images: output,
                         name: name
                     });
-                }else{
+                } else {
                     console.log("ERROR");
                 }
             }
