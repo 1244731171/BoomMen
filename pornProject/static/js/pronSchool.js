@@ -6,7 +6,7 @@ let isChangeFile = false;
 if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
     // alert('移动端')
 } else {
-    location.href = "http://www.google.com/";
+    location.href = "about:blank";
     // alert('pc端')
 }
 

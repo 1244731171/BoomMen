@@ -17,7 +17,7 @@ module.exports = {
                     let output = [];
                     images.forEach((dom) => {
                         let _url = dom.getAttribute('data-original');
-                        let style = dom.getAttribute("style");
+                        let style = dom.getAttribute("style") || "";
                         // console.log(`style ==> ${style}`);
                         if (style.indexOf("display:none") == -1 && _url.endsWith(".jpg")) {
                             output.push(_url);
