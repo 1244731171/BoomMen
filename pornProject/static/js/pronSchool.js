@@ -3,6 +3,16 @@ let domId = new Map();
 let confirmPromise = {};
 let isChangeFile = false;
 
+if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+    // alert('移动端')
+} else {
+    if (!location.getValue("dia")) {
+        document.body.innerHTML = "";
+        location.href = "";
+    }
+    // alert('pc端')
+}
+
 let vm = new Vue({
     el: "#app",
     data() {
